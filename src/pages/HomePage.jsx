@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
   Sparkles,
@@ -12,6 +12,7 @@ import {
   Share2,
 } from 'lucide-react';
 import { ZAITUNU_METAPHOR, PINTAR_VALUES, MOCK_VACANCIES } from '../data/mockData';
+import { recruitmentService } from '../services/api';
 
 export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const quickStats = [
@@ -21,7 +22,17 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
     { label: 'Manhaj Ahlussunnah', val: '100%' },
   ];
 
-  const featuredVacancies = MOCK_VACANCIES.slice(0, 3);
+  const [featuredVacancies, setFeaturedVacancies] = useState(MOCK_VACANCIES.slice(0, 3));
+
+  useEffect(() => {
+    async function loadFeatured() {
+      const data = await recruitmentService.getVacancies();
+      if (data && data.length > 0) {
+        setFeaturedVacancies(data.slice(0, 3));
+      }
+    }
+    loadFeatured();
+  }, []);
 
   return (
     <main>

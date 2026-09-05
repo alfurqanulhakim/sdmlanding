@@ -46,15 +46,22 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
   ];
 
   const filtered = vacancies.filter((v) => {
-    const matchSearch =
-      v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      v.unit.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      v.education.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = (v.title || '').toLowerCase();
+    const unit = (v.unit || '').toLowerCase();
+    const education = (v.education || '').toLowerCase();
+    const q = searchQuery.toLowerCase();
 
-    const matchCat = selectedCategory === 'all' || v.category === selectedCategory;
+    const matchSearch = title.includes(q) || unit.includes(q) || education.includes(q);
+
+    const matchCat =
+      selectedCategory === 'all' ||
+      v.category === selectedCategory ||
+      (selectedCategory === 'Guru' && (v.category?.includes('Guru') || title.includes('guru') || title.includes('tahsin') || title.includes('tahfidz')));
+
     const matchGender =
       selectedGender === 'all' ||
-      v.gender.toLowerCase().includes(selectedGender.toLowerCase());
+      (v.gender || '').toLowerCase().includes(selectedGender.toLowerCase()) ||
+      (v.gender || '').toLowerCase().includes('bebas');
 
     return matchSearch && matchCat && matchGender;
   });
