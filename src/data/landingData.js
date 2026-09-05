@@ -1,0 +1,280 @@
+export const CORE_VALUES = [
+  {
+    id: 'sunnah',
+    arabic: 'السنة',
+    title: 'As-Sunnah',
+    subtitle: 'Landasan Syari\'at & Akhlak Mulia',
+    desc: 'Menjadikan Al-Qur\'an dan Sunnah sesuai pemahaman Salafus Shalih sebagai kompas utama dalam bertutur, bersikap, mendidik, dan mengelola institusi.',
+    icon: 'BookOpen',
+    color: 'emerald',
+  },
+  {
+    id: 'amanah',
+    arabic: 'الأمانة',
+    title: 'Al-Amanah',
+    subtitle: 'Integritas & Tanggung Jawab',
+    desc: 'Setiap tugas adalah titipan umat dan Allah Ta\'ala. Kami menjunjung tinggi kejujuran, disiplin, akuntabilitas, dan keteladanan tanpa kompromi.',
+    icon: 'ShieldCheck',
+    color: 'blue',
+  },
+  {
+    id: 'ihsan',
+    arabic: 'الإحسان',
+    title: 'Al-Ihsan',
+    subtitle: 'Profesionalisme & Kualitas Terbaik',
+    desc: 'Bekerja dengan keahlian terbaik (itqan), senantiasa berinovasi dalam pedagogi islami, dan menerapkan standar manajemen mutu berkelanjutan.',
+    icon: 'Sparkles',
+    color: 'amber',
+  },
+  {
+    id: 'ittihad',
+    arabic: 'الاتحاد',
+    title: 'Al-Ittihad',
+    subtitle: 'Ukhuwah & Kolaborasi Sinergis',
+    desc: 'Membangun tim yang solid berlandaskan kasih sayang karena Allah, saling menopang antar unit, dan berkolaborasi mencapai kemaslahatan santri.',
+    icon: 'Users2',
+    color: 'purple',
+  },
+];
+
+export const SCHOOL_UNITS = [
+  {
+    id: 'playhouse-tkit',
+    category: 'Anak Usia Dini',
+    name: 'Playhouse & TK IT Dar el-Iman',
+    location: 'Padang, Sumatera Barat',
+    santriCount: '350+',
+    desc: 'Pendidikan dasar usia dini berbasis fitrah, pengenalan adab, hafalan doa harian, dan tahfidz juz 30 dengan metode bermain yang menyenangkan.',
+    badge: 'Akreditasi A',
+  },
+  {
+    id: 'sdit-1',
+    category: 'Pendidikan Dasar',
+    name: 'SD IT 1 Dar el-Iman',
+    location: 'Gurun Laweh, Padang',
+    santriCount: '800+',
+    desc: 'Sekolah rujukan Islam Terpadu dengan kurikulum nasional terintegrasi nilai Qur\'ani, program tahsin metode bersanad, dan sains terapan.',
+    badge: 'Sekolah Penggerak',
+  },
+  {
+    id: 'sdit-2',
+    category: 'Pendidikan Dasar',
+    name: 'SD IT 2 Dar el-Iman',
+    location: 'Sawahan / Belanti, Padang',
+    santriCount: '650+',
+    desc: 'Fokus pada pembinaan karakter mandiri, tahfidz mutqin, bahasa Arab dasar, serta pengembangan minat bakat santri.',
+    badge: 'Akreditasi A',
+  },
+  {
+    id: 'sdit-3',
+    category: 'Pendidikan Dasar',
+    name: 'SD IT 3 Dar el-Iman',
+    location: 'Nanggalo, Padang',
+    santriCount: '500+',
+    desc: 'Lingkungan belajar ramah anak yang mengintegrasikan pembelajaran teknologi dasar dengan penanaman tauhid yang kokoh.',
+    badge: 'Terakreditasi',
+  },
+  {
+    id: 'smpit',
+    category: 'Pendidikan Menengah',
+    name: 'SMP IT Dar el-Iman',
+    location: 'Jl. Gunung Juaro, Surau Gadang',
+    santriCount: '900+',
+    desc: 'Jenjang menengah pertama dengan sistem fullday & boarding, target hafalan 5–10 Juz, kepemimpinan islam, dan prestasi olimpiade sains.',
+    badge: 'Boarding & Fullday',
+  },
+  {
+    id: 'smait-mit',
+    category: 'Pendidikan Lanjutan',
+    name: 'SMA IT & Madrasah Aliyah Dar el-Iman',
+    location: 'Kampus Islamic Center, Padang',
+    santriCount: '750+',
+    desc: 'Mempersiapkan kader ulama dan cendekiawan muslim dengan penguasaan kitab turats, bahasa Arab aktif, serta tembus PTN dan universitas Timur Tengah.',
+    badge: 'Tahfidz 30 Juz',
+  },
+  {
+    id: 'operasional-sosial',
+    category: 'Lembaga Dakwah & Sosial',
+    name: 'Dar el-Iman Peduli & Media Dakwah',
+    location: 'Kantor Pusat Yayasan, Padang',
+    santriCount: 'Masyarakat',
+    desc: 'Unit penunjang operasional, penyaluran beasiswa santri dhuafa, radio/televisi dakwah sunnah, dan sistem teknologi informasi SIMAK.',
+    badge: 'Pelayanan Umat',
+  },
+];
+
+export const WHY_JOIN_US = [
+  {
+    icon: 'HeartHandshake',
+    title: 'Lingkungan Kerja Sunnah & Berkah',
+    desc: 'Suasana kerja yang adem, menjaga batasan hijab syar\'i, shalat fardhu berjamaah di masjid, dan kajian tafsir/hadits rutin untuk para asatidzah.',
+  },
+  {
+    icon: 'TrendingUp',
+    title: 'Jenjang Karir & Kompensasi Transparan',
+    desc: 'Penerapan Skala Upah Dua Titik berbasis Grade & Evaluasi Jabatan, serta penilaian KPI digital yang adil dan transparan melalui SIMAK.',
+  },
+  {
+    icon: 'ShieldCheck',
+    title: 'Jaminan Sosial & Kesehatan Lengkap',
+    desc: 'Perlindungan penuh jaminan ketenagakerjaan dan kesehatan (BPJS Ketenagakerjaan & BPJS Kesehatan) untuk ketenangan keluarga pegawai.',
+  },
+  {
+    icon: 'Award',
+    title: 'Program Apresiasi Umroh Tahunan',
+    desc: 'Pemberian penghargaan tiket dan akomodasi ibadah Umroh ke Tanah Suci bagi asatidzah dan pegawai dengan dedikasi dan prestasi terbaik.',
+  },
+  {
+    icon: 'GraduationCap',
+    title: 'Pelatihan Kompetensi Bersanad',
+    desc: 'Dukungan penuh sertifikasi Tahsin/Tahfidz bersanad, workshop pedagogi kurikulum merdeka, serta beasiswa lanjutan studi bagi guru.',
+  },
+  {
+    icon: 'Smartphone',
+    title: 'Ekosistem Digital Modern (SIMAK)',
+    desc: 'Administrasi presensi, slip gaji online, penilaian santri, dan pengajuan izin terkelola rapi melalui sistem aplikasi SIMAK.',
+  },
+];
+
+export const INITIAL_VACANCIES = [
+  {
+    id: 'vac-1',
+    posisi: 'Guru Tahfidz Al-Qur\'an',
+    unit: 'SD IT 1 & 2 Dar el-Iman',
+    kategori: 'Pendidik',
+    gender: 'Ikhwan & Akhwat',
+    kebutuhan: 4,
+    pendidikan: 'Min. D3 / S1 Ilmu Al-Qur\'an / Ma\'had ' ,
+    syarat: [
+      'Hafal Al-Qur\'an mutqin minimal 10 Juz (diutamakan 30 Juz)',
+      'Memiliki syahadah / sertifikat tahsin tajwid',
+      'Mampu membaca Al-Qur\'an dengan tartil dan makharijul huruf tepat',
+      'Menyukai dunia anak-anak dan penyabar',
+    ],
+    urgensi: 'Prioritas Tinggi',
+  },
+  {
+    id: 'vac-2',
+    posisi: 'Guru Kelas / PGSD',
+    unit: 'SD IT 2 & 3 Dar el-Iman',
+    kategori: 'Pendidik',
+    gender: 'Akhwat',
+    kebutuhan: 3,
+    pendidikan: 'S1 PGSD / Pendidikan Matematika / IPA',
+    syarat: [
+      'Lulusan S1 linier dengan IPK minimal 3.25',
+      'Mampu membaca Al-Qur\'an dengan baik',
+      'Memiliki kemampuan manajemen kelas yang interaktif & kreatif',
+      'Berakhlak mulia dan tidak merokok',
+    ],
+    urgensi: 'Prioritas Tinggi',
+  },
+  {
+    id: 'vac-3',
+    posisi: 'Guru Bahasa Arab & Dirasah Islamiyah',
+    unit: 'SMP IT & SMA IT Dar el-Iman',
+    kategori: 'Pendidik',
+    gender: 'Ikhwan',
+    kebutuhan: 2,
+    pendidikan: 'S1 Pendidikan Bahasa Arab / Syariah / LIPIA',
+    syarat: [
+      'Aktif berkomunikasi bahasa Arab fushah',
+      'Mampu membaca dan mengajarkan kitab turats dasar',
+      'Hafal Al-Qur\'an minimal 5 Juz',
+      'Memiliki komitmen tinggi terhadap dakwah sunnah',
+    ],
+    urgensi: 'Prioritas',
+  },
+  {
+    id: 'vac-4',
+    posisi: 'Guru Bimbingan Konseling (BK)',
+    unit: 'SMP IT Dar el-Iman',
+    kategori: 'Pendidik',
+    gender: 'Ikhwan & Akhwat',
+    kebutuhan: 2,
+    pendidikan: 'S1 Bimbingan Konseling / Psikologi',
+    syarat: [
+      'Memahami perkembangan psikologi remaja dan adab islami',
+      'Mampu melakukan konseling santri dan komunikasi dengan wali santri',
+      'Memiliki empati tinggi, pendengar yang baik, dan komunikatif',
+    ],
+    urgensi: 'Prioritas',
+  },
+  {
+    id: 'vac-5',
+    posisi: 'Staf IT & Sistem Informasi',
+    unit: 'Bidang Sarpras & IT Yayasan',
+    kategori: 'Tenaga Kependidikan',
+    gender: 'Ikhwan',
+    kebutuhan: 1,
+    pendidikan: 'S1 Teknik Informatika / Sistem Informasi',
+    syarat: [
+      'Memahami web technologies (React/Laravel/Node) & database SQL',
+      'Memahami instalasi jaringan mikrotik, LAN, dan troubleshooting PC',
+      'Jujur, amanah, dan mampu bekerja dalam tim',
+    ],
+    urgensi: 'Prioritas',
+  },
+  {
+    id: 'vac-6',
+    posisi: 'Musyrif / Pembina Asrama',
+    unit: 'Islamic Boarding School Dar el-Iman',
+    kategori: 'Pengasuhan',
+    gender: 'Ikhwan',
+    kebutuhan: 3,
+    pendidikan: 'Alumni Pondok Pesantren / Ma\'had ' ,
+    syarat: [
+      'Hafal Al-Qur\'an minimal 3 Juz',
+      'Bersedia tinggal di asrama dan membimbing halaqah santri',
+      'Memiliki keteladanan adab, tegas, dan berjiwa pengayom',
+    ],
+    urgensi: 'Prioritas Tinggi',
+  },
+];
+
+export const RECRUITMENT_STAGES = [
+  {
+    step: 1,
+    title: 'Seleksi Administrasi',
+    desc: 'Verifikasi berkas ijazah, CV, transkrip nilai, dan sertifikat pendukung.',
+  },
+  {
+    step: 2,
+    title: 'Tes Baca Al-Qur\'an & Tahsin',
+    desc: 'Ujian kemampuan tilawah Al-Qur\'an, kelancaran tajwid, dan hafalan.',
+  },
+  {
+    step: 3,
+    title: 'Microteaching / Tes Praktik Kerja',
+    desc: 'Simulasi mengajar di depan asatidzah penguji atau tes teknis bidang.',
+  },
+  {
+    step: 4,
+    title: 'Wawancara Kompetensi & Komitmen',
+    desc: 'Diskusi mendalam bersama tim SDM dan Kepala Unit kerja.',
+  },
+  {
+    step: 5,
+    title: 'Pemeriksaan Kesehatan (MCU) & Akad',
+    desc: 'Pengecekan kebugaran medis dan penandatanganan akad perjanjian kerja.',
+  },
+];
+
+export const FAQS = [
+  {
+    q: 'Apakah pelamar yang belum hafal 30 Juz tetap bisa melamar sebagai guru?',
+    a: 'Bisa. Untuk formasi guru umum (tematik, IPA, matematika, bahasa Inggris), syarat minimal adalah mampu membaca Al-Qur\'an dengan tartil dan bertahsin baik. Khusus formasi Guru Tahfidz diutamakan yang memiliki hafalan 10 s/d 30 Juz.',
+  },
+  {
+    q: 'Bagaimana alur dan jangka waktu proses seleksi?',
+    a: 'Proses seleksi berlangsung rata-rata 1–2 pekan sejak berkas lamaran dinyatakan lolos verifikasi administrasi. Anda dapat memantau status secara mandiri melalui menu "Cek Status Lamaran" di web ini.',
+  },
+  {
+    q: 'Apakah diperbolehkan melamar jika masih berdomisili di luar Sumatera Barat?',
+    a: 'Bisa. Untuk seleksi tahap awal (administrasi dan wawancara) dapat difasilitasi secara online. Namun saat tahapan microteaching dan tes mengajar, pelamar bersedia hadir langsung di kampus Dar el-Iman Padang.',
+  },
+  {
+    q: 'Bagaimana sistem gaji dan fasilitas guru di Dar el-Iman?',
+    a: 'Yayasan Dar el-Iman menerapkan struktur Skala Upah Dua Titik yang jelas dan transparan, tunjangan jabatan, tunjangan kinerja (KPI), BPJS Ketenagakerjaan & Kesehatan, serta program reward Umroh tahunan bagi guru berdedikasi tinggi.',
+  },
+];
