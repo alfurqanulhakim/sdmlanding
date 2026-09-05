@@ -14,6 +14,8 @@ import {
   Briefcase,
   Quote,
   Calendar,
+  Scale,
+  FileCheck,
 } from 'lucide-react';
 import { TEAM_SDM_DATA, FAQS_DATA } from '../data/mockData';
 
@@ -21,6 +23,7 @@ export default function TeamPage() {
   const [openFaq, setOpenFaq] = useState(null);
 
   const leader = TEAM_SDM_DATA?.leader || {};
+  const officers = TEAM_SDM_DATA?.officers || [];
   const contacts = TEAM_SDM_DATA?.contacts || TEAM_SDM_DATA?.helpdesk || {};
   const pillars = TEAM_SDM_DATA?.pillars || TEAM_SDM_DATA?.services || [];
 
@@ -241,7 +244,204 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* 3. 4 PILAR LAYANAN SDM */}
+      {/* 3. PROFIL KEPALA BAGIAN LEGAL & PERSONALIA (ALFURQANUL HAKIM, S.H., C.W.C.) */}
+      <section className="content-section white-bg" style={{ paddingTop: '0px' }}>
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <Scale size={14} />
+              <span>Legalitas & Personalia SDM</span>
+            </div>
+            <h2 className="section-title">
+              Kepala Bagian Legal & Personalia
+            </h2>
+            <p className="section-subtitle">
+              Pilar kepastian hukum ketenagakerjaan, kepatuhan kontrak kerja PKWT, dan pengawasan kinerja pegawai berbasis SIMAK & Katalog KPI.
+            </p>
+          </div>
+
+          {/* Card Profil Alfurqanul Hakim */}
+          <div style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
+            borderRadius: '24px',
+            boxShadow: 'var(--shadow-card)',
+            overflow: 'hidden',
+            marginBottom: '48px',
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '0',
+            }}>
+              {/* Left Column: Photo & Credentials */}
+              <div style={{
+                background: 'linear-gradient(135deg, #063b2d 0%, #031c15 100%)',
+                color: '#ffffff',
+                padding: 'clamp(28px, 4vw, 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '24px',
+              }}>
+                <div>
+                  {/* Photo Frame */}
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '280px',
+                    margin: '0 auto 24px auto',
+                  }}>
+                    <div style={{
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      border: '3px solid var(--gold-light)',
+                      boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
+                      background: '#0a2e24',
+                    }}>
+                      <img
+                        src="/alfurqanul-hakim.png"
+                        alt="Alfurqanul Hakim, S.H., C.W.C."
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/alfurqanul-hakim.svg';
+                        }}
+                        style={{
+                          width: '100%',
+                          height: '320px',
+                          objectFit: 'cover',
+                          objectPosition: 'top center',
+                          display: 'block',
+                        }}
+                      />
+                    </div>
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'var(--gold-vibrant)',
+                      color: 'var(--navy-dark)',
+                      fontSize: '0.72rem',
+                      fontWeight: 900,
+                      padding: '4px 14px',
+                      borderRadius: '100px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                    }}>
+                      Kabag Legal & Personalia
+                    </div>
+                  </div>
+
+                  {/* Identity */}
+                  <div style={{ textAlign: 'center', marginTop: '18px' }}>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 900, color: '#ffffff', lineHeight: 1.25, marginBottom: '6px' }}>
+                      Alfurqanul Hakim, S.H., C.W.C.
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--gold-light)', fontWeight: 600, marginBottom: '4px' }}>
+                      Kepala Bagian Legal & Personalia (HR & Legal Manager)
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#cde4de' }}>
+                      Yayasan Dar el-Iman Padang
+                    </p>
+                  </div>
+                </div>
+
+                {/* Badges & Education */}
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <GraduationCap size={18} color="var(--gold-light)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: '#e0eee9', lineHeight: 1.5 }}>
+                      <strong>Pendidikan:</strong> <br />
+                      S1 Ilmu Hukum (Universitas Andalas) &bull; Sedang Menempuh Magister (S2) Hukum Keluarga Islam (UIN Mahmud Yunus Batusangkar)
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <Award size={18} color="var(--gold-light)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: '#e0eee9', lineHeight: 1.5 }}>
+                      <strong>Sertifikasi Profesi:</strong> <br />
+                      Sertifikasi Profesi Advokat (PERADI) &bull; Certified Waqf Competence (C.W.C.)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Bio & Key Responsibilities */}
+              <div style={{
+                padding: 'clamp(28px, 4vw, 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                background: '#ffffff',
+              }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                    <ShieldCheck size={20} color="var(--emerald-main)" />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--emerald-main)' }}>
+                      Mandat & Integritas Kelembagaan
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: 'clamp(1.2rem, 2vw, 1.45rem)', fontWeight: 900, color: 'var(--text-title)', lineHeight: 1.35, marginBottom: '16px' }}>
+                    Memastikan Kepatuhan Regulasi & Keadilan Hubungan Industrial
+                  </h3>
+
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-body)', lineHeight: 1.75, marginBottom: '20px' }}>
+                    Alfurqanul Hakim bertanggung jawab atas pengelolaan tata kelola Sumber Daya Manusia (SDM) dan kepatuhan hukum di lingkungan Yayasan Dar El-Iman. Dengan latar belakang pendidikan Ilmu Hukum dari Universitas Andalas dan sertifikasi profesi Advokat (PERADI), beliau memastikan setiap kebijakan operasional, pengelolaan hubungan industrial, dan legalitas kelembagaan berjalan sesuai dengan hukum positif yang berlaku serta selaras dengan prinsip syariat Islam.
+                  </p>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '16px' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-title)' }}>
+                      Fokus Tanggung Jawab Utama:
+                    </span>
+
+                    <div style={{ background: 'var(--bg-page)', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-card)' }}>
+                      <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--emerald-main)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <CheckCircle2 size={16} />
+                        <span>Manajemen SDM & Kinerja Pegawai</span>
+                      </div>
+                      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+                        Mengawasi sistem administrasi personalia melalui platform SIMAK dan memimpin implementasi evaluasi kinerja pegawai berbasis <strong>Katalog KPI</strong> YDEI.
+                      </p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-page)', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-card)' }}>
+                      <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--emerald-main)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <CheckCircle2 size={16} />
+                        <span>Kepatuhan Legal & Kontrak Kerja (PKWT)</span>
+                      </div>
+                      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+                        Mengelola penyusunan dan audit Perjanjian Kerja Waktu Tertentu (PKWT), SOP internal kepegawaian, serta mitigasi risiko hukum kelembagaan.
+                      </p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-page)', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-card)' }}>
+                      <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--emerald-main)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <CheckCircle2 size={16} />
+                        <span>Hubungan Industrial & Mediasi Internal</span>
+                      </div>
+                      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+                        Menjadi mediator internal dan memastikan pemenuhan hak serta kewajiban ketenagakerjaan secara adil, transparan, dan amanah.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: '24px', borderTop: '1px solid var(--border-card)', paddingTop: '16px' }}>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--text-light)', lineHeight: 1.6, margin: 0 }}>
+                    <strong>Latar Belakang Profesional:</strong> Memiliki rekam jejak di sektor finansial sebagai praktisi <em>Legal, Appraisal, & Remedial</em> di PT Sarana Sumatera Barat Ventura, yang membekalinya dengan ketajaman analisis hukum aset dan resolusi mediasi kelembagaan.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 4 PILAR LAYANAN SDM */}
       <section className="content-section alt-bg">
         <div className="site-container">
           <div className="section-head-box">

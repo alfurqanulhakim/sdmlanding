@@ -25,6 +25,12 @@ export default function ApplicationModal({ vacancy, onClose }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [codeCopied, setCodeCopied] = useState(false);
 
+  // Quick Autofill Profile State
+  const [lookupQuery, setLookupQuery] = useState('');
+  const [lookingUp, setLookingUp] = useState(false);
+  const [lookupSuccess, setLookupSuccess] = useState(false);
+  const [lookupError, setLookupError] = useState('');
+
   // Form State
   const [formData, setFormData] = useState({
     // Step 2: Data Pribadi
@@ -49,6 +55,46 @@ export default function ApplicationModal({ vacancy, onClose }) {
     // Step 5: Dokumen
     cvFile: null,
   });
+
+  const handleLookupProfile = async () => {
+    if (!lookupQuery.trim()) {
+      setLookupError('Silakan masukkan NIK, No. WhatsApp, atau Kode Registrasi lama Anda.');
+      return;
+    }
+    setLookingUp(true);
+    setLookupError('');
+    setLookupSuccess(false);
+
+    try {
+      const data = await recruitmentService.lookupProfile(lookupQuery.trim());
+      if (data) {
+        setFormData((prev) => ({
+          ...prev,
+          fullName: data.fullName || prev.fullName,
+          nik: data.nik || prev.nik,
+          whatsapp: data.whatsapp || prev.whatsapp,
+          email: data.email || prev.email,
+          gender: data.gender || prev.gender,
+          birthDate: data.birthDate || prev.birthDate,
+          lastEducation: data.lastEducation || prev.lastEducation,
+          institution: data.institution || prev.institution,
+          gpa: data.gpa || prev.gpa,
+          experience: data.experience || prev.experience,
+          quranMemorization: data.quranMemorization || prev.quranMemorization,
+          tahsinSkill: data.tahsinSkill || prev.tahsinSkill,
+          microteachingLink: data.microteachingLink || prev.microteachingLink,
+        }));
+        setLookupSuccess(true);
+        if (currentStep === 1) {
+          setCurrentStep(2);
+        }
+      }
+    } catch (err) {
+      setLookupError(err.message || 'Data profil sebelumnya belum ditemukan.');
+    } finally {
+      setLookingUp(false);
+    }
+  };
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -139,7 +185,7 @@ export default function ApplicationModal({ vacancy, onClose }) {
       }
     } catch (error) {
       setSubmitting(false);
-      setErrorMessage('Terjadi kendala saat menghubungkan ke server. Silakan coba sesaat lagi.');
+      setErrorMessage(error.message || 'Terjadi kendala saat menghubungkan ke server. Silakan coba sesaat lagi.');
     }
   };
 
@@ -171,21 +217,21 @@ export default function ApplicationModal({ vacancy, onClose }) {
                 fontWeight: 800,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
-                color: 'var(--emerald-main)',
-                background: 'var(--emerald-soft)',
+                color: vacancy.isTalentPool ? '#b45309' : 'var(--emerald-main)',
+                background: vacancy.isTalentPool ? '#fef3c7' : 'var(--emerald-soft)',
                 padding: '3px 10px',
                 borderRadius: '6px',
                 display: 'inline-block',
                 marginBottom: '6px',
               }}
             >
-              Pendaftaran Online Formasi
+              {vacancy.isTalentPool ? 'Pendaftaran Talent Pool SDM' : 'Pendaftaran Online Formasi'}
             </span>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-title)', lineHeight: 1.3 }}>
               {vacancy.title}
             </h3>
-            <p style={{ fontSize: '0.82rem', color: 'var(--emerald-main)', fontWeight: 700, marginTop: '2px' }}>
-              Unit Penempatan: {vacancy.unit}
+            <p style={{ fontSize: '0.82rem', color: vacancy.isTalentPool ? '#d97706' : 'var(--emerald-main)', fontWeight: 700, marginTop: '2px' }}>
+              {vacancy.isTalentPool ? 'Basis Data Kandidat Prioritas: Seluruh Unit Yayasan Dar el-Iman' : `Unit Penempatan: ${vacancy.unit}`}
             </p>
           </div>
 
@@ -441,12 +487,108 @@ export default function ApplicationModal({ vacancy, onClose }) {
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                   Pastikan Anda telah membaca kualifikasi di atas dan menyiapkan data yang valid. Klik tombol <strong>Lanjutkan</strong> di bawah untuk mulai mengisi biodata diri.
                 </p>
+
+                {/* Fast Track / 1-Click Autofill Card */}
+                <div
+                  style={{
+                    background: '#f0fdf4',
+                    border: '1px solid #bbf7d0',
+                    borderRadius: '14px',
+                    padding: '14px 16px',
+                    marginTop: '4px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 800, color: '#166534' }}>
+                      <Sparkles size={15} color="#16a34a" />
+                      <span>Pernah Melamar Sebelumnya? (Isi Otomatis / 1-Click)</span>
+                    </div>
+                    {lookupSuccess && (
+                      <span style={{ fontSize: '0.74rem', color: '#15803d', fontWeight: 700, background: '#dcfce7', padding: '2px 8px', borderRadius: '6px' }}>
+                        ✓ Profil Berhasil Dimuat
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontSize: '0.76rem', color: '#166534', margin: '0 0 10px', lineHeight: 1.4 }}>
+                    Masukkan NIK, Nomor WhatsApp, atau Kode Registrasi lama Anda untuk memuat biodata secara instan tanpa perlu mengisi ulang.
+                  </p>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      placeholder="Contoh: 13710XXXXXXXXXXX atau 0812XXXXXXXX"
+                      value={lookupQuery}
+                      onChange={(e) => {
+                        setLookupQuery(e.target.value);
+                        setLookupError('');
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleLookupProfile();
+                        }
+                      }}
+                      style={{
+                        flex: 1,
+                        fontSize: '0.82rem',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid #86efac',
+                        background: '#ffffff',
+                        outline: 'none',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleLookupProfile}
+                      disabled={lookingUp}
+                      style={{
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        background: '#16a34a',
+                        color: '#ffffff',
+                        border: 'none',
+                        cursor: lookingUp ? 'not-allowed' : 'pointer',
+                        whiteSpace: 'nowrap',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      {lookingUp ? 'Mencari...' : 'Muat Data'}
+                    </button>
+                  </div>
+                  {lookupError && (
+                    <div style={{ fontSize: '0.75rem', color: '#b91c1c', marginTop: '6px' }}>
+                      {lookupError}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
             {/* STEP 2: Data Pribadi Pelamar */}
             {currentStep === 2 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {lookupSuccess && (
+                  <div
+                    style={{
+                      background: '#f0fdf4',
+                      border: '1px solid #86efac',
+                      borderRadius: '10px',
+                      padding: '10px 14px',
+                      fontSize: '0.8rem',
+                      color: '#166534',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <CheckCircle2 size={16} color="#16a34a" />
+                    <span>Data profil Anda berhasil dimuat dari arsip pendaftaran sebelumnya. Anda dapat memperbarui jika ada perubahan.</span>
+                  </div>
+                )}
                 <div className="form-field-group">
                   <label className="form-field-label">
                     Nama Lengkap (Sesuai KTP / Ijazah) <span style={{ color: '#ef4444' }}>*</span>

@@ -46,7 +46,12 @@ export const recruitmentService = {
   // Kirim lamaran pelamar baru langsung ke API SIMAK
   async submitApplication(formData) {
     try {
-      const response = await api.post('/api/public/recruitment/apply', formData);
+      const response = await api.post('/api/public/recruitment/apply', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        timeout: 30000,
+      });
       return response.data;
     } catch (err) {
       console.error('Gagal mengirim berkas lamaran ke API:', err);
@@ -69,6 +74,20 @@ export const recruitmentService = {
       throw new Error('Data lamaran tidak ditemukan.');
     } catch (err) {
       const msg = err.response?.data?.message || 'Data lamaran tidak ditemukan. Pastikan Anda sudah mendaftar formasi atau periksa kembali nomor yang Anda masukkan.';
+      throw new Error(msg);
+    }
+  },
+
+  // Muat data profil pelamar sebelumnya untuk fitur 1-click apply autofill
+  async lookupProfile(identifier) {
+    try {
+      const response = await api.get(`/api/public/recruitment/lookup-profile?query=${encodeURIComponent(identifier)}`);
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      throw new Error('Profil tidak ditemukan.');
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Data profil sebelumnya belum ditemukan. Silakan lengkapi data formulir secara mandiri.';
       throw new Error(msg);
     }
   },

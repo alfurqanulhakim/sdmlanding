@@ -521,6 +521,35 @@ export const TEAM_SDM_DATA = {
       desc: 'Layanan administrasi satu pintu untuk efisiensi presensi, cuti, dan evaluasi kinerja.',
     },
   ],
+  officers: [
+    {
+      name: 'Alfurqanul Hakim, S.H., C.W.C.',
+      role: 'Kepala Bagian Legal & Personalia',
+      positionTitle: 'HR & Legal Manager',
+      photo: '/alfurqanul-hakim.png',
+      education: 'S1 Ilmu Hukum (Universitas Andalas) • Sedang Menempuh Magister (S2) Hukum Keluarga Islam (UIN Mahmud Yunus Batusangkar)',
+      certifications: [
+        'Sertifikasi Profesi Advokat (PERADI)',
+        'Certified Waqf Competence (C.W.C.)',
+      ],
+      bio: 'Alfurqanul Hakim bertanggung jawab atas pengelolaan tata kelola Sumber Daya Manusia (SDM) dan kepatuhan hukum di lingkungan Yayasan Dar El-Iman. Dengan latar belakang pendidikan Ilmu Hukum dari Universitas Andalas dan sertifikasi profesi Advokat (PERADI), beliau memastikan setiap kebijakan operasional, pengelolaan hubungan industrial, dan legalitas kelembagaan berjalan sesuai dengan hukum positif yang berlaku serta selaras dengan prinsip syariat Islam.',
+      responsibilities: [
+        {
+          title: 'Manajemen SDM & Kinerja',
+          desc: 'Mengawasi sistem administrasi personalia melalui platform SIMAK dan memimpin implementasi evaluasi kinerja pegawai berbasis Katalog KPI YDEI.',
+        },
+        {
+          title: 'Kepatuhan Legal & Kontrak',
+          desc: 'Mengelola penyusunan dan audit Perjanjian Kerja Waktu Tertentu (PKWT), SOP internal, serta mitigasi risiko hukum kelembagaan.',
+        },
+        {
+          title: 'Hubungan Industrial',
+          desc: 'Menjadi mediator internal dan memastikan pemenuhan hak serta kewajiban ketenagakerjaan secara adil, transparan, dan amanah.',
+        },
+      ],
+      background: 'Memiliki rekam jejak profesional di sektor finansial sebagai praktisi Legal, Appraisal, & Remedial di PT Sarana Sumatera Barat Ventura, yang membekalinya dengan ketajaman analisis hukum, audit aset, dan resolusi mediasi kelembagaan.',
+    },
+  ],
   contacts: {
     whatsapp: '+62 821-7000-0000',
     waRaw: '6282170000000',

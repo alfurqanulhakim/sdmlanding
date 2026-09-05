@@ -212,18 +212,55 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', maxWidth: '480px', margin: '0 auto 20px' }}>
                 Silakan coba ubah kata kunci pencarian atau reset filter kategori/gender untuk melihat semua formasi yang tersedia.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCategory('all');
-                  setSelectedGender('all');
-                }}
-                className="btn-hero-primary"
-                style={{ fontSize: '0.85rem', padding: '10px 24px' }}
-              >
-                Reset Pencarian
-              </button>
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('all');
+                    setSelectedGender('all');
+                  }}
+                  className="btn-hero-primary"
+                  style={{ fontSize: '0.85rem', padding: '10px 24px' }}
+                >
+                  Reset Pencarian
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectVacancy && onSelectVacancy({
+                    id: 'talent-pool',
+                    title: 'Talent Pool & General Application',
+                    category: 'Umum / Talent Pool',
+                    unit: 'Yayasan Dar el-Iman (Semua Unit)',
+                    gender: 'Ikhwan / Akhwat',
+                    education: 'D3 / S1 / S2 / Sederajat',
+                    isTalentPool: true,
+                    requirements: [
+                      'Memiliki komitmen adab islami sesuai manhaj salaf',
+                      'Memiliki latar belakang pendidikan / keahlian yang relevan dengan bidang pendidikan & dakwah',
+                      'Mampu membaca Al-Qur\'an dengan baik',
+                      'Bersedia dihubungi oleh Tim SDM jika ada pembukaan formasi baru yang sesuai kualifikasi',
+                    ],
+                    deadline: 'Sepanjang Tahun (Terbuka)',
+                  })}
+                  style={{
+                    fontSize: '0.85rem',
+                    padding: '10px 24px',
+                    borderRadius: '50px',
+                    background: '#fef3c7',
+                    color: '#92400e',
+                    border: '1px solid #fde68a',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Sparkles size={15} color="#d97706" />
+                  <span>Daftar ke Talent Pool</span>
+                </button>
+              </div>
             </div>
           ) : viewMode === 'list' ? (
             /* VACANCIES LIST VIEW */
@@ -350,10 +387,75 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
             </div>
           )}
 
+          {/* BANNER TALENT POOL / GENERAL APPLICATION */}
+          <div
+            style={{
+              marginTop: '40px',
+              padding: '24px clamp(20px, 4vw, 32px)',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, #064e3b 0%, #047857 100%)',
+              color: '#ffffff',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '20px',
+              border: '1px solid rgba(167, 243, 208, 0.3)',
+              boxShadow: '0 10px 28px rgba(6, 78, 59, 0.15)',
+            }}
+          >
+            <div style={{ maxWidth: '620px' }}>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: '#a7f3d0',
+                  display: 'inline-block',
+                  marginBottom: '6px',
+                }}
+              >
+                Database Kandidat & Pelamar Umum
+              </span>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#ffffff', marginBottom: '6px' }}>
+                Belum Menemukan Posisi yang Sesuai?
+              </h3>
+              <p style={{ fontSize: '0.84rem', color: '#ecfdf5', lineHeight: 1.6, margin: 0 }}>
+                Daftarkan profil dan unggah CV Anda ke <strong>Talent Pool Yayasan Dar el-Iman</strong>. Tim SDM kami akan meninjau basis data ini dan menghubungi Anda begitu formasi yang relevan dibuka.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onSelectVacancy && onSelectVacancy({
+                id: 'talent-pool',
+                title: 'Talent Pool & General Application',
+                category: 'Umum / Talent Pool',
+                unit: 'Yayasan Dar el-Iman (Semua Unit)',
+                gender: 'Ikhwan / Akhwat',
+                education: 'D3 / S1 / S2 / Sederajat',
+                isTalentPool: true,
+                requirements: [
+                  'Memiliki komitmen adab islami sesuai manhaj salaf',
+                  'Memiliki latar belakang pendidikan / keahlian yang relevan dengan bidang pendidikan & dakwah',
+                  'Mampu membaca Al-Qur\'an dengan baik',
+                  'Bersedia dihubungi oleh Tim SDM jika ada pembukaan formasi baru yang sesuai kualifikasi',
+                ],
+                deadline: 'Sepanjang Tahun (Terbuka)',
+              })}
+              className="btn-hero-primary"
+              style={{ padding: '12px 24px', fontSize: '0.86rem', background: '#f59e0b', color: '#031c15', borderColor: '#f59e0b', fontWeight: 800 }}
+            >
+              <Sparkles size={16} />
+              <span>Daftar ke Talent Pool</span>
+            </button>
+          </div>
+
           {/* BANNER SEBARKAN KEBAIKAN */}
           <div
             style={{
-              marginTop: '48px',
+              marginTop: '24px',
               padding: '24px clamp(20px, 4vw, 32px)',
               borderRadius: '20px',
               background: 'linear-gradient(135deg, #031c15 0%, #063b2d 100%)',

@@ -255,6 +255,83 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
               </div>
             ))}
           </div>
+
+          {/* Quick Talent Pool Box on Homepage */}
+          <div
+            style={{
+              marginTop: '32px',
+              padding: '18px 24px',
+              borderRadius: '16px',
+              background: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '16px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
+                  background: '#dcfce7',
+                  color: '#16a34a',
+                  display: 'grid',
+                  placeItems: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Sparkles size={20} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: '#14532d', margin: '0 0 2px' }}>
+                  Tidak menemukan formasi yang sesuai?
+                </h4>
+                <p style={{ fontSize: '0.8rem', color: '#166534', margin: 0 }}>
+                  Daftarkan diri Anda ke <strong>Database Talent Pool Yayasan</strong> agar kami dapat menghubungi Anda saat formasi baru dibuka.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onSelectVacancy && onSelectVacancy({
+                id: 'talent-pool',
+                title: 'Talent Pool & General Application',
+                category: 'Umum / Talent Pool',
+                unit: 'Yayasan Dar el-Iman (Semua Unit)',
+                gender: 'Ikhwan / Akhwat',
+                education: 'D3 / S1 / S2 / Sederajat',
+                isTalentPool: true,
+                requirements: [
+                  'Memiliki komitmen adab islami sesuai manhaj salaf',
+                  'Memiliki latar belakang pendidikan / keahlian yang relevan dengan bidang pendidikan & dakwah',
+                  'Mampu membaca Al-Qur\'an dengan baik',
+                  'Bersedia dihubungi oleh Tim SDM jika ada pembukaan formasi baru yang sesuai kualifikasi',
+                ],
+                deadline: 'Sepanjang Tahun (Terbuka)',
+              })}
+              style={{
+                fontSize: '0.82rem',
+                padding: '8px 18px',
+                borderRadius: '50px',
+                background: '#16a34a',
+                color: '#ffffff',
+                border: 'none',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <span>Gabung Talent Pool</span>
+              <ArrowRight size={14} />
+            </button>
+          </div>
         </div>
       </section>
 
