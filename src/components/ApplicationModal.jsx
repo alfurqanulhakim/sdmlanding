@@ -1,460 +1,537 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
+  ChevronRight,
+  ChevronLeft,
   CheckCircle2,
-  AlertCircle,
   Upload,
-  User,
-  GraduationCap,
-  BookOpen,
+  AlertCircle,
   FileText,
-  ArrowRight,
-  ArrowLeft,
   Sparkles,
+  ExternalLink,
 } from 'lucide-react';
-import axios from 'axios';
+import { recruitmentService } from '../services/api';
 
 export default function ApplicationModal({ vacancy, onClose }) {
-  const [step, setStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [successData, setSuccessData] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Form State
   const [formData, setFormData] = useState({
-    posisi: vacancy?.posisi || 'Guru Kelas',
-    unit: vacancy?.unit || 'Yayasan Dar el-Iman',
-    nama_lengkap: '',
+    // Step 2: Data Pribadi
+    fullName: '',
     nik: '',
     whatsapp: '',
     email: '',
-    jenis_kelamin: 'Ikhwan',
-    tempat_lahir: '',
-    tanggal_lahir: '',
-    alamat_domisili: '',
-    pendidikan_terakhir: 'S1',
-    nama_kampus: '',
-    jurusan: '',
-    ipk: '',
-    pengalaman_mengajar: '',
-    jumlah_hafalan: '0 - 1 Juz',
-    sertifikat_tahsin: 'Belum Ada',
-    link_video_microteaching: '',
-    catatan_tambahan: '',
-    nama_file_cv: '',
+    gender: 'Ikhwan',
+    birthDate: '',
+
+    // Step 3: Pendidikan
+    lastEducation: 'S1',
+    institution: '',
+    gpa: '',
+    experience: '',
+
+    // Step 4: Al-Qur'an & Portofolio
+    quranMemorization: '5',
+    tahsinSkill: 'Baik (Mutqin)',
+    microteachingLink: '',
+
+    // Step 5: Dokumen
+    cvFile: null,
+    applicationLetter: null,
   });
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleFakeFileUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Ukuran file maksimal 5 MB');
-        return;
-      }
-      handleChange('nama_file_cv', file.name);
+  // Step Validation
+  const validateStep = () => {
+    setErrorMessage('');
+    if (currentStep === 2) {
+      if (!formData.fullName.trim()) return 'Nama lengkap wajib diisi.';
+      if (!formData.nik.trim() || formData.nik.length < 16) return 'NIK harus 16 digit angka.';
+      if (!formData.whatsapp.trim() || formData.whatsapp.length < 10) return 'Nomor WhatsApp aktif wajib diisi.';
+      if (!formData.email.trim() || !formData.email.includes('@')) return 'Alamat email valid wajib diisi.';
     }
+    if (currentStep === 3) {
+      if (!formData.institution.trim()) return 'Nama Universitas / Ma\'had wajib diisi.';
+      if (!formData.experience.trim()) return 'Ringkasan pengalaman kerja wajib diisi.';
+    }
+    if (currentStep === 5) {
+      if (!formData.cvFile) return 'Mohon unggah berkas CV / Resume (PDF).';
+    }
+    return null;
+  };
+
+  const handleNext = () => {
+    const err = validateStep();
+    if (err) {
+      setErrorMessage(err);
+      return;
+    }
+    setErrorMessage('');
+    setCurrentStep((prev) => Math.min(prev + 1, 5));
+  };
+
+  const handlePrev = () => {
+    setErrorMessage('');
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
-
-    if (!formData.nama_lengkap || !formData.nik || !formData.whatsapp) {
-      setErrorMessage('Mohon lengkapi data wajib (Nama Lengkap, NIK, dan No. WhatsApp).');
+    const err = validateStep();
+    if (err) {
+      setErrorMessage(err);
       return;
     }
 
-    try {
-      setIsSubmitting(true);
-      const apiBase = import.meta.env.VITE_API_URL || 'https://simakapi.sdmdareliman.web.id';
+    setSubmitting(true);
+    setErrorMessage('');
 
-      // Try sending to SIMAK API
-      const regCode = 'DEI-' + Math.floor(100000 + Math.random() * 900000);
-      try {
-        await axios.post(`${apiBase}/api/recruitment/candidates`, {
-          ...formData,
-          registration_code: regCode,
-        });
-      } catch (apiErr) {
-        console.warn('API endpoint unavailable or offline, recorded locally:', apiErr);
+    const payload = new FormData();
+    payload.append('vacancyId', vacancy.id);
+    payload.append('vacancyTitle', vacancy.title);
+    payload.append('unit', vacancy.unit);
+    Object.keys(formData).forEach((key) => {
+      if (formData[key]) {
+        payload.append(key, formData[key]);
       }
+    });
 
-      setSubmissionSuccess(regCode);
-    } catch (err) {
-      setErrorMessage(err.message || 'Terjadi kendala saat mengirim lamaran.');
-    } finally {
-      setIsSubmitting(false);
+    const result = await recruitmentService.submitApplication(payload);
+    setSubmitting(false);
+
+    if (result && result.success) {
+      setSuccessData(result.data);
+    } else {
+      setErrorMessage(result?.message || 'Gagal mengirim lamaran. Silakan coba lagi.');
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white rounded-3xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[92vh]">
+    <div className="modal-backdrop animate-fade-in" role="dialog" aria-modal="true">
+      <div className="modal-content-box p-6 sm:p-8">
         {/* Modal Header */}
-        <div className="p-5 sm:p-6 gradient-emerald text-white flex items-center justify-between relative shrink-0">
-          <div className="space-y-1">
-            <span className="px-2.5 py-0.5 bg-emerald-800/80 text-amber-300 border border-emerald-400/30 rounded-full text-[10px] font-extrabold uppercase tracking-wider">
-              Formulir E-Recruitment
+        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="space-y-0.5">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
+              Pendaftaran Online Formasi
             </span>
-            <h3 className="text-lg sm:text-xl font-black text-white leading-tight">
-              Lamar Formasi: {formData.posisi}
+            <h3 className="text-lg font-black text-slate-900 leading-snug">
+              {vacancy.title}
             </h3>
-            <p className="text-xs text-emerald-100">
-              Unit: {formData.unit}
+            <p className="text-xs text-slate-500 font-medium">
+              Unit: {vacancy.unit}
             </p>
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold transition-colors"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            aria-label="Tutup formulir lamaran"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-5 sm:p-7 overflow-y-auto flex-1 space-y-6">
-          {submissionSuccess ? (
-            /* Success Screen */
-            <div className="text-center py-8 space-y-5">
-              <div className="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-inner">
-                <CheckCircle2 className="w-10 h-10" />
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-2xl font-black text-slate-900">
-                  Lamaran Berhasil Terkirim!
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-                  Alhamdulillah, berkas lamaran Anda untuk posisi <b>{formData.posisi}</b> telah terdata di sistem SDM Yayasan Dar el-Iman.
-                </p>
-              </div>
-
-              {/* Registration Badge */}
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl max-w-sm mx-auto space-y-1">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Nomor Registrasi Seleksi
-                </span>
-                <span className="text-2xl font-black text-emerald-700 font-mono tracking-wider">
-                  {submissionSuccess}
-                </span>
-                <span className="text-[10px] text-slate-500 block">
-                  Simpan nomor ini untuk mengecek status seleksi sewaktu-waktu.
-                </span>
-              </div>
-
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={`https://wa.me/6281234567890?text=Assalamu'alaikum%20Admin%20SDM%20Dar%20el-Iman,%20saya%20sudah%20mengirim%20lamaran%20dengan%20No%20Reg:%20${submissionSuccess}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-gold text-xs px-5 py-3 rounded-xl w-full sm:w-auto"
-                >
-                  Konfirmasi via WhatsApp SDM
-                </a>
-                <button
-                  onClick={onClose}
-                  className="btn btn-outline text-xs px-5 py-3 rounded-xl w-full sm:w-auto"
-                >
-                  Tutup Formulir
-                </button>
-              </div>
+        {/* Success Screen */}
+        {successData ? (
+          <div className="py-8 text-center space-y-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-10 h-10" />
             </div>
-          ) : (
-            /* Multi-step Form */
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Stepper indicator */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3 text-xs font-bold text-slate-400">
-                <span className={step >= 1 ? 'text-emerald-700 font-black' : ''}>
-                  1. Data Diri
-                </span>
-                <span>•</span>
-                <span className={step >= 2 ? 'text-emerald-700 font-black' : ''}>
-                  2. Pendidikan & Keahlian
-                </span>
-                <span>•</span>
-                <span className={step >= 3 ? 'text-emerald-700 font-black' : ''}>
-                  3. Berkas & Al-Qur'an
-                </span>
+
+            <div className="space-y-2">
+              <h4 className="text-xl font-black text-slate-900">
+                Lamaran Berhasil Dikirim!
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                Jazakumullahu khairan kepada <strong>{formData.fullName}</strong>. Berkas lamaran Anda telah tercatat di sistem rekrutmen SDM Yayasan Dar el-Iman.
+              </p>
+            </div>
+
+            {/* Registration Code Card */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 max-w-sm mx-auto space-y-1 text-center">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                Kode Registrasi Pelamar
+              </span>
+              <div className="text-xl font-black text-emerald-800 font-mono tracking-wider">
+                {successData.registrationCode}
               </div>
+              <p className="text-[11px] text-slate-500">
+                Simpan nomor ini untuk melacak perkembangan tahapan seleksi Anda.
+              </p>
+            </div>
 
-              {errorMessage && (
-                <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{errorMessage}</span>
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="btn-zaitunu-primary text-xs py-2.5 px-6 w-full sm:w-auto"
+              >
+                Selesai & Tutup
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6 pt-4">
+            {/* Stepper Progress Indicator */}
+            <div className="flex items-center justify-between text-xs font-bold text-slate-400 border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((step) => (
+                  <div
+                    key={step}
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] transition-all ${
+                      currentStep === step
+                        ? 'bg-emerald-800 text-white font-extrabold shadow-xs'
+                        : currentStep > step
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : 'bg-slate-100 text-slate-400'
+                    }`}
+                  >
+                    {step}
+                  </div>
+                ))}
+              </div>
+              <span className="text-slate-600 font-semibold">
+                Langkah {currentStep} dari 5
+              </span>
+            </div>
+
+            {/* Error Banner */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
+            {/* Step 1: Formasi & Persyaratan */}
+            {currentStep === 1 && (
+              <div className="space-y-4 animate-fade-in">
+                <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+                  <h4 className="text-sm font-bold text-emerald-950">
+                    Kualifikasi & Persyaratan Minimal:
+                  </h4>
+                  <ul className="space-y-1.5 text-xs text-emerald-900">
+                    {vacancy.requirements && vacancy.requirements.map((req, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0 mt-0.5" />
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
 
-              {/* STEP 1: Data Diri */}
-              {step === 1 && (
-                <div className="space-y-4 animate-in fade-in duration-150">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Nama Lengkap & Gelar *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.nama_lengkap}
-                        onChange={(e) => handleChange('nama_lengkap', e.target.value)}
-                        placeholder="Contoh: Muhammad Ilham, S.Pd"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600 font-medium"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">NIK KTP (16 Digit) *</label>
-                      <input
-                        type="text"
-                        required
-                        maxLength={16}
-                        value={formData.nik}
-                        onChange={(e) => handleChange('nik', e.target.value.replace(/\D/g, ''))}
-                        placeholder="1371xxxxxxxxxxxx"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">No. WhatsApp Aktif *</label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.whatsapp}
-                        onChange={(e) => handleChange('whatsapp', e.target.value)}
-                        placeholder="0812xxxxxxxx"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Email</label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleChange('email', e.target.value)}
-                        placeholder="nama@gmail.com"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Jenis Kelamin</label>
-                      <select
-                        value={formData.jenis_kelamin}
-                        onChange={(e) => handleChange('jenis_kelamin', e.target.value)}
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700"
-                      >
-                        <option value="Ikhwan">Ikhwan (Laki-laki)</option>
-                        <option value="Akhwat">Akhwat (Perempuan)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-700">Alamat Domisili Sekarang</label>
-                    <textarea
-                      rows={2}
-                      value={formData.alamat_domisili}
-                      onChange={(e) => handleChange('alamat_domisili', e.target.value)}
-                      placeholder="Jalan, Kelurahan, Kecamatan, Kota..."
-                      className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600"
-                    />
-                  </div>
+                <div className="text-xs text-slate-600 space-y-2">
+                  <p>
+                    Pastikan Anda telah membaca kualifikasi di atas dengan seksama dan bersedia mengikuti seluruh alur seleksi yang ditetapkan Yayasan Dar el-Iman.
+                  </p>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* STEP 2: Pendidikan & Pengalaman */}
-              {step === 2 && (
-                <div className="space-y-4 animate-in fade-in duration-150">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Jenjang Pendidikan *</label>
-                      <select
-                        value={formData.pendidikan_terakhir}
-                        onChange={(e) => handleChange('pendidikan_terakhir', e.target.value)}
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700"
-                      >
-                        <option value="SMA / MA / Pondok">SMA / MA / Pondok Pesantren</option>
-                        <option value="D3">Diploma (D3)</option>
-                        <option value="S1">Sarjana (S1)</option>
-                        <option value="S2">Magister (S2)</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1 sm:col-span-2">
-                      <label className="text-xs font-bold text-slate-700">Nama Universitas / Ma'had *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.nama_kampus}
-                        onChange={(e) => handleChange('nama_kampus', e.target.value)}
-                        placeholder="Contoh: Universitas Negeri Padang / LIPIA"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Program Studi / Jurusan</label>
-                      <input
-                        type="text"
-                        value={formData.jurusan}
-                        onChange={(e) => handleChange('jurusan', e.target.value)}
-                        placeholder="Contoh: PGSD / Pendidikan Matematika"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">IPK Terakhir</label>
-                      <input
-                        type="text"
-                        value={formData.ipk}
-                        onChange={(e) => handleChange('ipk', e.target.value)}
-                        placeholder="Contoh: 3.55"
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-700">Riwayat Pengalaman Mengajar / Kerja Singkat</label>
-                    <textarea
-                      rows={2}
-                      value={formData.pengalaman_mengajar}
-                      onChange={(e) => handleChange('pengalaman_mengajar', e.target.value)}
-                      placeholder="Sebutkan instansi, posisi, dan lama mengajar sebelumnya..."
-                      className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200"
-                    />
-                  </div>
+            {/* Step 2: Data Pribadi */}
+            {currentStep === 2 && (
+              <div className="space-y-3.5 animate-fade-in text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">
+                    Nama Lengkap (Sesuai KTP / Ijazah) *
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="Contoh: Muhammad Hakim, S.Pd."
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                  />
                 </div>
-              )}
 
-              {/* STEP 3: Berkas & Al-Qur'an */}
-              {step === 3 && (
-                <div className="space-y-4 animate-in fade-in duration-150">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Jumlah Hafalan Al-Qur'an *</label>
-                      <select
-                        value={formData.jumlah_hafalan}
-                        onChange={(e) => handleChange('jumlah_hafalan', e.target.value)}
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
-                      >
-                        <option value="0 - 1 Juz (Juz 30)">0 - 1 Juz (Juz 30)</option>
-                        <option value="2 - 5 Juz">2 - 5 Juz</option>
-                        <option value="6 - 10 Juz">6 - 10 Juz</option>
-                        <option value="11 - 20 Juz">11 - 20 Juz</option>
-                        <option value="30 Juz Mutqin">30 Juz Mutqin</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700">Sertifikat / Sanad Tahsin</label>
-                      <select
-                        value={formData.sertifikat_tahsin}
-                        onChange={(e) => handleChange('sertifikat_tahsin', e.target.value)}
-                        className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 font-medium"
-                      >
-                        <option value="Ada - Bersanad">Ada (Bersanad)</option>
-                        <option value="Ada - Sertifikat Lembaga">Ada (Sertifikat Lembaga)</option>
-                        <option value="Belum Ada">Belum Ada</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-700">
-                      Upload Berkas CV & Lamaran (PDF/DOCX, Maks 5MB) *
-                    </label>
-                    <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-5 cursor-pointer bg-slate-50/50 hover:bg-emerald-50/30 transition-all text-center">
-                      <Upload className="w-7 h-7 text-emerald-600 mb-1.5" />
-                      <span className="text-xs font-bold text-slate-800">
-                        {formData.nama_file_cv || 'Klik untuk memilih file CV / Lamaran'}
-                      </span>
-                      <span className="text-[10px] text-slate-400 mt-0.5">
-                        Format PDF, DOC, atau DOCX (Maksimal 5 MB)
-                      </span>
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleFakeFileUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-700">
-                      Link Video Microteaching / Tilawah (Opsional - YouTube / Google Drive)
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Nomor Induk Kependudukan (NIK) *
                     </label>
                     <input
-                      type="url"
-                      value={formData.link_video_microteaching}
-                      onChange={(e) => handleChange('link_video_microteaching', e.target.value)}
-                      placeholder="https://youtu.be/... atau link Google Drive"
-                      className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200"
+                      type="text"
+                      name="nik"
+                      maxLength="16"
+                      value={formData.nik}
+                      onChange={handleChange}
+                      placeholder="16 digit angka NIK KTP"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Nomor WhatsApp Aktif *
+                    </label>
+                    <input
+                      type="tel"
+                      name="whatsapp"
+                      value={formData.whatsapp}
+                      onChange={handleChange}
+                      placeholder="Contoh: 081234567890"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
                     />
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Email Aktif *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="nama@email.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Jenis Kelamin *
+                    </label>
+                    <select
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleChange}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden bg-white"
+                    >
+                      <option value="Ikhwan">Ikhwan (Laki-laki)</option>
+                      <option value="Akhwat">Akhwat (Perempuan)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Pendidikan & Pengalaman */}
+            {currentStep === 3 && (
+              <div className="space-y-3.5 animate-fade-in text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Pendidikan Terakhir *
+                    </label>
+                    <select
+                      name="lastEducation"
+                      value={formData.lastEducation}
+                      onChange={handleChange}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden bg-white"
+                    >
+                      <option value="SMA/MA/Ponpes">SMA / MA / Ma'had Aly</option>
+                      <option value="D3">Diploma 3 (D3)</option>
+                      <option value="S1">Sarjana (S1)</option>
+                      <option value="S2">Magister (S2)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Indeks Prestasi Kumulatif (IPK)
+                    </label>
+                    <input
+                      type="text"
+                      name="gpa"
+                      value={formData.gpa}
+                      onChange={handleChange}
+                      placeholder="Contoh: 3.65"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">
+                    Nama Perguruan Tinggi / Ma'had *
+                  </label>
+                  <input
+                    type="text"
+                    name="institution"
+                    value={formData.institution}
+                    onChange={handleChange}
+                    placeholder="Contoh: Universitas Negeri Padang / STDI Imam Syafi'i"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">
+                    Ringkasan Pengalaman Kerja / Mengajar *
+                  </label>
+                  <textarea
+                    rows="3"
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleChange}
+                    placeholder="Sebutkan instansi, posisi, dan durasi pengabdian sebelumnya..."
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Step 4: Kemampuan Al-Qur'an & Portofolio */}
+            {currentStep === 4 && (
+              <div className="space-y-3.5 animate-fade-in text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Jumlah Hafalan Al-Qur'an Mutqin
+                    </label>
+                    <select
+                      name="quranMemorization"
+                      value={formData.quranMemorization}
+                      onChange={handleChange}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden bg-white"
+                    >
+                      <option value="1-2 Juz">1 – 2 Juz (Juz 30 & 29)</option>
+                      <option value="3-5 Juz">3 – 5 Juz</option>
+                      <option value="6-10 Juz">6 – 10 Juz</option>
+                      <option value="11-20 Juz">11 – 20 Juz</option>
+                      <option value="30 Juz">30 Juz Lengkap</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">
+                      Predikat Bacaan / Tahsin
+                    </label>
+                    <select
+                      name="tahsinSkill"
+                      value={formData.tahsinSkill}
+                      onChange={handleChange}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden bg-white"
+                    >
+                      <option value="Memiliki Sanad">Memiliki Sanad Qira'ah</option>
+                      <option value="Baik (Mutqin)">Lancar & Menguasai Tajwid (Mutqin)</option>
+                      <option value="Menengah">Taraf Belajar / Menengah</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">
+                    Tautan Video Microteaching / Portofolio (Opsional)
+                  </label>
+                  <input
+                    type="url"
+                    name="microteachingLink"
+                    value={formData.microteachingLink}
+                    onChange={handleChange}
+                    placeholder="Link Google Drive / YouTube video simulasi mengajar"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-600 focus:outline-hidden"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Pastikan akses link Google Drive diatur ke "Siapa saja yang memiliki link".
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Step 5: Upload Berkas Dokumen */}
+            {currentStep === 5 && (
+              <div className="space-y-4 animate-fade-in text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">
+                    Unggah Curriculum Vitae (CV / Resume) * (Format PDF, maks. 5MB)
+                  </label>
+                  <div className="border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:border-emerald-600 transition-colors bg-slate-50">
+                    <input
+                      type="file"
+                      id="cv-upload"
+                      name="cvFile"
+                      accept=".pdf"
+                      onChange={handleChange}
+                      className="hidden"
+                    />
+                    <label htmlFor="cv-upload" className="cursor-pointer flex flex-col items-center gap-1.5">
+                      <Upload className="w-6 h-6 text-emerald-700" />
+                      <span className="font-semibold text-slate-700">
+                        {formData.cvFile ? formData.cvFile.name : 'Klik untuk memilih file CV (PDF)'}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        PDF maksimal 5 MB
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
+                  <span className="font-bold text-slate-800">Pernyataan Kejujuran:</span>
+                  <p>
+                    Dengan menekan tombol kirim lamaran, saya menyatakan bahwa data dan dokumen yang saya sampaikan adalah benar dan siap diverifikasi oleh panitia seleksi SDM Yayasan Dar el-Iman.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Navigation Action Buttons */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+              {currentStep > 1 ? (
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors flex items-center gap-1"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Kembali</span>
+                </button>
+              ) : (
+                <div />
               )}
 
-              {/* Stepper Navigation Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                {step > 1 ? (
-                  <button
-                    type="button"
-                    onClick={() => setStep(step - 1)}
-                    className="btn btn-outline text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Sebelumnya</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="btn btn-ghost text-xs px-4 py-2.5 rounded-xl"
-                  >
-                    Batal
-                  </button>
-                )}
-
-                {step < 3 ? (
-                  <button
-                    type="button"
-                    onClick={() => setStep(step + 1)}
-                    className="btn btn-primary text-xs px-5 py-2.5 rounded-xl flex items-center gap-1.5"
-                  >
-                    <span>Langkah Selanjutnya</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="btn btn-primary text-xs px-6 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg"
-                  >
-                    {isSubmitting ? (
-                      <span>Mengirim Berkas...</span>
-                    ) : (
-                      <>
-                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                        <span>Kirim Lamaran Sekarang</span>
-                      </>
-                    )}
-                  </button>
-                )}
-              </div>
-            </form>
-          )}
-        </div>
+              {currentStep < 5 ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="btn-zaitunu-primary text-xs py-2 px-5"
+                >
+                  <span>Lanjutkan</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="btn-zaitunu-primary text-xs py-2.5 px-6 bg-emerald-800 hover:bg-emerald-700"
+                >
+                  {submitting ? 'Mengirimkan Berkas...' : 'Kirim Lamaran Sekarang'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

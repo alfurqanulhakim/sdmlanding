@@ -1,218 +1,221 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Briefcase,
   Search,
   Filter,
+  Calendar,
   Users,
   GraduationCap,
-  Sparkles,
   ArrowRight,
   CheckCircle2,
-  Clock,
+  Sparkles,
 } from 'lucide-react';
-import { INITIAL_VACANCIES, RECRUITMENT_STAGES } from '../data/landingData';
+import { recruitmentService } from '../services/api';
 
 export default function CareerSection({ onSelectVacancy, onOpenStatusModal }) {
-  const [search, setSearch] = useState('');
-  const [filterCategory, setFilterCategory] = useState('Semua');
-  const [filterGender, setFilterGender] = useState('Semua');
+  const [vacancies, setVacancies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedGender, setSelectedGender] = useState('all');
 
-  const categories = ['Semua', 'Pendidik', 'Tenaga Kependidikan', 'Pengasuhan'];
-  const genders = ['Semua', 'Ikhwan & Akhwat', 'Ikhwan', 'Akhwat'];
+  useEffect(() => {
+    async function loadVacancies() {
+      setLoading(true);
+      const data = await recruitmentService.getVacancies();
+      setVacancies(data);
+      setLoading(false);
+    }
+    loadVacancies();
+  }, []);
 
-  const filteredVacancies = INITIAL_VACANCIES.filter((v) => {
+  const categories = [
+    { id: 'all', label: 'Semua Kategori' },
+    { id: 'Guru', label: 'Tenaga Pendidik / Guru' },
+    { id: 'Tenaga Kependidikan', label: 'Tenaga Kependidikan / Staf' },
+  ];
+
+  const filteredVacancies = vacancies.filter((v) => {
     const matchSearch =
-      v.posisi.toLowerCase().includes(search.toLowerCase()) ||
-      v.unit.toLowerCase().includes(search.toLowerCase()) ||
-      v.pendidikan.toLowerCase().includes(search.toLowerCase());
+      v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.unit.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.education.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchCat = filterCategory === 'Semua' || v.kategori === filterCategory;
-    const matchGen = filterGender === 'Semua' || v.gender.toLowerCase().includes(filterGender.toLowerCase());
+    const matchCat =
+      selectedCategory === 'all' || v.category === selectedCategory;
 
-    return matchSearch && matchCat && matchGen;
+    const matchGender =
+      selectedGender === 'all' ||
+      v.gender.toLowerCase().includes(selectedGender.toLowerCase());
+
+    return matchSearch && matchCat && matchGender;
   });
 
   return (
-    <section id="pusat-karir" className="py-20 bg-slate-50 border-b border-slate-200/80">
-      <div className="container space-y-16">
+    <section id="karier" className="py-20 md:py-28 bg-white border-b border-slate-200/80">
+      <div className="container-custom space-y-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="section-tag mx-auto">Pusat Karir & E-Recruitment</div>
-          <h2 className="section-title">
-            Formasi Lowongan Guru & Staf <span className="gradient-text">Tahun Ajaran 2027/2028</span>
+        <div className="max-w-3xl mx-auto text-center space-y-3">
+          <div className="badge-pill badge-emerald mx-auto">
+            <Briefcase className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Pusat Rekrutmen & Karier</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+            Temukan Kesempatan <span className="title-gradient-zaitunu">Pengabdian Anda</span>
           </h2>
-          <p className="section-desc mx-auto">
-            Temukan formasi yang sesuai dengan kompetensi dan latar belakang pendidikan Anda.
-            Seluruh data formasi terintegrasi langsung dengan perencanaan Manpower Planning (MPP) Yayasan.
+
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Formasi resmi penerimaan pendidik dan tenaga kependidikan Yayasan Dar el-Iman berbasis perencanaan kebutuhan riil Manpower Planning (MPP).
           </p>
         </div>
 
-        {/* Filter Bar */}
-        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
-            {/* Search Input */}
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Cari formasi jabatan, guru mata pelajaran, atau unit..."
-                className="w-full text-xs sm:text-sm pl-11 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-emerald-600 transition-all font-medium"
-              />
-            </div>
-
-            {/* Category Select */}
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
-              <select
-                value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
-                className="text-xs sm:text-sm px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:bg-white focus:border-emerald-600"
-              >
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    Kategori: {c}
-                  </option>
-                ))}
-              </select>
-
-              {/* Gender Select */}
-              <select
-                value={filterGender}
-                onChange={(e) => setFilterGender(e.target.value)}
-                className="text-xs sm:text-sm px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:bg-white focus:border-emerald-600"
-              >
-                {genders.map((g) => (
-                  <option key={g} value={g}>
-                    Gender: {g}
-                  </option>
-                ))}
-              </select>
-            </div>
+        {/* Search & Filter Controls */}
+        <div className="bg-slate-50 p-4 sm:p-6 rounded-3xl border border-slate-200/80 space-y-4 max-w-4xl mx-auto">
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Cari formasi, unit sekolah, atau kualifikasi pendidikan..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-hidden focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 transition-all"
+            />
           </div>
 
-          <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-            <span>
-              Menampilkan <b>{filteredVacancies.length}</b> formasi aktif yang siap dilamar
-            </span>
-            <button
-              onClick={onOpenStatusModal}
-              className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline flex items-center gap-1"
-            >
-              <span>Sudah pernah melamar? Cek status Anda</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1 text-xs">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
+                    selectedCategory === cat.id
+                      ? 'bg-emerald-800 text-white'
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <span className="text-slate-500 font-semibold">Gender:</span>
+              <select
+                value={selectedGender}
+                onChange={(e) => setSelectedGender(e.target.value)}
+                className="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-hidden focus:border-emerald-600"
+              >
+                <option value="all">Semua Gender</option>
+                <option value="Ikhwan">Khusus Ikhwan</option>
+                <option value="Akhwat">Khusus Akhwat</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Vacancies Grid */}
-        {filteredVacancies.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
-              <Briefcase className="w-6 h-6" />
-            </div>
-            <h3 className="text-base font-bold text-slate-800">Tidak ada lowongan yang sesuai</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Coba gunakan kata kunci lain atau setel filter kategori dan gender ke "Semua".
+        {/* Vacancies List */}
+        {loading ? (
+          <div className="text-center py-16 text-slate-400 text-sm">
+            Memuat data formasi lowongan...
+          </div>
+        ) : filteredVacancies.length === 0 ? (
+          <div className="text-center py-16 p-8 rounded-3xl bg-slate-50 border border-slate-200 max-w-md mx-auto space-y-3">
+            <p className="text-sm font-bold text-slate-700">
+              Tidak ditemukan formasi yang cocok dengan kata kunci pencarian Anda.
             </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+                setSelectedGender('all');
+              }}
+              className="text-xs font-bold text-emerald-700 hover:underline"
+            >
+              Reset Filter Pencarian
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredVacancies.map((item) => (
+            {filteredVacancies.map((vac) => (
               <div
-                key={item.id}
-                className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm flex flex-col justify-between card-hover space-y-6"
+                key={vac.id}
+                className="card-zaitunu p-6 sm:p-7 flex flex-col justify-between space-y-5"
               >
-                <div className="space-y-4">
-                  {/* Top Badges */}
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="badge badge-emerald text-[10px]">
-                      {item.kategori}
+                {/* Header Card */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                      {vac.code}
                     </span>
-                    <span className="badge badge-amber text-[10px]">
-                      {item.urgensi}
+                    <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      {vac.status} • {vac.quota} Formasi
                     </span>
                   </div>
 
                   <div>
                     <h3 className="text-lg font-black text-slate-900 leading-snug">
-                      {item.posisi}
+                      {vac.title}
                     </h3>
-                    <div className="text-xs font-bold text-emerald-700 mt-1">
-                      {item.unit}
+                    <div className="text-xs font-bold text-emerald-800 mt-1">
+                      {vac.unit}
                     </div>
                   </div>
 
-                  {/* Highlights info */}
-                  <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-slate-100 bg-slate-50/60 rounded-xl px-3">
-                    <div>
-                      <span className="text-slate-400 block text-[10px] uppercase font-bold">Kebutuhan</span>
-                      <span className="font-extrabold text-slate-800">{item.kebutuhan} Orang</span>
+                  <div className="pt-2 space-y-1.5 text-xs text-slate-600">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span className="truncate">{vac.education}</span>
                     </div>
-                    <div>
-                      <span className="text-slate-400 block text-[10px] uppercase font-bold">Gender</span>
-                      <span className="font-bold text-slate-800">{item.gender}</span>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>Kriteria: {vac.gender}</span>
                     </div>
-                  </div>
-
-                  {/* Requirements List */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                      <GraduationCap className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{item.pendidikan}</span>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>Batas Lamaran: {vac.deadline}</span>
                     </div>
-                    <ul className="space-y-1.5 text-[11px] text-slate-600 pt-1">
-                      {item.syarat.map((s, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5 leading-relaxed">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onSelectVacancy(item)}
-                  className="btn btn-primary w-full py-3 rounded-2xl text-xs font-extrabold flex items-center justify-center gap-1.5 mt-2"
-                >
-                  <span>Lamar Posisi Ini</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                {/* Card CTA */}
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => onSelectVacancy(vac)}
+                    id={`btn-apply-${vac.id}`}
+                    className="btn-zaitunu-primary text-xs py-2 px-4 w-full"
+                  >
+                    <span>Lamar Sekarang</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* 5 Alur Rekrutmen Stepper Section */}
-        <div id="alur-seleksi" className="pt-10 space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-              5 Tahapan Alur Rekrutmen Calon Pegawai
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Proses seleksi kami dirancang transparan, objektif, dan mengedepankan adab serta kompetensi.
+        {/* Tracker Banner Callout */}
+        <div className="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto">
+          <div className="space-y-1 text-center sm:text-left">
+            <h4 className="text-sm font-black text-emerald-950">
+              Sudah Pernah Mengirimkan Lamaran Sebelumnya?
+            </h4>
+            <p className="text-xs text-emerald-800">
+              Anda dapat memeriksa status tahapan seleksi secara berkala dengan memasukkan nomor WhatsApp atau NIK Anda.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {RECRUITMENT_STAGES.map((stg) => (
-              <div
-                key={stg.step}
-                className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-2.5 relative"
-              >
-                <div className="w-8 h-8 rounded-xl gradient-emerald text-white flex items-center justify-center font-black text-xs">
-                  {stg.step}
-                </div>
-                <h4 className="text-sm font-black text-slate-900 leading-snug">
-                  {stg.title}
-                </h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  {stg.desc}
-                </p>
-              </div>
-            ))}
-          </div>
+          <button
+            type="button"
+            onClick={onOpenStatusModal}
+            className="btn-zaitunu-secondary text-xs py-2 px-4 whitespace-nowrap bg-white border-emerald-300 text-emerald-900 shrink-0"
+          >
+            <span>Cek Status Lamaran Anda</span>
+          </button>
         </div>
       </div>
     </section>

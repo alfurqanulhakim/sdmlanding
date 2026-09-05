@@ -1,32 +1,41 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Globe, ExternalLink, Sparkles, Heart } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  ExternalLink,
+  Sparkles,
+  Heart,
+} from 'lucide-react';
+import { TEAM_SDM_DATA } from '../data/mockData';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer id="kontak" className="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12">
-      <div className="container space-y-12">
+      <div className="container-custom space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
-          {/* Col 1: Brand Info */}
+          {/* Brand Info */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-white/95 p-1.5 rounded-xl shadow-xs">
+              <div className="flex items-center gap-2 bg-white p-1.5 rounded-xl">
                 <img
                   src="/logo-yayasan.png"
-                  alt="Yayasan Dar el-Iman"
+                  alt="Logo Yayasan Dar el-Iman"
                   className="h-8 w-auto object-contain"
                 />
-                <div className="h-5 w-px bg-slate-300" />
+                <div className="h-5 w-px bg-slate-200" />
                 <img
                   src="/logo-sdm.png"
-                  alt="SDM Dar el-Iman"
+                  alt="Logo SDM Dar el-Iman"
                   className="h-7 w-auto object-contain"
                 />
               </div>
               <div>
                 <div className="font-extrabold text-white text-base leading-tight">
-                  SDM DAR EL-IMAN
+                  ZAITUNU • SDM
                 </div>
                 <div className="text-[11px] text-slate-400">
                   Yayasan Dar el-Iman Padang
@@ -35,8 +44,7 @@ export default function Footer() {
             </div>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Lembaga dakwah, pendidikan, dan sosial berakhlak mulia di Kota Padang, Sumatera Barat.
-              Membina asatidzah dan santri di atas pemahaman Ahlussunnah wal Jama'ah.
+              Pusat pengelolaan talenta, budaya organisasi PINTAR, dan rekrutmen asatidzah di bawah naungan Yayasan Dar el-Iman Padang, Sumatera Barat.
             </p>
 
             <div className="pt-2 flex items-center gap-3">
@@ -44,47 +52,47 @@ export default function Footer() {
                 href="https://simak.sdmdareliman.web.id"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-simak-portal text-xs px-4 py-2 rounded-xl flex items-center gap-2"
+                className="btn-simak-external text-xs py-2 px-3.5"
               >
-                <span>Login Portal SIMAK</span>
-                <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                <span>Login Portal SIMAK Pegawai</span>
+                <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
               </a>
             </div>
           </div>
 
-          {/* Col 2: Kontak & Alamat Kantor */}
-          <div className="lg:col-span-4 space-y-3">
+          {/* Kontak & Sekretariat */}
+          <div className="lg:col-span-5 space-y-3">
             <h4 className="text-xs font-black uppercase tracking-wider text-white">
-              Sekretariat Yayasan
+              Sekretariat Pusat & Helpdesk SDM
             </h4>
 
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li className="flex items-start gap-2.5 leading-relaxed">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <span>
-                  Jl. Gunung Juaro, Kelurahan Surau Gadang, Kecamatan Nanggalo, Kota Padang, Sumatera Barat 25143
+                  {TEAM_SDM_DATA.helpdesk.location}
                 </span>
               </li>
 
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
                 <a
-                  href="https://wa.me/6281234567890"
+                  href={`https://wa.me/${TEAM_SDM_DATA.helpdesk.whatsapp.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-300 transition-colors"
                 >
-                  WhatsApp SDM: +62 812-3456-7890
+                  WhatsApp Recruitment: {TEAM_SDM_DATA.helpdesk.whatsapp}
                 </a>
               </li>
 
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
                 <a
-                  href="mailto:sdm@dareliman.web.id"
+                  href={`mailto:${TEAM_SDM_DATA.helpdesk.email}`}
                   className="hover:text-emerald-300 transition-colors"
                 >
-                  sdm@dareliman.web.id
+                  {TEAM_SDM_DATA.helpdesk.email}
                 </a>
               </li>
 
@@ -102,54 +110,56 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Quick Links & Unit */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Quick Links */}
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-black uppercase tracking-wider text-white">
-              Navigasi Halaman
+              Navigasi Cepat
             </h4>
-            <ul className="space-y-1.5 text-xs">
-              <li><a href="#beranda" className="hover:text-white transition-colors">Beranda</a></li>
-              <li><a href="#nilai-utama" className="hover:text-white transition-colors">Visi & Nilai Budaya</a></li>
-              <li><a href="#unit-pendidikan" className="hover:text-white transition-colors">19 Unit Pendidikan</a></li>
-              <li><a href="#kenapa-kami" className="hover:text-white transition-colors">Kenapa Mengabdi?</a></li>
-              <li><a href="#pusat-karir" className="hover:text-white transition-colors">Lowongan Karir</a></li>
-              <li><a href="#alur-seleksi" className="hover:text-white transition-colors">Alur Seleksi</a></li>
-            </ul>
-          </div>
-
-          {/* Col 4: Portal Sistem */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-white">
-              Sistem Terintegrasi
-            </h4>
-            <ul className="space-y-1.5 text-xs">
+            <ul className="space-y-2 text-xs">
               <li>
-                <a
-                  href="https://simak.sdmdareliman.web.id"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-amber-400 font-bold flex items-center gap-1 text-slate-200"
-                >
-                  <span>Portal SIMAK</span>
-                  <ExternalLink className="w-3 h-3" />
+                <a href="#beranda" className="hover:text-emerald-400 transition-colors">
+                  Beranda
                 </a>
               </li>
-              <li><span className="text-slate-500">Manpower Planning (MPP)</span></li>
-              <li><span className="text-slate-500">Skala Upah Dua Titik</span></li>
-              <li><span className="text-slate-500">KPI Kinerja Pegawai</span></li>
-              <li><span className="text-slate-500">Presensi & Penggajian</span></li>
+              <li>
+                <a href="#tentang-kami" className="hover:text-emerald-400 transition-colors">
+                  Tentang Zaitunu
+                </a>
+              </li>
+              <li>
+                <a href="#pintar" className="hover:text-emerald-400 transition-colors">
+                  Core Values PINTAR
+                </a>
+              </li>
+              <li>
+                <a href="#unit" className="hover:text-emerald-400 transition-colors">
+                  Unit Lembaga & Sekolah
+                </a>
+              </li>
+              <li>
+                <a href="#karier" className="hover:text-emerald-400 transition-colors">
+                  Pusat Lowongan Karier
+                </a>
+              </li>
+              <li>
+                <a href="#our-team" className="hover:text-emerald-400 transition-colors">
+                  Our Team & Layanan SDM
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div>
-            © {currentYear} <b>Yayasan Dar el-Iman Padang</b>. All Rights Reserved.
-          </div>
-          <div className="flex items-center gap-1 text-[11px]">
-            <span>Dikelola oleh Bidang SDM & Ketenagakerjaan</span>
-          </div>
+        {/* Bottom Legal Copyright */}
+        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p>
+            &copy; {currentYear} Yayasan Dar el-Iman Padang. All Rights Reserved.
+          </p>
+          <p className="flex items-center gap-1 text-[11px]">
+            <span>Ekosistem SDM Digital</span>
+            <span className="text-emerald-500 font-bold">ZAITUNU</span>
+            <span>&bull; Terhubung ke SIMAK</span>
+          </p>
         </div>
       </div>
     </footer>
