@@ -1,57 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ZaitunuSection from './components/ZaitunuSection';
-import CoreValues from './components/CoreValues';
-import UnitsSection from './components/UnitsSection';
-import WhyJoinUs from './components/WhyJoinUs';
-import CareerSection from './components/CareerSection';
-import TeamSection from './components/TeamSection';
-import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import UnitsPage from './pages/UnitsPage';
+import WhyUsPage from './pages/WhyUsPage';
+import CareerPage from './pages/CareerPage';
+import TeamPage from './pages/TeamPage';
 import ApplicationModal from './components/ApplicationModal';
 import StatusTrackerModal from './components/StatusTrackerModal';
 
 export default function App() {
+  const getRouteFromHash = () => {
+    const hash = window.location.hash.replace('#/', '').replace('#', '').trim();
+    if (!hash || hash === '') return 'home';
+    if (['home', 'tentang', 'unit', 'kenapa-kami', 'karier', 'our-team'].includes(hash)) {
+      return hash;
+    }
+    return 'home';
+  };
+
+  const [activeRoute, setActiveRoute] = useState(getRouteFromHash());
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const newRoute = getRouteFromHash();
+      setActiveRoute(newRoute);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const handleNavigate = (routeId) => {
+    setActiveRoute(routeId);
+    window.location.hash = routeId === 'home' ? '/' : `/${routeId}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#fafbfb] text-slate-900 selection:bg-emerald-800 selection:text-white">
-      {/* Sticky Header Navigation */}
-      <Navbar onOpenStatusModal={() => setStatusModalOpen(true)} />
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8faf9] text-[#0f1f1d]">
+      {/* Floating Pill Top Navbar */}
+      <Navbar
+        activeRoute={activeRoute}
+        onNavigate={handleNavigate}
+        onOpenStatusModal={() => setStatusModalOpen(true)}
+      />
 
-      {/* Main Content Flow */}
+      {/* Dynamic Page Views */}
       <main className="flex-1">
-        {/* 1. Hero Section */}
-        <Hero />
+        {activeRoute === 'home' && (
+          <HomePage
+            onNavigate={handleNavigate}
+            onSelectVacancy={(vac) => setSelectedVacancy(vac)}
+            onOpenStatusModal={() => setStatusModalOpen(true)}
+          />
+        )}
 
-        {/* 2. Zaitunu Concept Section ("Apa itu Zaitunu?") */}
-        <ZaitunuSection />
+        {activeRoute === 'tentang' && <AboutPage />}
 
-        {/* 3. Core Values PINTAR ("Nilai yang Menjadi Akar") */}
-        <CoreValues />
+        {activeRoute === 'unit' && <UnitsPage />}
 
-        {/* 4. Unit Pendidikan & Lembaga */}
-        <UnitsSection />
+        {activeRoute === 'kenapa-kami' && (
+          <WhyUsPage onNavigate={handleNavigate} />
+        )}
 
-        {/* 5. Mengapa Bertumbuh Bersama Dar el-Iman? (Why Join Us) */}
-        <WhyJoinUs />
+        {activeRoute === 'karier' && (
+          <CareerPage
+            onSelectVacancy={(vac) => setSelectedVacancy(vac)}
+            onOpenStatusModal={() => setStatusModalOpen(true)}
+          />
+        )}
 
-        {/* 6. Career Center / Lowongan Formasi */}
-        <CareerSection
-          onSelectVacancy={(vac) => setSelectedVacancy(vac)}
-          onOpenStatusModal={() => setStatusModalOpen(true)}
-        />
-
-        {/* 7. Our Team / Tim SDM */}
-        <TeamSection />
-
-        {/* 8. Call to Action Banner */}
-        <CtaSection />
+        {activeRoute === 'our-team' && <TeamPage />}
       </main>
 
-      {/* Footer */}
+      {/* Global Footer */}
       <Footer />
 
       {/* Application Form Modal (Multi-step) */}

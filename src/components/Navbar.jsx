@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ExternalLink, Search, Sparkles } from 'lucide-react';
+import { Search, ExternalLink, Menu, X } from 'lucide-react';
 
-export default function Navbar({ onOpenStatusModal }) {
+export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,144 +12,94 @@ export default function Navbar({ onOpenStatusModal }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Beranda', href: '#beranda' },
-    { label: 'Tentang Kami', href: '#tentang-kami' },
-    { label: 'PINTAR', href: '#pintar' },
-    { label: 'Unit', href: '#unit' },
-    { label: 'Kenapa Kami', href: '#kenapa-kami' },
-    { label: 'Karier', href: '#karier' },
-    { label: 'Our Team', href: '#our-team' },
-    { label: 'Kontak', href: '#kontak' },
+  const navItems = [
+    { id: 'home', label: 'Beranda' },
+    { id: 'tentang', label: 'Tentang Kami' },
+    { id: 'unit', label: 'Unit' },
+    { id: 'kenapa-kami', label: 'Kenapa Kami' },
+    { id: 'karier', label: 'Karier' },
+    { id: 'our-team', label: 'Our Team' },
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled ? 'glass-nav-scrolled py-2.5' : 'glass-nav-header py-3.5'
-      }`}
-    >
-      <div className="container-custom flex items-center justify-between">
-        {/* Brand Logo & Name */}
-        <a href="#beranda" className="flex items-center gap-3.5 group" id="brand-logo-link">
-          <div className="flex items-center gap-2.5 bg-white p-1.5 rounded-xl border border-slate-200 shadow-xs group-hover:border-emerald-300 transition-colors">
-            <img
-              src="/logo-yayasan.png"
-              alt="Logo Yayasan Dar el-Iman"
-              className="h-8 md:h-9 w-auto object-contain"
-            />
-            <div className="h-5 w-px bg-slate-200" />
-            <img
-              src="/logo-sdm.png"
-              alt="Logo SDM Dar el-Iman"
-              className="h-7 md:h-8 w-auto object-contain"
-            />
+    <header className={`top-navbar-container ${isScrolled ? 'top-navbar-scrolled' : ''}`}>
+      {/* Brand Logo & Name */}
+      <button
+        type="button"
+        onClick={() => onNavigate('home')}
+        className="brand-wrapper text-left bg-transparent border-none cursor-pointer"
+        id="brand-logo-btn"
+      >
+        <div className="brand-logos">
+          <img
+            src="/logo-yayasan.png"
+            alt="Logo Yayasan Dar el-Iman"
+            className="h-7 sm:h-8 w-auto object-contain"
+          />
+          <div className="h-4 w-px bg-slate-300" />
+          <img
+            src="/logo-sdm.png"
+            alt="Logo SDM Dar el-Iman"
+            className="h-6 sm:h-7 w-auto object-contain"
+          />
+        </div>
+        <div className="hidden sm:block leading-tight">
+          <div className="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5">
+            <span>ZAITUNU</span>
+            <span className="text-[10px] font-bold bg-[#f1d493] text-[#063b2d] px-1.5 py-0.2 rounded">
+              SDM
+            </span>
           </div>
-          <div className="hidden sm:block">
-            <div className="font-extrabold text-slate-900 leading-tight text-sm tracking-tight flex items-center gap-1.5">
-              <span>ZAITUNU</span>
-              <span className="text-[10px] font-bold bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-200 uppercase">
-                SDM
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-500 font-medium">
-              Yayasan Dar el-Iman Padang
-            </p>
-          </div>
-        </a>
+          <p className="text-[11px] text-emerald-200/80 font-medium">
+            Yayasan Dar el-Iman Padang
+          </p>
+        </div>
+      </button>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/60 transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Action Buttons */}
-        <div className="hidden lg:flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={onOpenStatusModal}
-            id="nav-btn-track-status"
-            className="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-emerald-800 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1.5 border border-slate-200"
-          >
-            <Search className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Cek Status</span>
-          </button>
-
-          <a
-            href="https://simak.sdmdareliman.web.id"
-            target="_blank"
-            rel="noopener noreferrer"
-            id="nav-btn-simak"
-            className="btn-simak-external"
-            title="Buka Portal Internal SIMAK di tab baru"
-          >
-            <span>Login Portal SIMAK</span>
-            <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
+      {/* Floating Pill Nav Bar (alhakimmembantu.asia style) */}
+      <div className="nav-center-wrapper">
+        <nav className="floating-nav-pills" aria-label="Navigasi Utama">
+          {navItems.map((item) => {
+            const isActive = activeRoute === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onNavigate(item.id)}
+                className={isActive ? 'active' : ''}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+          <a href="#kontak" className="hidden md:inline-flex">
+            Kontak
           </a>
-        </div>
-
-        {/* Mobile Hamburger Button */}
-        <div className="flex items-center gap-2 xl:hidden">
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            id="mobile-menu-toggle"
-            className="p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors border border-slate-200"
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        </nav>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="xl:hidden bg-white/98 border-b border-slate-200 shadow-xl px-5 py-6 space-y-4 animate-fade-in">
-          <nav className="flex flex-col space-y-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-emerald-800 hover:bg-emerald-50 transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+      {/* Action CTA Buttons */}
+      <div className="hidden lg:flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onOpenStatusModal}
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-white hover:text-[#f1d493] hover:bg-white/10 transition-colors"
+        >
+          <Search className="w-3.5 h-3.5" />
+          <span>Cek Status</span>
+        </button>
 
-          <div className="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenStatusModal();
-              }}
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 flex items-center justify-center gap-2"
-            >
-              <Search className="w-4 h-4 text-emerald-700" />
-              <span>Cek Status Lamaran</span>
-            </button>
-
-            <a
-              href="https://simak.sdmdareliman.web.id"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-simak-external justify-center py-2.5"
-            >
-              <span>Login Portal SIMAK ↗</span>
-            </a>
-          </div>
-        </div>
-      )}
+        <a
+          href="https://simak.sdmdareliman.web.id"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-simak-pill"
+          title="Login Portal SIMAK Internal Pegawai (Buka Tab Baru)"
+        >
+          <span>Portal SIMAK</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
     </header>
   );
 }
