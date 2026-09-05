@@ -12,6 +12,8 @@ import {
   Building2,
   AlertCircle,
   Share2,
+  LayoutGrid,
+  List,
 } from 'lucide-react';
 import { recruitmentService } from '../services/api';
 import { RECRUITMENT_STAGES } from '../data/mockData';
@@ -22,6 +24,20 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedGender, setSelectedGender] = useState('all');
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      return localStorage.getItem('career_view_mode') || 'grid';
+    } catch {
+      return 'grid';
+    }
+  });
+
+  const handleSetViewMode = (mode) => {
+    setViewMode(mode);
+    try {
+      localStorage.setItem('career_view_mode', mode);
+    } catch {}
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -153,8 +169,32 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
               </div>
             </div>
 
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-card)', paddingTop: '12px' }}>
-              Menampilkan <strong style={{ color: 'var(--emerald-main)' }}>{filtered.length}</strong> formasi aktif yang sesuai dengan pencarian Anda.
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid var(--border-card)', paddingTop: '14px' }}>
+              <div style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
+                Menampilkan <strong style={{ color: 'var(--emerald-main)' }}>{filtered.length}</strong> formasi aktif yang sesuai dengan pencarian Anda.
+              </div>
+              <div className="view-mode-toggle-group">
+                <button
+                  type="button"
+                  onClick={() => handleSetViewMode('grid')}
+                  className={`view-mode-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                  title="Tampilan Grid Kartu"
+                  aria-label="Tampilan Grid Kartu"
+                >
+                  <LayoutGrid size={15} />
+                  <span>Grid</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSetViewMode('list')}
+                  className={`view-mode-btn ${viewMode === 'list' ? 'active' : ''}`}
+                  title="Tampilan List Baris"
+                  aria-label="Tampilan List Baris"
+                >
+                  <List size={15} />
+                  <span>List</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -185,7 +225,68 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShare
                 Reset Pencarian
               </button>
             </div>
+          ) : viewMode === 'list' ? (
+            /* VACANCIES LIST VIEW */
+            <div className="vacancy-list-container">
+              {filtered.map((job) => (
+                <div key={job.id} className="vacancy-list-item">
+                  <div className="vacancy-list-info">
+                    <div className="vacancy-list-header">
+                      <h3 className="vacancy-list-title">{job.title}</h3>
+                      <span className="tag-badge-green">{job.category}</span>
+                      <span className="tag-badge-slate">{job.gender}</span>
+                    </div>
+
+                    <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: '4px 0 10px' }}>
+                      {job.requirements?.[0] || 'Kualifikasi pendidikan relevan & komitmen adab islami sesuai visi Yayasan Dar el-Iman.'}
+                    </p>
+
+                    <div className="vacancy-list-meta">
+                      <div className="vacancy-list-meta-item">
+                        <Building2 size={16} color="var(--emerald-main)" />
+                        <span>{job.unit}</span>
+                      </div>
+                      <div className="vacancy-list-meta-item">
+                        <GraduationCap size={16} color="var(--emerald-main)" />
+                        <span>{job.education}</span>
+                      </div>
+                      <div className="vacancy-list-meta-item">
+                        <Calendar size={16} color="var(--emerald-main)" />
+                        <span>Batas: <strong>{job.deadline}</strong></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="vacancy-list-actions">
+                    <button
+                      type="button"
+                      onClick={() => onSelectVacancy(job)}
+                      className="btn-apply-job"
+                    >
+                      <span>Lamar Formasi</span>
+                      <ArrowRight size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onShareVacancy && onShareVacancy({
+                        title: job.title,
+                        unit: job.unit,
+                        url: `${window.location.origin}/#/karier`,
+                        customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nInformasi Lowongan Kerja Yayasan Dar el-Iman Padang:\n📌 Formasi: ${job.title}\n🏢 Unit: ${job.unit}\n🎓 Kualifikasi: ${job.education}\n👥 Kriteria: ${job.gender}\n📅 Batas: ${job.deadline}\n\nDaftar online sekarang di:\nhttps://sdmdareliman.web.id/#/karier`,
+                      })}
+                      className="btn-share-job"
+                      title="Bagikan lowongan ini"
+                      aria-label={`Bagikan lowongan ${job.title}`}
+                    >
+                      <Share2 size={16} />
+                      <span>Bagikan</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
+            /* VACANCIES GRID VIEW */
             <div className="grid-3-col">
               {filtered.map((job) => (
                 <div key={job.id} className="vacancy-card">
