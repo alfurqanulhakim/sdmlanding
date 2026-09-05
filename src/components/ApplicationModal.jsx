@@ -117,6 +117,9 @@ export default function ApplicationModal({ vacancy, onClose }) {
 
     const payload = new FormData();
     payload.append('vacancyId', vacancy.id || '');
+    if (vacancy.mpp_quota_id) {
+      payload.append('mpp_quota_id', vacancy.mpp_quota_id);
+    }
     payload.append('vacancyTitle', vacancy.title || '');
     payload.append('unit', vacancy.unit || '');
     Object.keys(formData).forEach((key) => {
