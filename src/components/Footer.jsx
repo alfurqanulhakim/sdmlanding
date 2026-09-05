@@ -22,6 +22,13 @@ export default function Footer({ onNavigate }) {
     }
   };
 
+  const contacts = TEAM_SDM_DATA?.contacts || TEAM_SDM_DATA?.helpdesk || {};
+  const address = contacts.address || contacts.location || 'Gedung Sekretariat Pusat Yayasan Dar el-Iman, Padang';
+  const whatsapp = contacts.whatsapp || '+62 821-7000-0000';
+  const waRaw = contacts.waRaw || '6282170000000';
+  const email = contacts.email || 'sdm@dareliman.web.id';
+  const workHours = contacts.workHours || contacts.hours || 'Senin – Jumat | 08.00 – 16.00 WIB';
+
   return (
     <footer id="kontak" className="site-footer">
       <div className="site-container">
@@ -77,25 +84,25 @@ export default function Footer({ onNavigate }) {
             <ul className="footer-links-list">
               <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', lineHeight: 1.6 }}>
                 <MapPin size={16} color="var(--emerald-light)" style={{ flexShrink: 0, marginTop: '3px' }} />
-                <span>{TEAM_SDM_DATA.contacts.address}</span>
+                <span>{address}</span>
               </li>
 
               <li style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Phone size={16} color="var(--emerald-light)" style={{ flexShrink: 0 }} />
                 <a
-                  href={`https://wa.me/${TEAM_SDM_DATA.contacts.waRaw}`}
+                  href={`https://wa.me/${waRaw}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-link-item"
                 >
-                  WhatsApp: {TEAM_SDM_DATA.contacts.whatsapp} ({TEAM_SDM_DATA.contacts.workHours})
+                  WhatsApp: {whatsapp} ({workHours})
                 </a>
               </li>
 
               <li style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Mail size={16} color="var(--emerald-light)" style={{ flexShrink: 0 }} />
-                <a href={`mailto:${TEAM_SDM_DATA.contacts.email}`} className="footer-link-item">
-                  {TEAM_SDM_DATA.contacts.email}
+                <a href={`mailto:${email}`} className="footer-link-item">
+                  {email}
                 </a>
               </li>
 

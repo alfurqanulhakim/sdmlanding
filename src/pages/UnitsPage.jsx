@@ -73,65 +73,68 @@ export default function UnitsPage() {
 
           {/* Grouped Units Grid */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '56px' }}>
-            {filteredGroups.map((group) => (
-              <div key={group.categorySlug}>
-                <div style={{ borderBottom: '2px solid var(--border-card)', paddingBottom: '12px', marginBottom: '24px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: 'var(--text-title)' }}>
-                    {group.category}
-                  </h3>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald-main)' }}>
-                    {group.items.length} Lembaga
-                  </span>
-                </div>
+            {filteredGroups.map((group) => {
+              const unitList = group.units || group.items || [];
+              return (
+                <div key={group.categorySlug}>
+                  <div style={{ borderBottom: '2px solid var(--border-card)', paddingBottom: '12px', marginBottom: '24px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: 'var(--text-title)' }}>
+                      {group.category}
+                    </h3>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald-main)' }}>
+                      {unitList.length} Lembaga
+                    </span>
+                  </div>
 
-                <div className="grid-3-col">
-                  {group.items.map((unit) => (
-                    <div key={unit.id} className="unit-card">
-                      <div>
-                        <div className="unit-head">
-                          <div className="unit-icon-box">
-                            <School size={22} />
+                  <div className="grid-3-col">
+                    {unitList.map((unit) => (
+                      <div key={unit.id} className="unit-card">
+                        <div>
+                          <div className="unit-head">
+                            <div className="unit-icon-box">
+                              <School size={22} />
+                            </div>
+                            <span className="tag-badge-green" style={{ textTransform: 'uppercase' }}>
+                              {unit.code || unit.id}
+                            </span>
                           </div>
-                          <span className="tag-badge-green" style={{ textTransform: 'uppercase' }}>
-                            {unit.code}
+
+                          <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '14px', marginBottom: '8px', lineHeight: 1.35 }}>
+                            {unit.name}
+                          </h4>
+
+                          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
+                            {unit.desc || unit.focus || ''}
+                          </p>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            <MapPin size={14} color="var(--emerald-main)" />
+                            <span>{unit.address || unit.location || 'Padang, Sumatera Barat'}</span>
+                          </div>
+                        </div>
+
+                        <div style={{ borderTop: '1px solid var(--border-card)', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--text-light)' }}>
+                            {unit.studentCount ? `${unit.studentCount} Santri/Siswa` : 'Unit Operasional'}
                           </span>
-                        </div>
-
-                        <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '14px', marginBottom: '8px', lineHeight: 1.35 }}>
-                          {unit.name}
-                        </h4>
-
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
-                          {unit.desc}
-                        </p>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          <MapPin size={14} color="var(--emerald-main)" />
-                          <span>{unit.address}</span>
+                          {unit.website && (
+                            <a
+                              href={unit.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', fontWeight: 700, color: 'var(--emerald-main)' }}
+                            >
+                              <span>Info Unit</span>
+                              <ExternalLink size={12} />
+                            </a>
+                          )}
                         </div>
                       </div>
-
-                      <div style={{ borderTop: '1px solid var(--border-card)', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-light)' }}>
-                          {unit.studentCount ? `${unit.studentCount} Santri/Siswa` : 'Unit Operasional'}
-                        </span>
-                        {unit.website && (
-                          <a
-                            href={unit.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', fontWeight: 700, color: 'var(--emerald-main)' }}
-                          >
-                            <span>Info Unit</span>
-                            <ExternalLink size={12} />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

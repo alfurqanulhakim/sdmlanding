@@ -68,6 +68,13 @@ export const ZAITUNU_METAPHOR = {
   ],
 };
 
+// Aliases for bulletproof compatibility
+ZAITUNU_METAPHOR.pillars.forEach((p) => {
+  p.meaning = p.title;
+  p.action = p.desc;
+});
+ZAITUNU_METAPHOR.parts = ZAITUNU_METAPHOR.pillars;
+
 // 2. Core Values PINTAR (Wajib & Resmi Sesuai Dokumen Master)
 export const PINTAR_VALUES = [
   {
@@ -169,6 +176,12 @@ export const PINTAR_VALUES = [
   },
 ];
 
+PINTAR_VALUES.forEach((v) => {
+  v.code = v.id;
+  v.name = v.title;
+  v.indicator = Array.isArray(v.indicators) ? v.indicators[0] : (v.indicator || '');
+});
+
 // 3. Unit Pendidikan & Lembaga Resmi Yayasan Dar el-Iman (Grouped)
 export const MOCK_UNITS = [
   {
@@ -176,10 +189,10 @@ export const MOCK_UNITS = [
     categorySlug: 'paud',
     desc: 'Penanaman tauhid sejak dini, pembiasaan adab islami, dan metode bermain yang bermakna.',
     units: [
-      { id: 'tkit-1', name: 'TK IT Dar el-Iman 1', location: 'Padang, Sumbar', focus: 'Tahfidz Juz 30 & Adab' },
-      { id: 'tkit-2', name: 'TK IT Dar el-Iman 2', location: 'Padang, Sumbar', focus: 'Karakter & Kemandirian' },
-      { id: 'tkit-3', name: 'TK IT Dar el-Iman 3', location: 'Padang, Sumbar', focus: 'Kecakapan Sensorik & Doa' },
-      { id: 'taud-saqu', name: 'TAUD SaQu Dar el-Iman', location: 'Padang, Sumbar', focus: 'Tahfidz Al-Qur\'an Usia Dini' },
+      { id: 'tkit-1', code: 'TKIT-1', name: 'TK IT Dar el-Iman 1', location: 'Padang, Sumbar', address: 'Jl. Gunung Juaro, Surau Gadang, Padang', focus: 'Tahfidz Juz 30 & Adab', desc: 'Rintisan awal pembinaan adab, doa harian, dan kecakapan motorik anak usia dini.', studentCount: '120+' },
+      { id: 'tkit-2', code: 'TKIT-2', name: 'TK IT Dar el-Iman 2', location: 'Padang, Sumbar', address: 'Sawahan, Padang Timur, Padang', focus: 'Karakter & Kemandirian', desc: 'Pengenalan nilai-nilai sunnah, stimulasi bahasa, dan kemandirian perilaku.', studentCount: '95+' },
+      { id: 'tkit-3', code: 'TKIT-3', name: 'TK IT Dar el-Iman 3', location: 'Padang, Sumbar', address: 'Nanggalo, Padang', focus: 'Kecakapan Sensorik & Doa', desc: 'Pembiasaan akhlak mulia dan kecintaan menghafal Al-Qur\'an sejak masa balita.', studentCount: '80+' },
+      { id: 'taud-saqu', code: 'TAUD', name: 'TAUD SaQu Dar el-Iman', location: 'Padang, Sumbar', address: 'Islamic Center Dar el-Iman, Padang', focus: 'Tahfidz Al-Qur\'an Usia Dini', desc: 'Metode intensif talaqqi Al-Qur\'an dan tahsin khusus usia pra-sekolah dasar.', studentCount: '150+' },
     ],
   },
   {
@@ -187,10 +200,10 @@ export const MOCK_UNITS = [
     categorySlug: 'dikdas',
     desc: 'Pondasi akademik kuat berpadu kurikulum tahfidz mutqin dan keteladanan akhlak.',
     units: [
-      { id: 'mit', name: 'Madrasah Ibtidaiyah Terpadu (MIT)', location: 'Padang', focus: 'Integrasi Sains & Diniyah' },
-      { id: 'sdit-1', name: 'SD IT Dar el-Iman 1', location: 'Gurun Laweh, Padang', focus: 'Sekolah Rujukan & Penggerak' },
-      { id: 'sdit-2', name: 'SD IT Dar el-Iman 2', location: 'Sawahan, Padang', focus: 'Tahsin Bersanad & Adab' },
-      { id: 'sdit-3', name: 'SD IT Dar el-Iman 3', location: 'Nanggalo, Padang', focus: 'Pendidikan Ramah Anak' },
+      { id: 'mit', code: 'MIT', name: 'Madrasah Ibtidaiyah Terpadu (MIT)', location: 'Padang', address: 'Jl. Belanti Indah, Lolong Belanti, Padang', focus: 'Integrasi Sains & Diniyah', desc: 'Kurikulum Kemenag berpadu penguatan diniyah salaf dan tahfidz mutqin.', studentCount: '340+' },
+      { id: 'sdit-1', code: 'SDIT-1', name: 'SD IT Dar el-Iman 1', location: 'Gurun Laweh, Padang', address: 'Jl. Gurun Laweh, Nanggalo, Padang', focus: 'Sekolah Rujukan & Penggerak', desc: 'Sekolah dasar pelopor dengan kurikulum terpadu nasional dan muatan lokal sunnah.', studentCount: '620+' },
+      { id: 'sdit-2', code: 'SDIT-2', name: 'SD IT Dar el-Iman 2', location: 'Sawahan, Padang', address: 'Jl. Sawahan No. 12, Padang Timur', focus: 'Tahsin Bersanad & Adab', desc: 'Fokus pembinaan karakter santri dan akselerasi hafalan Al-Qur\'an.', studentCount: '480+' },
+      { id: 'sdit-3', code: 'SDIT-3', name: 'SD IT Dar el-Iman 3', location: 'Nanggalo, Padang', address: 'Jl. Joni Anwar, Lapai, Nanggalo, Padang', focus: 'Pendidikan Ramah Anak', desc: 'Suasana belajar inspiratif dengan pembinaan akhlak mulia dan prestasi akademik.', studentCount: '390+' },
     ],
   },
   {
@@ -198,9 +211,9 @@ export const MOCK_UNITS = [
     categorySlug: 'dikmen',
     desc: 'Membentuk generasi tangguh berwawasan global, hafizh Al-Qur\'an, dan berprestasi.',
     units: [
-      { id: 'smpit-padang', name: 'SMP IT Dar el-Iman Padang', location: 'Gunung Juaro, Padang', focus: 'Fullday & Boarding' },
-      { id: 'smpit-50kota', name: 'SMP IT Dar el-Iman 50 Kota', location: 'Kab. 50 Kota, Sumbar', focus: 'Penguatan Diniyah & Tahfidz' },
-      { id: 'smait', name: 'SMA IT Dar el-Iman Padang', location: 'Islamic Center Padang', focus: 'Persiapan PTN & Studi Timur Tengah' },
+      { id: 'smpit-padang', code: 'SMPIT', name: 'SMP IT Dar el-Iman Padang', location: 'Gunung Juaro, Padang', address: 'Kompleks Islamic Center, Nanggalo, Padang', focus: 'Fullday & Boarding', desc: 'Persiapan matang ilmu syar\'i, sains modern, dan bahasa Arab aktif.', studentCount: '510+' },
+      { id: 'smpit-50kota', code: 'SMPIT-50K', name: 'SMP IT Dar el-Iman 50 Kota', location: 'Kab. 50 Kota, Sumbar', address: 'Kec. Harau, Kab. Lima Puluh Kota, Sumbar', focus: 'Penguatan Diniyah & Tahfidz', desc: 'Kampus alam berbasis keteladanan santri di Kabupaten 50 Kota.', studentCount: '220+' },
+      { id: 'smait', code: 'SMAIT', name: 'SMA IT Dar el-Iman Padang', location: 'Islamic Center Padang', address: 'Jl. Gunung Juaro, Nanggalo, Padang', focus: 'Persiapan PTN & Studi Timur Tengah', desc: 'Lulusan diproyeksikan melanjutkan ke Universitas Islam Madinah, LIPIA, dan PTN ternama.', studentCount: '380+' },
     ],
   },
   {
@@ -208,8 +221,8 @@ export const MOCK_UNITS = [
     categorySlug: 'pesantren',
     desc: 'Kawah candradimuka pembinaan santri 24 jam dengan suasana ilmiah dan ukhuwah.',
     units: [
-      { id: 'ponpes-putra', name: 'Pondok Pesantren Putra Dar el-Iman', location: 'Padang', focus: 'Kitab Turats & Bahasa Arab' },
-      { id: 'ponpes-putri', name: 'Pondok Pesantren Putri Dar el-Iman', location: 'Padang', focus: 'Tahfidzul Qur\'an & Tarbiyah Nisa\'' },
+      { id: 'ponpes-putra', code: 'PONTREN-PA', name: 'Pondok Pesantren Putra Dar el-Iman', location: 'Padang', address: 'Kompleks Islamic Center Putra, Nanggalo, Padang', focus: 'Kitab Turats & Bahasa Arab', desc: 'Pendidikan kader ulama, talaqqi kitab ulama salaf, dan penguasaan bahasa Arab 24 jam.', studentCount: '320+' },
+      { id: 'ponpes-putri', code: 'PONTREN-PI', name: 'Pondok Pesantren Putri Dar el-Iman', location: 'Padang', address: 'Kompleks Putri Dar el-Iman, Kuranji, Padang', focus: 'Tahfidzul Qur\'an & Tarbiyah Nisa\'', desc: 'Pembentukan shahabiyah masa depan dengan keteguhan adab dan hafalan mutqin.', studentCount: '290+' },
     ],
   },
   {
@@ -217,13 +230,18 @@ export const MOCK_UNITS = [
     categorySlug: 'operasional',
     desc: 'Pilar penopang dakwah umat, kemanusiaan, logistik, dan kemandirian ekonomi syariah.',
     units: [
-      { id: 'dei-peduli', name: 'Dar el-Iman Peduli', location: 'Padang', focus: 'Sosial, Kemanusiaan & ZISWAF' },
-      { id: 'media-dakwah', name: 'Divisi Media & Dakwah', location: 'Padang', focus: 'Radio Surau & Konten Syiar' },
-      { id: 'koperasi', name: 'Koperasi Syariah Dar el-Iman', location: 'Padang', focus: 'Pemberdayaan Ekonomi Umat' },
-      { id: 'sarpras-logistik', name: 'Divisi Sarpras & Logistik', location: 'Padang', focus: 'Infrastruktur & Fasilitas Lembaga' },
+      { id: 'dei-peduli', code: 'PEDULI', name: 'Dar el-Iman Peduli', location: 'Padang', address: 'Gedung Pusat DEI, Nanggalo, Padang', focus: 'Sosial, Kemanusiaan & ZISWAF', desc: 'Lembaga amil zakat dan aksi tanggap darurat bencana di wilayah Sumatera Barat.', studentCount: '' },
+      { id: 'media-dakwah', code: 'MEDIA', name: 'Divisi Media & Radio Surau', location: 'Padang', address: 'Studio Radio Surau FM, Padang', focus: 'Radio Surau & Konten Syiar', desc: 'Pusat penyiaran radio dakwah FM, streaming video, dan publikasi media sosial resmi.', studentCount: '' },
+      { id: 'koperasi', code: 'KOP-SYAR', name: 'Koperasi Syariah Dar el-Iman', location: 'Padang', address: 'Jl. Gunung Juaro, Nanggalo, Padang', focus: 'Pemberdayaan Ekonomi Umat', desc: 'Lembaga simpan pinjam syariah dan unit usaha ritel untuk kesejahteraan pegawai.', studentCount: '' },
+      { id: 'sarpras-logistik', code: 'SARPRAS', name: 'Divisi Sarpras & Logistik', location: 'Padang', address: 'Gedung Workshop Yayasan Dar el-Iman', focus: 'Infrastruktur & Fasilitas Lembaga', desc: 'Pengelolaan aset, pemeliharaan gedung sekolah, dan armada transportasi santri.', studentCount: '' },
     ],
   },
 ];
+
+// Add items alias to MOCK_UNITS for full backward compatibility
+MOCK_UNITS.forEach((g) => {
+  g.items = g.units;
+});
 
 // 4. Manfaat & Nilai Mengabdi (Why Join Us)
 export const BENEFITS_DATA = [
@@ -434,14 +452,57 @@ export const MOCK_APPLICANTS = [
   },
 ];
 
-// 8. Tim SDM & Layanan
+// 8. Tim SDM & Layanan (Resmi Dokumen Master Ustadz Redo Pratama Harista, S.Sos.)
 export const TEAM_SDM_DATA = {
+  leader: {
+    name: 'Redo Pratama Harista, S.Sos.',
+    title: 'Kepala Bidang SDM Yayasan Dar el-Iman',
+    period: '2021 – Sekarang',
+    photo: '/ustadz-redo.jpg',
+    birth: 'Solok, 16 Desember 1991',
+    education: 'S1 Ilmu Administrasi Negara • Sedang Menempuh Magister Ekonomi Syariah (Peminatan Manajemen SDM)',
+    certifications: [
+      'Sertifikasi BNSP Pengurus Koperasi Simpan Pinjam',
+      'Pelatihan & Workshop Profesional (sejak 2022): Manajemen SDM, KPI, Compensation & Benefit, Training Management, Organization Development, GA & HSE',
+    ],
+    careerJourney: [
+      { year: '2016 – 2017', role: 'Karier Profesional Bank BUMN' },
+      { year: '2017', role: 'Bergabung di Yayasan Dar el-Iman' },
+      { year: '2017 – 2019', role: 'Kepala Tata Usaha SD IT Dar el-Iman 1' },
+      { year: '2019 – 2020', role: 'Wakil Kepala Kurikulum SD IT Dar el-Iman 1' },
+      { year: '2020 – 2021', role: 'Staf Sumber Daya Manusia (SDM) Yayasan' },
+      { year: '2021 – 2025', role: 'Kepala Bidang SDM Yayasan Dar el-Iman' },
+    ],
+    welcomeMessage: {
+      lead: 'Merawat Akar Nilai, Mengokohkan Pengabdian untuk Generasi Rabbani',
+      greeting: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh.\n\nAlhamdulillah, segala puji hanya milik Allah Subhanahu wa Ta\'ala yang telah mempertemukan kita dalam niat mulia menegakkan dakwah dan pendidikan Islam bermanhaj Salafus Shalih di Ranah Minang.\n\nBagi kami di Bidang Sumber Daya Manusia Yayasan Dar el-Iman, mengelola SDM bukan sekadar urusan administratif personalia, melainkan amanah besar merawat fitrah para mujahid pendidikan. Sebagaimana filosofi pohon zaitun—Zaitunu—kami berikhtiar memastikan setiap asatidzah dan pegawai memiliki akar akidah yang kokoh, bertumbuh dalam keilmuan dan kompetensi profesional, serta berbuah lebat dalam pengabdian yang ikhlas.\n\nMelalui sistem manajemen modern berlandaskan syariah, keadilan Skala Upah Dua Titik, keterbukaan KPI, jaminan perlindungan sosial, dan digitalisasi SIMAK, kami siap mendampingi perjalanan karier antum semua. Selamat bergabung, bertumbuh, dan mengukir amal jariyah bersama keluarga besar Yayasan Dar el-Iman.',
+    },
+  },
   quote: {
     lead: 'Menemani Setiap Langkah Pertumbuhan Talenta Rabbani',
     text: 'Yayasan Dar el-Iman berkomitmen menghadirkan ekosistem kerja yang memuliakan ilmu, menghargai integritas, dan memberikan ruang bagi asatidzah untuk mendedikasikan potensi terbaiknya demi izzul Islam wal muslimin.',
-    title: 'Divisi Sumber Daya Manusia (SDM)',
+    title: 'Redo Pratama Harista, S.Sos.',
+    role: 'Kepala Bidang SDM',
     org: 'Yayasan Dar el-Iman Padang',
   },
+  pillars: [
+    {
+      title: 'Perencanaan Formasi (MPP)',
+      desc: 'Pemetaan kebutuhan tenaga pendidik secara terukur sesuai perkembangan peserta didik dan kurikulum lembaga.',
+    },
+    {
+      title: 'Daurah & Kompetensi',
+      desc: 'Penyelenggaraan pelatihan pedagogik, tahsin bersanad, dan pembinaan adab berkala bersama asatidzah kompeten.',
+    },
+    {
+      title: 'Kesejahteraan & Benefit',
+      desc: 'Pengelolaan jaminan sosial BPJS Ketenagakerjaan & Kesehatan, Skala Upah Dua Titik yang adil, serta apresiasi ibadah umroh.',
+    },
+    {
+      title: 'Digitalisasi SIMAK',
+      desc: 'Layanan administrasi satu pintu untuk efisiensi presensi, cuti, pemantauan slip gaji, dan evaluasi KPI.',
+    },
+  ],
   services: [
     {
       title: 'Perencanaan Formasi (MPP)',
@@ -460,6 +521,13 @@ export const TEAM_SDM_DATA = {
       desc: 'Layanan administrasi satu pintu untuk efisiensi presensi, cuti, dan evaluasi kinerja.',
     },
   ],
+  contacts: {
+    whatsapp: '+62 821-7000-0000',
+    waRaw: '6282170000000',
+    email: 'sdm@dareliman.web.id',
+    workHours: 'Senin – Jumat | 08.00 – 16.00 WIB',
+    address: 'Gedung Sekretariat Pusat Yayasan Dar el-Iman, Jl. Gunung Juaro, Surau Gadang, Kec. Nanggalo, Kota Padang, Sumbar 25143',
+  },
   helpdesk: {
     whatsapp: '+62 821-7000-0000',
     email: 'sdm@dareliman.web.id',

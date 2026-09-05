@@ -9,11 +9,20 @@ import {
   Sparkles,
   ShieldCheck,
   CheckCircle2,
+  GraduationCap,
+  Award,
+  Briefcase,
+  Quote,
+  Calendar,
 } from 'lucide-react';
 import { TEAM_SDM_DATA, FAQS_DATA } from '../data/mockData';
 
 export default function TeamPage() {
   const [openFaq, setOpenFaq] = useState(null);
+
+  const leader = TEAM_SDM_DATA?.leader || {};
+  const contacts = TEAM_SDM_DATA?.contacts || TEAM_SDM_DATA?.helpdesk || {};
+  const pillars = TEAM_SDM_DATA?.pillars || TEAM_SDM_DATA?.services || [];
 
   return (
     <main>
@@ -26,43 +35,205 @@ export default function TeamPage() {
             </div>
 
             <h1 className="hero-title">
-              Orang-Orang di Balik <br />
-              <span className="hero-title-highlight">Perjalanan Talenta Rabbani.</span>
+              Mendampingi Langkah <br />
+              <span className="hero-title-highlight">Pengabdian Talenta Rabbani.</span>
             </h1>
 
             <p className="hero-desc">
-              Mendampingi setiap asatidzah dan pegawai mulai dari tahapan seleksi, orientasi, pembinaan berkelanjutan, hingga tercapainya kemaslahatan dakwah dan pendidikan bersama.
+              Mengenal pimpinan dan ekosistem pengelolaan talenta Yayasan Dar el-Iman yang berdedikasi mengayomi ratusan asatidzah dan pegawai demi kemajuan pendidikan dan dakwah Islam bermanhaj Salafus Shalih.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 2. SAMBUTAN PIMPINAN */}
+      {/* 2. PROFIL & KATA SAMBUTAN KEPALA BIDANG SDM (USTADZ REDO PRATAMA HARISTA) */}
       <section className="content-section white-bg">
-        <div className="site-container-narrow">
-          <div className="quote-editorial-card">
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--emerald-main)', background: 'var(--emerald-soft)', padding: '4px 12px', borderRadius: '100px', display: 'inline-block', marginBottom: '16px' }}>
-              Pesan Pimpinan Pengelolaan SDM
-            </span>
-
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--text-title)', lineHeight: 1.35, marginBottom: '16px' }}>
-              "{TEAM_SDM_DATA.quote.lead}"
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <Sparkles size={14} />
+              <span>Kepemimpinan SDM</span>
+            </div>
+            <h2 className="section-title">
+              Profil & Sambutan Kepala Bidang SDM
             </h2>
+            <p className="section-subtitle">
+              Amanah memimpin tata kelola kepegawaian, pengembangan budaya PINTAR, dan pemenuhan hak talenta di Yayasan Dar el-Iman Padang.
+            </p>
+          </div>
 
-            <blockquote style={{ fontSize: '0.98rem', color: 'var(--text-body)', lineHeight: 1.75, fontStyle: 'italic', marginBottom: '24px' }}>
-              "{TEAM_SDM_DATA.quote.text}"
-            </blockquote>
+          {/* Profile Card & Speech Container */}
+          <div style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
+            borderRadius: '24px',
+            boxShadow: 'var(--shadow-card)',
+            overflow: 'hidden',
+            marginBottom: '48px',
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '0',
+            }}>
+              {/* Left Column: Photo & Biography */}
+              <div style={{
+                background: 'linear-gradient(135deg, #031c15 0%, #063b2d 100%)',
+                color: '#ffffff',
+                padding: 'clamp(28px, 4vw, 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '24px',
+              }}>
+                <div>
+                  {/* Photo Frame */}
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '280px',
+                    margin: '0 auto 24px auto',
+                  }}>
+                    <div style={{
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      border: '3px solid var(--gold-light)',
+                      boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
+                      background: '#0a2e24',
+                    }}>
+                      <img
+                        src={leader.photo || '/ustadz-redo.jpg'}
+                        alt={leader.name || 'Ustadz Redo Pratama Harista, S.Sos.'}
+                        style={{
+                          width: '100%',
+                          height: '320px',
+                          objectFit: 'cover',
+                          objectPosition: 'top center',
+                          display: 'block',
+                        }}
+                      />
+                    </div>
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'var(--gold-vibrant)',
+                      color: 'var(--navy-dark)',
+                      fontSize: '0.72rem',
+                      fontWeight: 900,
+                      padding: '4px 14px',
+                      borderRadius: '100px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                    }}>
+                      Kepala Bidang SDM
+                    </div>
+                  </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', borderTop: '1px solid var(--border-card)', paddingTop: '18px' }}>
-              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'var(--emerald-main)', color: 'var(--gold-light)', display: 'grid', placeItems: 'center', fontWeight: 900, fontSize: '0.85rem' }}>
-                SDM
-              </div>
-              <div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-title)' }}>
-                  {TEAM_SDM_DATA.quote.title}
+                  {/* Leader Name & Identity */}
+                  <div style={{ textAlign: 'center', marginTop: '18px' }}>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#ffffff', lineHeight: 1.25, marginBottom: '6px' }}>
+                      {leader.name || 'Redo Pratama Harista, S.Sos.'}
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--gold-light)', fontWeight: 600, marginBottom: '4px' }}>
+                      {leader.title || 'Kepala Bidang SDM Yayasan Dar el-Iman'}
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#cde4de' }}>
+                      Periode: {leader.period || '2021 – Sekarang'} &bull; {leader.birth || 'Solok, 16 Desember 1991'}
+                    </p>
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  {TEAM_SDM_DATA.quote.org}
+
+                {/* Educational & Certification Badges */}
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <GraduationCap size={18} color="var(--gold-light)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: '#e0eee9', lineHeight: 1.5 }}>
+                      <strong>Pendidikan:</strong> <br />
+                      {leader.education || 'S1 Ilmu Administrasi Negara • Magister Ekonomi Syariah (Peminatan Manajemen SDM)'}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <Award size={18} color="var(--gold-light)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: '#e0eee9', lineHeight: 1.5 }}>
+                      <strong>Sertifikasi & Lisensi:</strong> <br />
+                      Sertifikasi BNSP Pengurus Koperasi Simpan Pinjam
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <ShieldCheck size={18} color="var(--gold-light)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: '#e0eee9', lineHeight: 1.5 }}>
+                      <strong>Keahlian Profesional:</strong> <br />
+                      Manajemen SDM, KPI & Performance Management, Compensation & Benefit, Organization Development, GA & HSE.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Kata Sambutan Resmi */}
+              <div style={{
+                padding: 'clamp(28px, 4vw, 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                background: '#ffffff',
+              }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                    <Quote size={20} color="var(--emerald-main)" />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--emerald-main)' }}>
+                      Kata Sambutan Resmi
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)', fontWeight: 900, color: 'var(--text-title)', lineHeight: 1.35, marginBottom: '20px' }}>
+                    "{leader?.welcomeMessage?.lead || 'Merawat Akar Nilai, Mengokohkan Pengabdian untuk Generasi Rabbani'}"
+                  </h3>
+
+                  <div style={{ fontSize: '0.92rem', color: 'var(--text-body)', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <p>
+                      <strong>Assalamu'alaikum Warahmatullahi Wabarakatuh.</strong>
+                    </p>
+                    <p>
+                      Alhamdulillah, segala puji dan syukur hanya milik Allah <em>Subhanahu wa Ta'ala</em> yang telah mempertemukan kita dalam niat tulus menegakkan syiar dakwah dan pendidikan Islam bermanhaj Salafus Shalih di Ranah Minang.
+                    </p>
+                    <p>
+                      Bagi kami di Bidang Sumber Daya Manusia Yayasan Dar el-Iman, pengelolaan SDM bukan sekadar urusan administratif personalia, melainkan amanah besar merawat fitrah dan memfasilitasi para mujahid pendidikan. Mengambil inspirasi dari pohon zaitun—<strong>Zaitunu</strong>—kami berikhtiar memastikan setiap asatidzah dan pegawai memiliki akar akidah yang kokoh, bertumbuh dalam keilmuan dan kompetensi profesional, serta berbuah lebat dalam kemanfaatan bagi umat.
+                    </p>
+                    <p>
+                      Melalui tata kelola modern berlandaskan syariah, keadilan Skala Upah Dua Titik, keterbukaan penilaian kinerja KPI, jaminan perlindungan sosial, dan digitalisasi sistem SIMAK, kami berkomitmen menghadirkan lingkungan kerja yang tenang, saling menguatkan, dan penuh ketenteraman lahir batin.
+                    </p>
+                    <p>
+                      Kepada para calon pendidik dan pegawai yang berniat bergabung, mari songsong kesempatan ini dengan niat yang lurus. Mari bersama-sama bertumbuh dan menanam amal jariyah di Yayasan Dar el-Iman.
+                    </p>
+                    <p style={{ fontStyle: 'italic', color: 'var(--emerald-main)', fontWeight: 700 }}>
+                      Wassalamu'alaikum Warahmatullahi Wabarakatuh.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Riwayat Jejak Pengabdian (Career Journey) */}
+                <div style={{ marginTop: '32px', borderTop: '1px solid var(--border-card)', paddingTop: '24px' }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-title)', display: 'block', marginBottom: '14px' }}>
+                    Jejak Pengabdian di Yayasan Dar el-Iman:
+                  </span>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                    {leader?.careerJourney && leader.careerJourney.map((j, idx) => (
+                      <div key={idx} style={{ background: 'var(--bg-page)', padding: '10px 14px', borderRadius: '12px', border: '1px solid var(--border-card)' }}>
+                        <div style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--emerald-main)' }}>
+                          {j.year}
+                        </div>
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-title)' }}>
+                          {j.role}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,18 +247,18 @@ export default function TeamPage() {
           <div className="section-head-box">
             <div className="section-tagline">
               <ShieldCheck size={14} />
-              <span>Standar Layanan</span>
+              <span>Standar Layanan SDM</span>
             </div>
             <h2 className="section-title">
-              Layanan & Tanggung Jawab Divisi SDM
+              Layanan & Tanggung Jawab Bidang SDM
             </h2>
             <p className="section-subtitle">
-              Empat fokus utama dalam mengayomi seluruh asatidzah dan pegawai di lingkungan yayasan.
+              Empat pilar utama pelayanan dalam mendampingi seluruh asatidzah dan pegawai di lingkungan yayasan.
             </p>
           </div>
 
           <div className="grid-2-col">
-            {TEAM_SDM_DATA.pillars.map((pillar, idx) => (
+            {pillars.map((pillar, idx) => (
               <div key={idx} className="card-numbered">
                 <div>
                   <div className="number-badge-box">
@@ -116,37 +287,37 @@ export default function TeamPage() {
                 <span>Pusat Bantuan & Konsultasi</span>
               </div>
               <h2 className="section-title">
-                Hubungi Divisi SDM Yayasan
+                Hubungi Bidang SDM Yayasan
               </h2>
               <p className="section-subtitle" style={{ marginBottom: '24px' }}>
-                Memiliki pertanyaan seputar proses seleksi, status lamaran, atau administrasi kepegawaian? Tim kami siap melayani Anda.
+                Memiliki pertanyaan seputar proses seleksi, status berkas lamaran, atau administrasi kepegawaian? Tim kami siap melayani Anda.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <a
-                  href={`https://wa.me/${TEAM_SDM_DATA.contacts.waRaw}?text=Bismillah,%20saya%20ingin%20bertanya%20seputar%20SDM%20Yayasan%20Dar%20el-Iman`}
+                  href={`https://wa.me/${contacts.waRaw || '6282170000000'}?text=Bismillah,%20saya%20ingin%20bertanya%20seputar%20SDM%20Yayasan%20Dar%20el-Iman`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-hero-primary"
                   style={{ width: 'fit-content' }}
                 >
                   <MessageCircle size={16} />
-                  <span>Chat WhatsApp Resmi ({TEAM_SDM_DATA.contacts.whatsapp})</span>
+                  <span>Chat WhatsApp Resmi ({contacts.whatsapp || '+62 821-7000-0000'})</span>
                 </a>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
                   <Mail size={16} color="var(--emerald-main)" />
-                  <span>{TEAM_SDM_DATA.contacts.email}</span>
+                  <span>{contacts.email || 'sdm@dareliman.web.id'}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
                   <Clock size={16} color="var(--emerald-main)" />
-                  <span>{TEAM_SDM_DATA.contacts.workHours}</span>
+                  <span>{contacts.workHours || contacts.hours || 'Senin – Jumat | 08.00 – 16.00 WIB'}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
                   <MapPin size={16} color="var(--emerald-main)" />
-                  <span>{TEAM_SDM_DATA.contacts.address}</span>
+                  <span>{contacts.address || contacts.location || 'Gedung Sekretariat Pusat Yayasan Dar el-Iman, Kota Padang'}</span>
                 </div>
               </div>
             </div>

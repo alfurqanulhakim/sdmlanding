@@ -148,7 +148,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid-3-col">
-            {ZAITUNU_METAPHOR.parts.map((part, idx) => {
+            {(ZAITUNU_METAPHOR?.parts || ZAITUNU_METAPHOR?.pillars || []).map((part, idx) => {
               const IconComp = iconMap[part.icon] || Sparkles;
               return (
                 <div key={idx} className="card-numbered">
