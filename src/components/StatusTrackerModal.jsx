@@ -45,7 +45,7 @@ export default function StatusTrackerModal({ onClose }) {
       const data = await recruitmentService.trackStatus(identifier);
       setResult(data);
     } catch (err) {
-      setError('Data lamaran tidak ditemukan. Pastikan nomor/kode registrasi yang Anda masukkan sesuai.');
+      setError(err.message || 'Data lamaran tidak ditemukan. Pastikan nomor/kode registrasi yang Anda masukkan sesuai.');
     } finally {
       setSearching(false);
     }

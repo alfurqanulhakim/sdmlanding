@@ -43,27 +43,19 @@ export const recruitmentService = {
     }
   },
 
-  // Kirim lamaran pelamar baru
+  // Kirim lamaran pelamar baru langsung ke API SIMAK
   async submitApplication(formData) {
     try {
-      const response = await api.post('/api/public/recruitment/apply', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/api/public/recruitment/apply', formData);
       return response.data;
     } catch (err) {
-      // Simulasi sukses jika offline / API belum aktif
-      console.info('Simulasi penerimaan berkas (Fallback):', err.message);
-      const regCode = `REG-2026-${Math.floor(100000 + Math.random() * 900000)}`;
-      return {
-        success: true,
-        data: {
-          registrationCode: regCode,
-          message: 'Berkas lamaran Anda berhasil didaftarkan.',
-          applicantName: formData.get('fullName') || 'Calon Pelamar',
-        },
-      };
+      console.error('Gagal mengirim berkas lamaran ke API:', err);
+      const validationErrors = err.response?.data?.errors;
+      let errMsg = err.response?.data?.message;
+      if (validationErrors) {
+        errMsg = Object.values(validationErrors).flat().join(', ');
+      }
+      throw new Error(errMsg || err.message || 'Gagal mengirim lamaran ke server SIMAK.');
     }
   },
 
@@ -74,34 +66,10 @@ export const recruitmentService = {
       if (response.data && response.data.data) {
         return response.data.data;
       }
-      throw new Error('Not found');
+      throw new Error('Data lamaran tidak ditemukan.');
     } catch (err) {
-      // Cari di data mock jika belum ada di API
-      const cleanId = identifier.trim().toLowerCase();
-      const found = MOCK_APPLICANTS.find(
-        (a) =>
-          a.registrationCode.toLowerCase() === cleanId ||
-          a.whatsapp.includes(cleanId) ||
-          (cleanId.length >= 6 && a.nik.includes(cleanId))
-      );
-
-      if (found) {
-        return found;
-      }
-
-      // Default demo status jika pelamar mencoba nomor lain
-      return {
-        registrationCode: identifier.toUpperCase().startsWith('REG-')
-          ? identifier.toUpperCase()
-          : `REG-2026-${Math.floor(100000 + Math.random() * 900000)}`,
-        applicantName: 'Pelamar Terdaftar',
-        positionApplied: 'Formasi Pendidik / Tenaga Kependidikan',
-        unitApplied: 'Yayasan Dar el-Iman Padang',
-        currentStageIndex: 1, // Berada di tahap 2 (Microteaching & Wawancara)
-        statusText: 'Sedang Proses Penjadwalan Wawancara & Microteaching',
-        updatedAt: '5 September 2026',
-        notes: 'Silakan persiapkan RPP dan kelengkapan materi microteaching sesuai arahan tim rekrutmen.',
-      };
+      const msg = err.response?.data?.message || 'Data lamaran tidak ditemukan. Pastikan Anda sudah mendaftar formasi atau periksa kembali nomor yang Anda masukkan.';
+      throw new Error(msg);
     }
   },
 };
