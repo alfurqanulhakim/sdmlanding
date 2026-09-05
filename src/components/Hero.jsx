@@ -70,13 +70,28 @@ export default function Hero() {
                 <div className="absolute top-0 right-0 translate-x-8 -translate-y-8 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
                 <div className="space-y-6 relative z-10">
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-emerald-800/80 border border-emerald-400/30 text-amber-300 text-xs font-extrabold tracking-wider uppercase">
-                      Yayasan Dar el-Iman
-                    </span>
-                    <span className="text-xs text-emerald-200 font-medium">
-                      Kota Padang, Sumbar
-                    </span>
+                  {/* Official Logos Badge */}
+                  <div className="flex items-center justify-between bg-emerald-950/50 border border-emerald-500/30 p-2.5 rounded-2xl backdrop-blur-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-white/95 p-1.5 rounded-xl shadow-xs">
+                        <img
+                          src="/logo-yayasan.png"
+                          alt="Yayasan Dar el-Iman"
+                          className="h-7 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="bg-white/95 p-1.5 rounded-xl shadow-xs">
+                        <img
+                          src="/logo-sdm.png"
+                          alt="SDM Dar el-Iman"
+                          className="h-7 w-auto object-contain"
+                        />
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs font-black text-amber-300 tracking-wide">DAR EL-IMAN PADANG</div>
+                      <div className="text-[10px] text-emerald-200">Divisi Sumber Daya Manusia</div>
+                    </div>
                   </div>
 
                   <div className="space-y-2">

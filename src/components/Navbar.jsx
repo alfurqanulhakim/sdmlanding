@@ -32,13 +32,23 @@ export default function Navbar({ onOpenStatusModal }) {
       }`}
     >
       <div className="container flex items-center justify-between">
-        {/* Brand Logo */}
+        {/* Brand Logo with Official Yayasan & SDM Logos */}
         <a href="#beranda" className="flex items-center gap-3 group" id="brand-logo-link">
-          <div className="w-10 h-10 rounded-xl gradient-emerald text-white flex items-center justify-center shadow-md shadow-emerald-900/20 group-hover:scale-105 transition-transform">
-            <Sparkles className="w-5 h-5 text-amber-300" />
+          <div className="flex items-center gap-2 bg-white/90 p-1 rounded-xl border border-slate-200/60 shadow-xs group-hover:scale-105 transition-transform">
+            <img
+              src="/logo-yayasan.png"
+              alt="Logo Yayasan Dar el-Iman"
+              className="h-9 w-auto object-contain"
+            />
+            <div className="h-6 w-px bg-slate-200" />
+            <img
+              src="/logo-sdm.png"
+              alt="Logo SDM Dar el-Iman"
+              className="h-8 w-auto object-contain"
+            />
           </div>
-          <div>
-            <div className="font-extrabold text-slate-900 leading-tight text-base tracking-tight flex items-center gap-1.5">
+          <div className="hidden sm:block">
+            <div className="font-black text-slate-900 leading-tight text-sm tracking-tight flex items-center gap-1.5">
               <span>SDM DAR EL-IMAN</span>
               <span className="text-[10px] uppercase font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-300">
                 Official

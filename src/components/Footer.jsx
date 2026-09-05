@@ -11,8 +11,18 @@ export default function Footer() {
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-emerald text-white flex items-center justify-center shadow-md shadow-emerald-900/30">
-                <Sparkles className="w-5 h-5 text-amber-300" />
+              <div className="flex items-center gap-2 bg-white/95 p-1.5 rounded-xl shadow-xs">
+                <img
+                  src="/logo-yayasan.png"
+                  alt="Yayasan Dar el-Iman"
+                  className="h-8 w-auto object-contain"
+                />
+                <div className="h-5 w-px bg-slate-300" />
+                <img
+                  src="/logo-sdm.png"
+                  alt="SDM Dar el-Iman"
+                  className="h-7 w-auto object-contain"
+                />
               </div>
               <div>
                 <div className="font-extrabold text-white text-base leading-tight">
