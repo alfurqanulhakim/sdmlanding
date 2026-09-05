@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { School, MapPin, Building2, Filter, Sparkles } from 'lucide-react';
+import { School, MapPin, Building2, Filter, Sparkles, ExternalLink } from 'lucide-react';
 import { MOCK_UNITS } from '../data/mockData';
 
 export default function UnitsPage() {
@@ -14,98 +14,118 @@ export default function UnitsPage() {
     { id: 'operasional', label: 'Dakwah & Operasional' },
   ];
 
-  const filteredGroups = activeCategory === 'all'
-    ? MOCK_UNITS
-    : MOCK_UNITS.filter((g) => g.categorySlug === activeCategory);
+  const filteredGroups =
+    activeCategory === 'all'
+      ? MOCK_UNITS
+      : MOCK_UNITS.filter((g) => g.categorySlug === activeCategory);
 
   return (
-    <div>
+    <main>
       {/* 1. HERO BANNER */}
-      <section className="hero-page-banner">
-        <div className="container-custom relative z-10 max-w-4xl space-y-6">
-          <div className="eyebrow-accent">
-            <span>DIREKTORI LEMBAGA &bull; CABANG-CABANG ZAITUNU</span>
+      <section className="hero-section-box">
+        <div className="site-container">
+          <div style={{ maxWidth: '780px' }}>
+            <div className="hero-eyebrow">
+              DIREKTORI LEMBAGA &bull; CABANG-CABANG ZAITUNU
+            </div>
+
+            <h1 className="hero-title">
+              Unit Pendidikan, Pesantren & <br />
+              <span className="hero-title-highlight">Lembaga Sosial Dakwah.</span>
+            </h1>
+
+            <p className="hero-desc">
+              Yayasan Dar el-Iman menaungi ragam jenjang pendidikan Islam terpadu dan divisi operasional yang memberikan wadah berkarya, bertumbuh, dan mengabdi bagi ratusan asatidzah di Kota Padang dan sekitarnya.
+            </p>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Unit Pendidikan, Pesantren & <br />
-            <span className="text-[#f1d493]">Lembaga Sosial Dakwah.</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed font-normal max-w-2xl">
-            Yayasan Dar el-Iman menaungi ragam jenjang pendidikan Islam terpadu dan divisi operasional yang memberikan wadah berkarya, bertumbuh, dan mengabdi bagi ratusan asatidzah di Kota Padang dan sekitarnya.
-          </p>
         </div>
       </section>
 
       {/* 2. UNITS DIRECTORY WITH FILTER */}
-      <section className="page-section bg-white">
-        <div className="container-custom space-y-12">
+      <section className="content-section white-bg">
+        <div className="site-container">
           {/* Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-black text-slate-900">
-                Pilih Kategori Unit
-              </h2>
-              <p className="text-xs text-slate-500">
-                Filter berdasarkan jenjang pendidikan atau divisi operasional
-              </p>
-            </div>
+          <div className="search-filter-panel" style={{ marginBottom: '48px' }}>
+            <div className="filter-bar-row">
+              <div>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-title)', marginBottom: '4px' }}>
+                  Pilih Kategori Unit
+                </h2>
+                <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
+                  Filter direktori berdasarkan jenjang pendidikan atau divisi operasional
+                </p>
+              </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => setActiveCategory(c.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                    activeCategory === c.id
-                      ? 'bg-emerald-800 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {c.label}
-                </button>
-              ))}
+              <div className="filter-btn-group">
+                {categories.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setActiveCategory(c.id)}
+                    className={`filter-pill-btn ${activeCategory === c.id ? 'active' : ''}`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Grouped Units Grid */}
-          <div className="space-y-12">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '56px' }}>
             {filteredGroups.map((group) => (
-              <div key={group.categorySlug} className="space-y-4">
-                <div className="border-b border-slate-200/80 pb-2 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                  <h3 className="text-lg font-black text-slate-900 tracking-tight">
+              <div key={group.categorySlug}>
+                <div style={{ borderBottom: '2px solid var(--border-card)', paddingBottom: '12px', marginBottom: '24px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: 'var(--text-title)' }}>
                     {group.category}
                   </h3>
-                  <span className="text-xs text-slate-500">
-                    {group.desc}
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald-main)' }}>
+                    {group.items.length} Lembaga
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {group.units.map((unit) => (
-                    <div
-                      key={unit.id}
-                      className="card-alhakim flex flex-col justify-between space-y-3"
-                    >
-                      <div className="space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center">
-                          <School className="w-4 h-4" />
+                <div className="grid-3-col">
+                  {group.items.map((unit) => (
+                    <div key={unit.id} className="unit-card">
+                      <div>
+                        <div className="unit-head">
+                          <div className="unit-icon-box">
+                            <School size={22} />
+                          </div>
+                          <span className="tag-badge-green" style={{ textTransform: 'uppercase' }}>
+                            {unit.code}
+                          </span>
                         </div>
-                        <h4 className="text-sm font-black text-slate-900 leading-snug">
+
+                        <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '14px', marginBottom: '8px', lineHeight: 1.35 }}>
                           {unit.name}
                         </h4>
-                        <p className="text-xs text-slate-500 flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                          <span>{unit.location}</span>
+
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
+                          {unit.desc}
                         </p>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          <MapPin size={14} color="var(--emerald-main)" />
+                          <span>{unit.address}</span>
+                        </div>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-100">
-                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50/80 px-2 py-1 rounded border border-emerald-200/60 block truncate">
-                          Fokus: {unit.focus}
+                      <div style={{ borderTop: '1px solid var(--border-card)', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-light)' }}>
+                          {unit.studentCount ? `${unit.studentCount} Santri/Siswa` : 'Unit Operasional'}
                         </span>
+                        {unit.website && (
+                          <a
+                            href={unit.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', fontWeight: 700, color: 'var(--emerald-main)' }}
+                          >
+                            <span>Info Unit</span>
+                            <ExternalLink size={12} />
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -115,6 +135,6 @@ export default function UnitsPage() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

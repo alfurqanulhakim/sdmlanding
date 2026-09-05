@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ExternalLink, Menu, X } from 'lucide-react';
+import { Search, ExternalLink } from 'lucide-react';
 
 export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,50 +15,48 @@ export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
   const navItems = [
     { id: 'home', label: 'Beranda' },
     { id: 'tentang', label: 'Tentang Kami' },
-    { id: 'unit', label: 'Unit' },
+    { id: 'unit', label: 'Unit Lembaga' },
     { id: 'kenapa-kami', label: 'Kenapa Kami' },
-    { id: 'karier', label: 'Karier' },
+    { id: 'karier', label: 'Lowongan' },
     { id: 'our-team', label: 'Our Team' },
   ];
 
   return (
-    <header className={`top-navbar-container ${isScrolled ? 'top-navbar-scrolled' : ''}`}>
-      {/* Brand Logo & Name */}
+    <header className={`site-navbar ${isScrolled ? 'scrolled' : ''}`}>
+      {/* Brand Logo & Title */}
       <button
         type="button"
         onClick={() => onNavigate('home')}
-        className="brand-wrapper text-left bg-transparent border-none cursor-pointer"
+        className="nav-brand-btn"
         id="brand-logo-btn"
       >
-        <div className="brand-logos">
+        <div className="nav-brand-logos">
           <img
             src="/logo-yayasan.png"
             alt="Logo Yayasan Dar el-Iman"
-            className="h-7 sm:h-8 w-auto object-contain"
+            style={{ height: '32px', width: 'auto', objectFit: 'contain' }}
           />
-          <div className="h-4 w-px bg-slate-300" />
+          <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }} />
           <img
             src="/logo-sdm.png"
             alt="Logo SDM Dar el-Iman"
-            className="h-6 sm:h-7 w-auto object-contain"
+            style={{ height: '28px', width: 'auto', objectFit: 'contain' }}
           />
         </div>
-        <div className="hidden sm:block leading-tight">
-          <div className="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5">
+        <div className="nav-brand-text">
+          <div className="nav-brand-title">
             <span>ZAITUNU</span>
-            <span className="text-[10px] font-bold bg-[#f1d493] text-[#063b2d] px-1.5 py-0.2 rounded">
-              SDM
-            </span>
+            <span className="nav-brand-badge">SDM</span>
           </div>
-          <p className="text-[11px] text-emerald-200/80 font-medium">
+          <p className="nav-brand-sub">
             Yayasan Dar el-Iman Padang
           </p>
         </div>
       </button>
 
-      {/* Floating Pill Nav Bar (alhakimmembantu.asia style) */}
-      <div className="nav-center-wrapper">
-        <nav className="floating-nav-pills" aria-label="Navigasi Utama">
+      {/* Floating Pill Nav Bar */}
+      <div className="nav-pill-wrapper">
+        <nav className="nav-pill-box" aria-label="Navigasi Utama">
           {navItems.map((item) => {
             const isActive = activeRoute === item.id;
             return (
@@ -66,26 +64,24 @@ export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
                 key={item.id}
                 type="button"
                 onClick={() => onNavigate(item.id)}
-                className={isActive ? 'active' : ''}
+                className={`nav-pill-item ${isActive ? 'active' : ''}`}
               >
                 {item.label}
               </button>
             );
           })}
-          <a href="#kontak" className="hidden md:inline-flex">
-            Kontak
-          </a>
         </nav>
       </div>
 
-      {/* Action CTA Buttons */}
-      <div className="hidden lg:flex items-center gap-3">
+      {/* Action Buttons (Right) */}
+      <div className="nav-actions">
         <button
           type="button"
           onClick={onOpenStatusModal}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-white hover:text-[#f1d493] hover:bg-white/10 transition-colors"
+          className="btn-nav-status"
+          id="btn-nav-track-status"
         >
-          <Search className="w-3.5 h-3.5" />
+          <Search size={14} />
           <span>Cek Status</span>
         </button>
 
@@ -93,11 +89,11 @@ export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
           href="https://simak.sdmdareliman.web.id"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-simak-pill"
+          className="btn-nav-simak"
           title="Login Portal SIMAK Internal Pegawai (Buka Tab Baru)"
         >
           <span>Portal SIMAK</span>
-          <ExternalLink className="w-3.5 h-3.5" />
+          <ExternalLink size={14} />
         </a>
       </div>
     </header>

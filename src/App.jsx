@@ -79,7 +79,7 @@ export default function App() {
       </main>
 
       {/* Global Footer */}
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
 
       {/* Application Form Modal (Multi-step) */}
       {selectedVacancy && (

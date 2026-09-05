@@ -6,143 +6,142 @@ import {
   Globe,
   ExternalLink,
   Sparkles,
-  Heart,
 } from 'lucide-react';
 import { TEAM_SDM_DATA } from '../data/mockData';
 
-export default function Footer() {
+export default function Footer({ onNavigate }) {
   const currentYear = new Date().getFullYear();
 
+  const handleNav = (route) => (e) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(route);
+    } else {
+      window.location.hash = `#/${route === 'home' ? '' : route}`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <footer id="kontak" className="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12">
-      <div className="container-custom space-y-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+    <footer id="kontak" className="site-footer">
+      <div className="site-container">
+        <div className="footer-grid">
           {/* Brand Info */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-white p-1.5 rounded-xl">
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#ffffff', padding: '6px 10px', borderRadius: '12px' }}>
                 <img
                   src="/logo-yayasan.png"
                   alt="Logo Yayasan Dar el-Iman"
-                  className="h-8 w-auto object-contain"
+                  style={{ height: '32px', width: 'auto', objectFit: 'contain' }}
                 />
-                <div className="h-5 w-px bg-slate-200" />
+                <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }} />
                 <img
                   src="/logo-sdm.png"
                   alt="Logo SDM Dar el-Iman"
-                  className="h-7 w-auto object-contain"
+                  style={{ height: '28px', width: 'auto', objectFit: 'contain' }}
                 />
               </div>
               <div>
-                <div className="font-extrabold text-white text-base leading-tight">
-                  ZAITUNU • SDM
+                <div style={{ fontWeight: 900, color: '#ffffff', fontSize: '1rem', lineHeight: 1.2 }}>
+                  ZAITUNU &bull; SDM
                 </div>
-                <div className="text-[11px] text-slate-400">
+                <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
                   Yayasan Dar el-Iman Padang
                 </div>
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Pusat pengelolaan talenta, budaya organisasi PINTAR, dan rekrutmen asatidzah di bawah naungan Yayasan Dar el-Iman Padang, Sumatera Barat.
+            <p style={{ fontSize: '0.84rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: '360px', marginBottom: '20px' }}>
+              Pusat pengelolaan talenta, pembinaan budaya PINTAR, dan rekrutmen asatidzah di bawah naungan Yayasan Dar el-Iman Padang, Sumatera Barat.
             </p>
 
-            <div className="pt-2 flex items-center gap-3">
-              <a
-                href="https://simak.sdmdareliman.web.id"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-simak-external text-xs py-2 px-3.5"
-              >
-                <span>Login Portal SIMAK Pegawai</span>
-                <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
-              </a>
-            </div>
+            <a
+              href="https://simak.sdmdareliman.web.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-nav-simak"
+              style={{ display: 'inline-flex', padding: '8px 18px', fontSize: '0.78rem' }}
+            >
+              <span>Login Portal SIMAK Pegawai</span>
+              <ExternalLink size={13} />
+            </a>
           </div>
 
-          {/* Kontak & Sekretariat */}
-          <div className="lg:col-span-5 space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-white">
-              Sekretariat Pusat & Helpdesk SDM
+          {/* Sekretariat & Kontak */}
+          <div style={{ gridColumn: 'span 2' }}>
+            <h4 className="footer-col-title">
+              Sekretariat & Helpdesk Rekrutmen
             </h4>
 
-            <ul className="space-y-2.5 text-xs text-slate-300">
-              <li className="flex items-start gap-2.5 leading-relaxed">
-                <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>
-                  {TEAM_SDM_DATA.helpdesk.location}
-                </span>
+            <ul className="footer-links-list">
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', lineHeight: 1.6 }}>
+                <MapPin size={16} color="var(--emerald-light)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                <span>{TEAM_SDM_DATA.contacts.address}</span>
               </li>
 
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
+              <li style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Phone size={16} color="var(--emerald-light)" style={{ flexShrink: 0 }} />
                 <a
-                  href={`https://wa.me/${TEAM_SDM_DATA.helpdesk.whatsapp.replace(/[^0-9]/g, '')}`}
+                  href={`https://wa.me/${TEAM_SDM_DATA.contacts.waRaw}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors"
+                  className="footer-link-item"
                 >
-                  WhatsApp Recruitment: {TEAM_SDM_DATA.helpdesk.whatsapp}
+                  WhatsApp: {TEAM_SDM_DATA.contacts.whatsapp} ({TEAM_SDM_DATA.contacts.workHours})
                 </a>
               </li>
 
-              <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <a
-                  href={`mailto:${TEAM_SDM_DATA.helpdesk.email}`}
-                  className="hover:text-emerald-300 transition-colors"
-                >
-                  {TEAM_SDM_DATA.helpdesk.email}
+              <li style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Mail size={16} color="var(--emerald-light)" style={{ flexShrink: 0 }} />
+                <a href={`mailto:${TEAM_SDM_DATA.contacts.email}`} className="footer-link-item">
+                  {TEAM_SDM_DATA.contacts.email}
                 </a>
               </li>
 
-              <li className="flex items-center gap-2.5">
-                <Globe className="w-4 h-4 text-emerald-400 shrink-0" />
-                <a
-                  href="https://dareliman.or.id"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors"
-                >
+              <li style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Globe size={16} color="var(--emerald-light)" style={{ flexShrink: 0 }} />
+                <a href="https://dareliman.or.id" target="_blank" rel="noopener noreferrer" className="footer-link-item">
                   www.dareliman.or.id
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-white">
-              Navigasi Cepat
+          {/* Navigasi Cepat */}
+          <div>
+            <h4 className="footer-col-title">
+              Navigasi Halaman
             </h4>
-            <ul className="space-y-2 text-xs">
+
+            <ul className="footer-links-list">
               <li>
-                <a href="#beranda" className="hover:text-emerald-400 transition-colors">
+                <a href="#/" onClick={handleNav('home')} className="footer-link-item">
                   Beranda
                 </a>
               </li>
               <li>
-                <a href="#tentang-kami" className="hover:text-emerald-400 transition-colors">
-                  Tentang Zaitunu
+                <a href="#/tentang" onClick={handleNav('tentang')} className="footer-link-item">
+                  Tentang Zaitunu & PINTAR
                 </a>
               </li>
               <li>
-                <a href="#pintar" className="hover:text-emerald-400 transition-colors">
-                  Core Values PINTAR
+                <a href="#/unit" onClick={handleNav('unit')} className="footer-link-item">
+                  Unit Pendidikan & Lembaga
                 </a>
               </li>
               <li>
-                <a href="#unit" className="hover:text-emerald-400 transition-colors">
-                  Unit Lembaga & Sekolah
+                <a href="#/kenapa-kami" onClick={handleNav('kenapa-kami')} className="footer-link-item">
+                  Kesejahteraan (Kenapa Kami)
                 </a>
               </li>
               <li>
-                <a href="#karier" className="hover:text-emerald-400 transition-colors">
+                <a href="#/karier" onClick={handleNav('karier')} className="footer-link-item">
                   Pusat Lowongan Karier
                 </a>
               </li>
               <li>
-                <a href="#our-team" className="hover:text-emerald-400 transition-colors">
+                <a href="#/our-team" onClick={handleNav('our-team')} className="footer-link-item">
                   Our Team & Layanan SDM
                 </a>
               </li>
@@ -151,14 +150,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom Legal Copyright */}
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="footer-bottom-bar">
           <p>
             &copy; {currentYear} Yayasan Dar el-Iman Padang. All Rights Reserved.
           </p>
-          <p className="flex items-center gap-1 text-[11px]">
-            <span>Ekosistem SDM Digital</span>
-            <span className="text-emerald-500 font-bold">ZAITUNU</span>
-            <span>&bull; Terhubung ke SIMAK</span>
+          <p style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span>Portal SDM Digital</span>
+            <strong style={{ color: 'var(--gold-light)' }}>ZAITUNU</strong>
+            <span>&bull; Terintegrasi ke SIMAK</span>
           </p>
         </div>
       </div>

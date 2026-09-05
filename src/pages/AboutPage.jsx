@@ -12,8 +12,8 @@ import {
   ShieldCheck,
   Smile,
   CheckCircle2,
-  FileText,
   BookmarkCheck,
+  FileText,
 } from 'lucide-react';
 import { ZAITUNU_METAPHOR, PINTAR_VALUES } from '../data/mockData';
 
@@ -44,59 +44,83 @@ export default function AboutPage() {
   ];
 
   return (
-    <div>
+    <main>
       {/* 1. HERO BANNER */}
-      <section className="hero-page-banner">
-        <div className="container-custom relative z-10 max-w-4xl space-y-6">
-          <div className="eyebrow-accent">
-            <span>TENTANG KAMI &bull; FILOSOFI ZAITUNU</span>
+      <section className="hero-section-box">
+        <div className="site-container">
+          <div style={{ maxWidth: '780px' }}>
+            <div className="hero-eyebrow">
+              TENTANG KAMI &bull; FILOSOFI ZAITUNU
+            </div>
+
+            <h1 className="hero-title">
+              Berakar pada Nilai, Bertumbuh dalam Kompetensi, <br />
+              <span className="hero-title-highlight">Berbuah dalam Pengabdian.</span>
+            </h1>
+
+            <p className="hero-desc">
+              Mengenal ekosistem talenta SDM Yayasan Dar el-Iman yang terinspirasi dari pohon zaitun yang diberkahi, serta nilai-nilai luhur PINTAR yang menjadi kompas moral setiap insan pendidik.
+            </p>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Berakar pada Nilai, Bertumbuh dalam Kompetensi, <br />
-            <span className="text-[#f1d493]">Berbuah dalam Pengabdian.</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed font-normal max-w-2xl">
-            Mengenal ekosistem talenta SDM Yayasan Dar el-Iman yang terinspirasi dari pohon zaitun yang diberkahi, serta nilai-nilai luhur PINTAR yang menjadi kompas moral setiap insan pendidik.
-          </p>
         </div>
       </section>
 
       {/* 2. LANDASAN STRATEGIS: VISI & MISI RESMI */}
-      <section className="page-section bg-white border-b border-slate-200/80">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <section className="content-section white-bg">
+        <div className="site-container">
+          <div className="grid-overview">
             {/* Visi Box */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-                <BookmarkCheck className="w-4 h-4 text-emerald-700" />
+            <div>
+              <div className="section-tagline">
+                <BookmarkCheck size={14} />
                 <span>Visi Yayasan Dar el-Iman</span>
               </div>
-              <blockquote className="text-lg sm:text-xl font-bold text-slate-900 leading-snug italic border-l-4 border-[#f59e0b] pl-4 py-1">
-                "{visi}"
-              </blockquote>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Menjadi rujukan lembaga pendidikan dan dakwah bermanhaj Ahlussunnah wal Jama'ah di Ranah Minang yang menebar manfaat bagi umat di seluruh pelosok negeri.
-              </p>
+              <div className="quote-editorial-card">
+                <blockquote style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-title)', lineHeight: 1.5, marginBottom: '16px', fontStyle: 'italic' }}>
+                  "{visi}"
+                </blockquote>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
+                  Menjadi rujukan lembaga pendidikan dan dakwah bermanhaj Ahlussunnah wal Jama'ah di Ranah Minang yang menebar manfaat bagi umat di seluruh pelosok negeri.
+                </p>
+              </div>
             </div>
 
-            {/* Misi Box */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="text-xs font-bold text-amber-700 tracking-widest uppercase flex items-center gap-2">
-                <FileText className="w-4 h-4 text-amber-600" />
+            {/* Misi List */}
+            <div>
+              <div className="section-tagline" style={{ color: 'var(--gold-deep)' }}>
+                <FileText size={14} />
                 <span>5 Misi Strategis Yayasan</span>
               </div>
-              <div className="space-y-3">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {misi.map((m, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-3.5"
+                    style={{
+                      background: 'var(--bg-page)',
+                      border: '1px solid var(--border-card)',
+                      borderRadius: '16px',
+                      padding: '16px 20px',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '14px',
+                    }}
                   >
-                    <div className="w-6 h-6 rounded-full bg-emerald-800 text-white flex items-center justify-center shrink-0 text-xs font-extrabold mt-0.5">
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: 'var(--emerald-main)',
+                      color: '#ffffff',
+                      display: 'grid',
+                      placeItems: 'center',
+                      fontSize: '0.75rem',
+                      fontWeight: 900,
+                      flexShrink: 0,
+                      marginTop: '2px',
+                    }}>
                       {idx + 1}
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                    <p style={{ fontSize: '0.88rem', color: 'var(--text-body)', lineHeight: 1.6, fontWeight: 500 }}>
                       {m}
                     </p>
                   </div>
@@ -107,121 +131,111 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 3. METAFORA POHON ZAITUN (6 BAGIAN) */}
-      <section className="page-section-alt border-b border-slate-200/80">
-        <div className="container-custom space-y-12">
-          <div className="max-w-3xl space-y-3">
-            <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Arsitektur Ekosistem Zaitunu</span>
+      {/* 3. METAFORA POHON ZAITUN (6 PILAR ORGANISASI) */}
+      <section className="content-section alt-bg">
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <Sparkles size={14} />
+              <span>Filosofi Induk Organisasi</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900">
-              Bagaimana Pohon Zaitunu Bertumbuh
+            <h2 className="section-title">
+              6 Bagian Anatomi Pohon Zaitun
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Zaitunu menggambarkan perjalanan setiap insan Dar el-Iman. Tidak ada buah yang lebat tanpa akar yang kuat, dan tidak ada dedaunan yang rimbun tanpa batang yang kokoh menopang.
+            <p className="section-subtitle">
+              Setiap bagian pohon merepresentasikan pilar tata kelola SDM Yayasan Dar el-Iman yang kokoh dan berkelanjutan.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ZAITUNU_METAPHOR.pillars.map((item, idx) => {
-              const IconComp = iconMap[item.icon] || Leaf;
+          <div className="grid-3-col">
+            {ZAITUNU_METAPHOR.parts.map((part, idx) => {
+              const IconComp = iconMap[part.icon] || Sparkles;
               return (
-                <div key={item.id} className="card-alhakim space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-extrabold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200 uppercase">
-                      {item.part}
-                    </span>
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 text-emerald-800 flex items-center justify-center border border-slate-200">
-                      <IconComp className="w-5 h-5" />
-                    </div>
-                  </div>
-
+                <div key={idx} className="card-numbered">
                   <div>
-                    <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wide">
-                      {item.symbol}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                      <div className="number-badge-box">
+                        0{idx + 1}
+                      </div>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--emerald-soft)', color: 'var(--emerald-main)', display: 'grid', placeItems: 'center' }}>
+                        <IconComp size={20} />
+                      </div>
+                    </div>
+
+                    <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--emerald-main)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '4px' }}>
+                      {part.part}
                     </span>
-                    <h3 className="text-lg font-black text-slate-900 mt-0.5">
-                      {item.title}
+
+                    <h3 className="card-title" style={{ marginBottom: '8px' }}>
+                      {part.meaning}
                     </h3>
-                  </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. CORE VALUES PINTAR (NILAI YANG MENJADI AKAR) */}
-      <section className="page-section bg-white">
-        <div className="container-custom space-y-12">
-          <div className="max-w-3xl space-y-3">
-            <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-              <Anchor className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Nilai Budaya Kerja Yayasan</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900">
-              6 Pilar Budaya Organisasi "PINTAR"
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Enam standar baku akhlak dan perilaku kerja yang menjadi rujukan dalam pembinaan serta evaluasi kinerja (KPI) asatidzah dan pegawai.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PINTAR_VALUES.map((val) => {
-              const IconComp = iconMap[val.icon] || Sparkles;
-              return (
-                <div
-                  key={val.id}
-                  className="card-alhakim flex flex-col justify-between space-y-5"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-900 text-[#f1d493] flex items-center justify-center font-black text-2xl shadow-xs">
-                          {val.letter}
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-black text-slate-900 leading-tight">
-                            {val.title}
-                          </h3>
-                          <div className="text-[11px] font-bold text-emerald-700">
-                            {val.subtitle}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 flex items-center justify-center border border-slate-200">
-                        <IconComp className="w-5 h-5 text-emerald-700" />
-                      </div>
-                    </div>
-
-                    <div className="text-xs font-semibold text-slate-800 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                      "{val.summary}"
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {val.desc}
+                    <p className="card-desc">
+                      {part.action}
                     </p>
                   </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-                  <div className="pt-3 border-t border-slate-100 space-y-2">
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Indikator Perilaku:
+      {/* 4. 6 BUDAYA ORGANISASI PINTAR */}
+      <section className="content-section white-bg">
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <CheckCircle2 size={14} />
+              <span>Core Values SDM</span>
+            </div>
+            <h2 className="section-title">
+              Budaya Organisasi PINTAR
+            </h2>
+            <p className="section-subtitle">
+              Enam nilai utama yang memandu perilaku harian, komunikasi antar unit, serta standar pengabdian seluruh asatidzah dan staf.
+            </p>
+          </div>
+
+          <div className="grid-3-col">
+            {PINTAR_VALUES.map((val, idx) => {
+              const IconComp = iconMap[val.icon] || Sparkles;
+              return (
+                <div key={val.code} className="card-numbered">
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                      <div style={{
+                        fontSize: '1.4rem',
+                        fontWeight: 900,
+                        color: 'var(--emerald-main)',
+                        background: 'var(--emerald-soft)',
+                        padding: '6px 14px',
+                        borderRadius: '12px',
+                        border: '1px solid var(--emerald-border)',
+                      }}>
+                        {val.letter}
+                      </div>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--bg-alt)', color: 'var(--text-body)', display: 'grid', placeItems: 'center' }}>
+                        <IconComp size={20} />
+                      </div>
                     </div>
-                    <ul className="space-y-1.5">
-                      {val.indicators.map((ind, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{ind}</span>
-                        </li>
-                      ))}
-                    </ul>
+
+                    <h3 className="card-title">
+                      {val.name}
+                    </h3>
+
+                    <p className="card-desc" style={{ marginBottom: '16px' }}>
+                      {val.desc}
+                    </p>
+
+                    <div style={{ borderTop: '1px solid var(--border-card)', paddingTop: '14px' }}>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--emerald-main)', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        Indikator Utama:
+                      </span>
+                      <p style={{ fontSize: '0.82rem', color: 'var(--text-body)', fontWeight: 600 }}>
+                        {val.indicator}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -229,6 +243,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

@@ -8,6 +8,7 @@ import {
   Laptop,
   CheckCircle2,
   Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { BENEFITS_DATA } from '../data/mockData';
 
@@ -22,68 +23,65 @@ const iconMap = {
 
 export default function WhyUsPage({ onNavigate }) {
   return (
-    <div>
+    <main>
       {/* 1. HERO BANNER */}
-      <section className="hero-page-banner">
-        <div className="container-custom relative z-10 max-w-4xl space-y-6">
-          <div className="eyebrow-accent">
-            <span>KESEJAHTERAAN & KULTUR KERJA &bull; DAUN-DAUN ZAITUNU</span>
+      <section className="hero-section-box">
+        <div className="site-container">
+          <div style={{ maxWidth: '780px' }}>
+            <div className="hero-eyebrow">
+              KESEJAHTERAAN & KULTUR KERJA &bull; DAUN-DAUN ZAITUNU
+            </div>
+
+            <h1 className="hero-title">
+              Mengapa Bertumbuh Bersama <br />
+              <span className="hero-title-highlight">Yayasan Dar el-Iman?</span>
+            </h1>
+
+            <p className="hero-desc">
+              Kami meyakini bahwa pendidik dan tenaga kependidikan yang tenang, terlindungi, dan terfasilitasi dengan baik akan melahirkan proses belajar mengajar yang menginspirasi generasi umat.
+            </p>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Mengapa Bertumbuh Bersama <br />
-            <span className="text-[#f1d493]">Yayasan Dar el-Iman?</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed font-normal max-w-2xl">
-            Kami meyakini bahwa pendidik dan tenaga kependidikan yang tenang, terlindungi, dan terfasilitasi dengan baik akan melahirkan proses belajar mengajar yang menginspirasi generasi umat.
-          </p>
         </div>
       </section>
 
       {/* 2. 6 PILARS OF BENEFITS */}
-      <section className="page-section bg-white border-b border-slate-200/80">
-        <div className="container-custom space-y-12">
-          <div className="max-w-3xl space-y-3">
-            <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+      <section className="content-section white-bg">
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <Sparkles size={14} />
               <span>Komitmen Resmi SDM Yayasan</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900">
+            <h2 className="section-title">
               6 Pilar Keberkahan & Kesejahteraan
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Prinsip keadilan, transparansi, dan pemenuhan hak pegawai sesuai regulasi dan tuntunan syariat Islam.
+            <p className="section-subtitle">
+              Prinsip keadilan, transparansi, dan pemenuhan hak pegawai sesuai regulasi ketenagakerjaan dan tuntunan syariat Islam.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid-3-col">
             {BENEFITS_DATA.map((item, idx) => {
               const IconComp = iconMap[item.icon] || Award;
               const num = String(idx + 1).padStart(2, '0');
 
               return (
-                <div key={item.id} className="card-alhakim flex flex-col justify-between space-y-5">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="number-badge">{num}</div>
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center">
-                        <IconComp className="w-5 h-5" />
+                <div key={item.id} className="card-numbered">
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                      <div className="number-badge-box">{num}</div>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--emerald-soft)', color: 'var(--emerald-main)', display: 'grid', placeItems: 'center' }}>
+                        <IconComp size={22} />
                       </div>
                     </div>
 
-                    <h3 className="text-lg font-black text-slate-900 leading-snug">
+                    <h3 className="card-title">
                       {item.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <p className="card-desc">
                       {item.desc}
                     </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-800">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Terstandar dalam Kebijakan SDM</span>
                   </div>
                 </div>
               );
@@ -92,43 +90,32 @@ export default function WhyUsPage({ onNavigate }) {
         </div>
       </section>
 
-      {/* 3. SIMAK INTEGRATION SPOTLIGHT */}
-      <section className="page-section-alt">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto rounded-3xl p-8 sm:p-10 bg-white border border-slate-200/90 shadow-sm space-y-6">
-            <div className="space-y-3">
-              <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                Ekosistem Digital SIMAK
-              </span>
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
-                Kemudahan Administrasi Kepegawaian dalam Satu Sentuhan
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Seluruh pegawai Yayasan Dar el-Iman terhubung ke sistem <strong>SIMAK Pintar</strong>. Presensi berbasis radius GPS sekolah, perizinan cuti online, monitoring slip remunerasi, hingga laporan ketercapaian KPI dapat diakses secara transparan langsung dari ponsel pintar asatidzah.
-              </p>
+      {/* 3. CTA: JOIN THE ECOSYSTEM */}
+      <section style={{ background: 'var(--navy-dark)', color: '#ffffff', padding: '80px 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="site-container" style={{ textAlign: 'center' }}>
+          <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+            <div className="section-tagline" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>
+              <Sparkles size={14} />
+              <span>Jalur Pengabdian Mulia</span>
             </div>
-
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => onNavigate('karier')}
-                className="btn-simak-pill text-xs px-5 py-2.5"
-              >
-                <span>Lihat Formasi Lowongan</span>
-              </button>
-
-              <a
-                href="https://simak.sdmdareliman.web.id"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-full border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
-              >
-                <span>Buka Portal Internal SIMAK ↗</span>
-              </a>
-            </div>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 800, marginBottom: '16px', lineHeight: 1.25 }}>
+              Siap Bertumbuh Bersama Kami?
+            </h2>
+            <p style={{ color: '#cde4de', fontSize: '0.98rem', marginBottom: '32px', lineHeight: 1.65 }}>
+              Daftarkan diri Anda pada formasi lowongan aktif dan mulailah perjalanan pengabdian dakwah pendidikan bersama Yayasan Dar el-Iman.
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigate('karier')}
+              className="btn-hero-primary"
+              style={{ padding: '14px 32px' }}
+            >
+              <span>Lihat Formasi Karier Aktif</span>
+              <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

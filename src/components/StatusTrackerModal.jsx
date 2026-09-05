@@ -45,70 +45,72 @@ export default function StatusTrackerModal({ onClose }) {
       const data = await recruitmentService.trackStatus(identifier);
       setResult(data);
     } catch (err) {
-      setError('Data lamaran tidak ditemukan. Pastikan data yang Anda masukkan sesuai.');
+      setError('Data lamaran tidak ditemukan. Pastikan nomor/kode registrasi yang Anda masukkan sesuai.');
     } finally {
       setSearching(false);
     }
   };
 
   return (
-    <div className="modal-backdrop animate-fade-in" role="dialog" aria-modal="true">
-      <div className="modal-content-box p-6 sm:p-8">
+    <div className="modal-backdrop-overlay" role="dialog" aria-modal="true">
+      <div className="modal-dialog-card">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div className="space-y-0.5">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
+        <div className="modal-head-row">
+          <div>
+            <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--emerald-main)', background: 'var(--emerald-soft)', padding: '3px 10px', borderRadius: '6px', display: 'inline-block', marginBottom: '6px' }}>
               Layanan Mandiri Pelamar
             </span>
-            <h3 className="text-lg font-black text-slate-900">
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-title)' }}>
               Pelacak Status Seleksi Rekrutmen
             </h3>
-            <p className="text-xs text-slate-500 font-medium">
-              Pantau perkembangan tahapan seleksi secara transparan
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              Pantau perkembangan tahapan seleksi Anda secara mandiri dan transparan
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="btn-close-modal"
             aria-label="Tutup pelacak status"
           >
-            <X className="w-5 h-5" />
+            <X size={20} />
           </button>
         </div>
 
         {/* Search Input Box */}
-        <form onSubmit={handleSearch} className="pt-5 space-y-3">
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-700">
+        <form onSubmit={handleSearch} style={{ marginTop: '16px' }}>
+          <div className="form-field-group">
+            <label className="form-field-label">
               Kode Registrasi / No. WhatsApp / NIK
             </label>
-            <div className="flex gap-2">
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
                 type="text"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="Contoh: REG-2026-781923 atau 081234567890"
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:border-emerald-600 focus:outline-hidden"
+                className="form-field-input"
+                style={{ flex: 1 }}
               />
               <button
                 type="submit"
                 disabled={searching}
-                className="btn-zaitunu-primary text-xs py-2 px-5 shrink-0"
+                className="btn-hero-primary"
+                style={{ padding: '12px 22px', fontSize: '0.85rem', flexShrink: 0 }}
               >
-                <Search className="w-4 h-4" />
+                <Search size={15} />
                 <span>{searching ? 'Mencari...' : 'Lacak'}</span>
               </button>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Demi privasi, kami hanya menampilkan inisial dan tidak menampilkan data sensitif pelamar.
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '6px' }}>
+              Demi privasi, kami hanya menampilkan inisial dan tidak mempublikasikan data sensitif.
             </p>
           </div>
 
           {error && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div style={{ padding: '12px 16px', borderRadius: '12px', background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
+              <AlertCircle size={16} style={{ flexShrink: 0 }} />
               <span>{error}</span>
             </div>
           )}
@@ -116,89 +118,101 @@ export default function StatusTrackerModal({ onClose }) {
 
         {/* Tracking Result View */}
         {result && (
-          <div className="mt-6 pt-5 border-t border-slate-100 space-y-6 animate-fade-in">
+          <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '1px solid var(--border-card)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Applicant Summary Card */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-emerald-800 font-mono">
+            <div style={{ background: 'var(--bg-page)', border: '1px solid var(--border-card)', borderRadius: '16px', padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 900, color: 'var(--emerald-main)', fontFamily: 'monospace' }}>
                   {result.registrationCode}
                 </span>
-                <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', background: '#ffffff', padding: '2px 8px', borderRadius: '6px', border: '1px solid var(--border-card)' }}>
                   Update: {result.updatedAt}
                 </span>
               </div>
 
               <div>
-                <h4 className="text-sm font-black text-slate-900">
+                <h4 style={{ fontSize: '1.05rem', fontWeight: 900, color: 'var(--text-title)' }}>
                   {result.applicantName}
                 </h4>
-                <p className="text-xs text-slate-600 font-medium">
-                  {result.positionApplied} • {result.unitApplied}
+                <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
+                  {result.positionApplied} &bull; {result.unitApplied}
                 </p>
               </div>
 
-              <div className="text-xs font-semibold text-emerald-900 bg-emerald-100/60 p-2.5 rounded-xl border border-emerald-200/60">
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy-dark)', background: 'var(--emerald-soft)', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--emerald-border)' }}>
                 Status Terkini: {result.statusText}
               </div>
 
               {result.notes && (
-                <p className="text-[11px] text-slate-500 italic pt-1">
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                   Catatan Panitia: "{result.notes}"
                 </p>
               )}
             </div>
 
             {/* Visual Growth Pipeline Stepper */}
-            <div className="space-y-3">
-              <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                Alur Tahapan Pertumbuhan Seleksi:
+            <div>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-title)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '12px' }}>
+                Alur Tahapan Seleksi Masuk:
               </span>
 
-              <div className="space-y-2.5">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {RECRUITMENT_STAGES.map((stage, idx) => {
                   const isPast = idx < result.currentStageIndex;
                   const isCurrent = idx === result.currentStageIndex;
-                  const isFuture = idx > result.currentStageIndex;
 
                   return (
                     <div
                       key={stage.id}
-                      className={`p-3 rounded-xl border flex items-center justify-between text-xs transition-colors ${
-                        isCurrent
-                          ? 'bg-emerald-50 border-emerald-300 font-bold text-emerald-950'
-                          : isPast
-                          ? 'bg-slate-50/60 border-slate-200 text-slate-500'
-                          : 'bg-white border-slate-100 text-slate-400'
-                      }`}
+                      style={{
+                        padding: '12px 16px',
+                        borderRadius: '12px',
+                        border: '1px solid',
+                        borderColor: isCurrent ? 'var(--emerald-main)' : isPast ? 'var(--emerald-border)' : 'var(--border-card)',
+                        background: isCurrent ? 'var(--emerald-soft)' : isPast ? '#ffffff' : 'var(--bg-page)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                      }}
                     >
-                      <div className="flex items-center gap-3">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div
-                          className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 ${
-                            isPast
-                              ? 'bg-emerald-600 text-white'
-                              : isCurrent
-                              ? 'bg-emerald-800 text-white'
-                              : 'bg-slate-200 text-slate-500'
-                          }`}
+                          style={{
+                            width: '26px',
+                            height: '26px',
+                            borderRadius: '50%',
+                            display: 'grid',
+                            placeItems: 'center',
+                            fontSize: '0.75rem',
+                            fontWeight: 900,
+                            flexShrink: 0,
+                            background: isPast || isCurrent ? 'var(--emerald-main)' : '#cbd5e1',
+                            color: '#ffffff',
+                          }}
                         >
-                          {isPast ? <CheckCircle2 className="w-3.5 h-3.5" /> : stage.step}
+                          {isPast ? <CheckCircle2 size={15} /> : stage.step}
                         </div>
                         <div>
-                          <div className="leading-tight">{stage.title}</div>
-                          <div className="text-[10px] font-normal text-slate-500">
+                          <div style={{ fontSize: '0.84rem', fontWeight: isCurrent ? 800 : 600, color: isCurrent ? 'var(--navy-dark)' : 'var(--text-body)' }}>
+                            {stage.title}
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--text-light)' }}>
                             {stage.desc}
                           </div>
                         </div>
                       </div>
 
                       <span
-                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded ${
-                          isPast
-                            ? 'text-emerald-700 bg-emerald-100'
-                            : isCurrent
-                            ? 'text-amber-800 bg-amber-100'
-                            : 'text-slate-400 bg-slate-100'
-                        }`}
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: 800,
+                          padding: '3px 8px',
+                          borderRadius: '6px',
+                          background: isPast ? 'var(--emerald-soft)' : isCurrent ? 'var(--gold-soft)' : '#f1f5f9',
+                          color: isPast ? 'var(--emerald-main)' : isCurrent ? 'var(--gold-deep)' : 'var(--text-light)',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {isPast ? 'Selesai' : isCurrent ? 'Tahap Aktif' : 'Menunggu'}
                       </span>

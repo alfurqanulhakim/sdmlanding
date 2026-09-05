@@ -9,6 +9,8 @@ import {
   ArrowRight,
   Sparkles,
   CheckCircle2,
+  Building2,
+  AlertCircle,
 } from 'lucide-react';
 import { recruitmentService } from '../services/api';
 import { RECRUITMENT_STAGES } from '../data/mockData';
@@ -36,6 +38,12 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
     { id: 'Tenaga Kependidikan', label: 'Tenaga Kependidikan / Staf' },
   ];
 
+  const genderOptions = [
+    { id: 'all', label: 'Semua Gender' },
+    { id: 'Ikhwan', label: 'Ikhwan' },
+    { id: 'Akhawat', label: 'Akhawat' },
+  ];
+
   const filtered = vacancies.filter((v) => {
     const matchSearch =
       v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,94 +59,110 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
   });
 
   return (
-    <div>
+    <main>
       {/* 1. HERO BANNER */}
-      <section className="hero-page-banner">
-        <div className="container-custom relative z-10 max-w-4xl space-y-6">
-          <div className="eyebrow-accent">
-            <span>PUSAT KARIER & REKRUTMEN &bull; BIBIT-BIBIT ZAITUNU</span>
-          </div>
+      <section className="hero-section-box">
+        <div className="site-container">
+          <div style={{ maxWidth: '780px' }}>
+            <div className="hero-eyebrow">
+              PUSAT KARIER & REKRUTMEN &bull; BIBIT-BIBIT ZAITUNU
+            </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Temukan Kesempatan Pengabdian <br />
-            <span className="text-[#f1d493]">Terbaik Anda.</span>
-          </h1>
+            <h1 className="hero-title">
+              Temukan Kesempatan <br />
+              <span className="hero-title-highlight">Pengabdian Terbaik Anda.</span>
+            </h1>
 
-          <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed font-normal max-w-2xl">
-            Penerimaan resmi calon asatidzah dan tenaga kependidikan Yayasan Dar el-Iman berbasis perencanaan kebutuhan Manpower Planning (MPP). Salurkan ilmu dan keahlian Anda di jalan dakwah Islam.
-          </p>
+            <p className="hero-desc">
+              Penerimaan resmi calon asatidzah dan tenaga kependidikan Yayasan Dar el-Iman berbasis perencanaan kebutuhan Manpower Planning (MPP). Salurkan ilmu dan keahlian Anda di jalan dakwah Islam.
+            </p>
 
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={onOpenStatusModal}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#f1d493] border border-white/20 text-xs font-bold transition-all"
-            >
-              <Search className="w-3.5 h-3.5" />
-              <span>Sudah Mendaftar? Lacak Status Seleksi Anda</span>
-            </button>
+            <div style={{ marginTop: '24px' }}>
+              <button
+                type="button"
+                onClick={onOpenStatusModal}
+                className="btn-hero-outline"
+                id="btn-career-track-modal"
+              >
+                <Search size={15} />
+                <span>Sudah Mendaftar? Lacak Status Seleksi Anda</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. FILTER & VACANCIES LIST */}
-      <section className="page-section bg-white border-b border-slate-200/80">
-        <div className="container-custom space-y-10">
-          {/* Search & Filter Box */}
-          <div className="bg-slate-50 p-5 sm:p-6 rounded-3xl border border-slate-200/90 space-y-4 max-w-4xl mx-auto">
-            <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+      {/* 2. SEARCH & VACANCIES LIST */}
+      <section className="content-section white-bg">
+        <div className="site-container">
+          {/* SEARCH & FILTER PANEL — GUARANTEED ISOLATION */}
+          <div className="search-filter-panel">
+            <div className="search-box-wrapper">
+              <Search className="search-box-icon" />
               <input
                 type="text"
-                placeholder="Cari formasi, nama unit sekolah, atau kualifikasi..."
+                placeholder="Cari formasi lowongan, nama unit sekolah, atau kualifikasi..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-hidden focus:border-emerald-700"
+                className="search-box-input"
+                id="career-search-input"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <div className="flex flex-wrap items-center gap-2">
+            <div className="filter-bar-row">
+              {/* Category Pills */}
+              <div className="filter-btn-group">
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-title)', marginRight: '6px' }}>
+                  Kategori:
+                </span>
                 {categories.map((c) => (
                   <button
                     key={c.id}
                     type="button"
                     onClick={() => setSelectedCategory(c.id)}
-                    className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
-                      selectedCategory === c.id
-                        ? 'bg-emerald-800 text-white'
-                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
-                    }`}
+                    className={`filter-pill-btn ${selectedCategory === c.id ? 'active' : ''}`}
                   >
                     {c.label}
                   </button>
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 self-end sm:self-auto">
-                <span className="text-slate-500 font-semibold">Kriteria Gender:</span>
-                <select
-                  value={selectedGender}
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-700 focus:outline-hidden"
-                >
-                  <option value="all">Semua Gender</option>
-                  <option value="Ikhwan">Khusus Ikhwan</option>
-                  <option value="Akhwat">Khusus Akhwat</option>
-                </select>
+              {/* Gender Pills */}
+              <div className="filter-btn-group">
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-title)', marginRight: '6px' }}>
+                  Gender:
+                </span>
+                {genderOptions.map((g) => (
+                  <button
+                    key={g.id}
+                    type="button"
+                    onClick={() => setSelectedGender(g.id)}
+                    className={`filter-pill-btn ${selectedGender === g.id ? 'active' : ''}`}
+                  >
+                    {g.label}
+                  </button>
+                ))}
               </div>
+            </div>
+
+            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-card)', paddingTop: '12px' }}>
+              Menampilkan <strong style={{ color: 'var(--emerald-main)' }}>{filtered.length}</strong> formasi aktif yang sesuai dengan pencarian Anda.
             </div>
           </div>
 
-          {/* Vacancies Grid */}
+          {/* VACANCIES GRID */}
           {loading ? (
-            <div className="text-center py-16 text-slate-400 text-sm">
-              Memuat data formasi rekrutmen...
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)' }}>
+              Memuat daftar formasi lowongan...
             </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-16 p-8 rounded-3xl bg-slate-50 border border-slate-200 max-w-md mx-auto space-y-3">
-              <p className="text-sm font-bold text-slate-700">
-                Tidak ditemukan lowongan yang cocok dengan pencarian Anda.
+            <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-alt)', borderRadius: '20px', border: '1px solid var(--border-card)' }}>
+              <AlertCircle size={40} color="var(--text-light)" style={{ margin: '0 auto 16px' }} />
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-title)', marginBottom: '8px' }}>
+                Tidak Ada Formasi yang Cocok
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', maxWidth: '480px', margin: '0 auto 20px' }}>
+                Silakan coba ubah kata kunci pencarian atau reset filter kategori/gender untuk melihat semua formasi yang tersedia.
               </p>
               <button
                 type="button"
@@ -147,78 +171,54 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
                   setSelectedCategory('all');
                   setSelectedGender('all');
                 }}
-                className="text-xs font-bold text-emerald-800 hover:underline"
+                className="btn-hero-primary"
+                style={{ fontSize: '0.85rem', padding: '10px 24px' }}
               >
-                Reset Filter Pencarian
+                Reset Pencarian
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((vac) => (
-                <div
-                  key={vac.id}
-                  className="card-alhakim flex flex-col justify-between space-y-5"
-                >
-                  <div className="space-y-3.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                        {vac.code}
-                      </span>
-                      <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                        {vac.status} &bull; {vac.quota} Formasi
-                      </span>
+            <div className="grid-3-col">
+              {filtered.map((job) => (
+                <div key={job.id} className="vacancy-card">
+                  <div>
+                    <div className="vacancy-top-tags">
+                      <span className="tag-badge-green">{job.category}</span>
+                      <span className="tag-badge-slate">{job.gender}</span>
                     </div>
 
-                    <div>
-                      <h3 className="text-lg font-black text-slate-900 leading-snug">
-                        {vac.title}
-                      </h3>
-                      <div className="text-xs font-bold text-emerald-800 mt-1">
-                        {vac.unit}
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '16px', marginBottom: '10px', lineHeight: 1.3 }}>
+                      {job.title}
+                    </h3>
+
+                    <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '16px' }}>
+                      {job.requirements[0] || 'Kualifikasi pendidikan relevan & komitmen adab islami.'}
+                    </p>
+
+                    <div className="vacancy-meta-list">
+                      <div className="vacancy-meta-item">
+                        <Building2 size={16} color="var(--emerald-main)" />
+                        <span>{job.unit}</span>
+                      </div>
+                      <div className="vacancy-meta-item">
+                        <GraduationCap size={16} color="var(--emerald-main)" />
+                        <span>{job.education}</span>
+                      </div>
+                      <div className="vacancy-meta-item">
+                        <Calendar size={16} color="var(--emerald-main)" />
+                        <span>Batas: <strong>{job.deadline}</strong></span>
                       </div>
                     </div>
-
-                    <div className="space-y-2 text-xs text-slate-600 pt-1">
-                      <div className="flex items-center gap-2">
-                        <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
-                        <span className="truncate">{vac.education}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-slate-400 shrink-0" />
-                        <span>Kriteria: {vac.gender}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
-                        <span>Batas Lamaran: {vac.deadline}</span>
-                      </div>
-                    </div>
-
-                    {vac.requirements && (
-                      <div className="pt-2 border-t border-slate-100 space-y-1">
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Persyaratan Ringkas:
-                        </span>
-                        <ul className="space-y-1 text-xs text-slate-600">
-                          {vac.requirements.slice(0, 2).map((req, i) => (
-                            <li key={i} className="flex items-start gap-1.5">
-                              <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0 mt-0.5" />
-                              <span className="truncate">{req}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100">
+                  <div>
                     <button
                       type="button"
-                      onClick={() => onSelectVacancy(vac)}
-                      id={`btn-apply-${vac.id}`}
-                      className="btn-simak-pill text-xs w-full py-2.5 justify-center"
+                      onClick={() => onSelectVacancy(job)}
+                      className="btn-apply-job"
                     >
                       <span>Lamar Formasi Ini</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight size={15} />
                     </button>
                   </div>
                 </div>
@@ -228,38 +228,37 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
         </div>
       </section>
 
-      {/* 3. ALUR TAHAPAN SELEKSI */}
-      <section className="page-section-alt">
-        <div className="container-custom space-y-10">
-          <div className="max-w-3xl space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-              Alur 5 Tahapan Seleksi Rekrutmen
+      {/* 3. TAHAPAN REKRUTMEN SELEKSI */}
+      <section className="content-section alt-bg">
+        <div className="site-container">
+          <div className="section-head-box">
+            <div className="section-tagline">
+              <CheckCircle2 size={14} />
+              <span>Transparan & Terstandarisasi</span>
+            </div>
+            <h2 className="section-title">
+              6 Tahapan Seleksi Masuk
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Proses seleksi transparan untuk memastikan keselarasan kompetensi, adab, dan komitmen syar'i calon pendidik.
+            <p className="section-subtitle">
+              Alur rekrutmen dirancang untuk menjamin kesesuaian adab islami, manhaj salaf, kompetensi pedagogik, dan integritas calon pegawai.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {RECRUITMENT_STAGES.map((st) => (
-              <div
-                key={st.id}
-                className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2"
-              >
-                <div className="w-7 h-7 rounded-full bg-emerald-800 text-white flex items-center justify-center text-xs font-black">
-                  {st.step}
+          <div className="grid-3-col">
+            {RECRUITMENT_STAGES.map((stage) => (
+              <div key={stage.step} className="card-numbered">
+                <div className="number-badge-box">
+                  0{stage.step}
                 </div>
-                <h4 className="text-sm font-black text-slate-900 leading-snug">
-                  {st.title}
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {st.desc}
-                </p>
+                <div>
+                  <h3 className="card-title">{stage.title}</h3>
+                  <p className="card-desc">{stage.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

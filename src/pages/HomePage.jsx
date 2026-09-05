@@ -3,11 +3,12 @@ import {
   ArrowRight,
   Sparkles,
   ShieldCheck,
-  CheckCircle2,
   Briefcase,
+  GraduationCap,
+  Users,
+  CheckCircle2,
+  Calendar,
   Building2,
-  Compass,
-  ArrowDownRight,
 } from 'lucide-react';
 import { ZAITUNU_METAPHOR, PINTAR_VALUES, MOCK_VACANCIES } from '../data/mockData';
 
@@ -19,189 +20,194 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
     { label: 'Manhaj Ahlussunnah', val: '100%' },
   ];
 
+  const featuredVacancies = MOCK_VACANCIES.slice(0, 3);
+
   return (
-    <div>
-      {/* 1. HERO SECTION (DARK DEEP FOREST WITH ARCHITECTURAL GRID) */}
-      <section className="hero-page-banner">
-        <div className="container-custom relative z-10">
-          <div className="max-w-3xl space-y-6">
-            <div className="eyebrow-accent">
-              <span>ZAITUNU &bull; HUMAN CAPITAL & CAREER ECOSYSTEM</span>
+    <main>
+      {/* 1. HERO SECTION (ARCHITECTURAL GRID — ZERO COLLISION) */}
+      <section className="hero-section-box">
+        <div className="site-container">
+          <div style={{ maxWidth: '780px' }}>
+            <div className="hero-eyebrow">
+              ZAITUNU &bull; HUMAN CAPITAL & CAREER ECOSYSTEM
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-black text-white tracking-tight leading-[1.12]">
-              Bertumbuh dan Menebar Kebaikan Bersama <br className="hidden sm:block" />
-              <span className="text-[#f1d493]">Yayasan Dar el-Iman.</span>
+            <h1 className="hero-title">
+              Bertumbuh dan Menebar <br />
+              Kebaikan Bersama <br />
+              <span className="hero-title-highlight">Yayasan Dar el-Iman.</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl font-normal">
+            <p className="hero-desc">
               Portal resmi SDM dan pusat karier Yayasan Dar el-Iman untuk menemukan kesempatan bertumbuh, berkontribusi, dan mengabdi bersama ekosistem pendidikan dan dakwah bermanhaj Salafus Shalih.
             </p>
 
-            {/* Tagline Box */}
-            <div className="inline-block py-2.5 px-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
-              <p className="text-xs sm:text-sm font-semibold text-[#f1d493] italic tracking-wide">
-                "{ZAITUNU_METAPHOR.tagline}"
-              </p>
+            {/* Tagline Badge */}
+            <div className="hero-tagline-box">
+              "{ZAITUNU_METAPHOR.tagline}"
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-3">
+            {/* Hero Action Buttons — STRICT GAP & ISOLATION */}
+            <div className="hero-btn-group">
               <button
                 type="button"
                 onClick={() => onNavigate('karier')}
-                className="btn-simak-pill px-6 py-3.5 text-sm"
+                className="btn-hero-primary"
+                id="btn-hero-explore-career"
               >
                 <span>Jelajahi Lowongan Karier</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight size={16} />
               </button>
 
               <button
                 type="button"
                 onClick={() => onNavigate('tentang')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/40 text-white font-bold text-sm hover:bg-white/15 transition-all"
+                className="btn-hero-outline"
+                id="btn-hero-about-zaitunu"
               >
                 <span>Filosofi Zaitunu & PINTAR</span>
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Quick Numbers Bar at Bottom of Hero */}
-        <div className="container-custom mt-16 pt-8 border-t border-white/15 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {quickStats.map((item, i) => (
-              <div key={i} className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-black text-[#f1d493]">
-                  {item.val}
-                </div>
-                <div className="text-xs text-emerald-200/90 font-medium">
-                  {item.label}
-                </div>
+          {/* Quick Stats Bar */}
+          <div className="hero-stats-row">
+            {quickStats.map((item, idx) => (
+              <div key={idx}>
+                <div className="stat-item-num">{item.val}</div>
+                <div className="stat-item-label">{item.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 2. OVERVIEW: BERAKAR PADA NILAI, BERTUMBUH DALAM KOMPETENSI */}
-      <section className="page-section bg-white border-b border-slate-200/80">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 space-y-4">
-              <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+      {/* 2. OVERVIEW: EDITORIAL GRID WITH BREATHING SPACE */}
+      <section className="content-section white-bg">
+        <div className="site-container">
+          <div className="grid-overview">
+            <div>
+              <div className="section-tagline">
+                <Sparkles size={14} />
                 <span>Pohon Zaitun yang Diberkahi</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 leading-tight">
+              <h2 className="section-title">
                 Membangun Generasi Rabbani Lewat Keteladanan.
               </h2>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="section-subtitle" style={{ marginBottom: '24px' }}>
                 Di Yayasan Dar el-Iman, mengabdi bukan sekadar profesi mencari nafkah, melainkan ikhtiar menanam amal jariyah. Seperti pohon zaitun yang akarnya menancap teguh dan rantingnya berbuah kemanfaatan, kami memfasilitasi setiap asatidzah untuk berkembang dalam adab dan keahlian.
               </p>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => onNavigate('tentang')}
-                  className="text-xs font-bold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5 underline underline-offset-4"
-                >
-                  <span>Baca Selengkapnya Tentang Zaitunu</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => onNavigate('tentang')}
+                className="btn-hero-primary"
+                style={{ background: 'var(--emerald-main)', color: '#ffffff' }}
+              >
+                <span>Pelajari Filosofi Zaitunu</span>
+                <ArrowRight size={16} />
+              </button>
             </div>
 
-            {/* 3 Numbered Highlight Cards */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-5">
-              <div className="card-alhakim">
-                <div className="number-badge">01</div>
-                <h3 className="text-base font-black text-slate-900 mb-2">Nilai PINTAR</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Peduli, Islami, Niat Mulia, Taat, Amanah, dan Ramah sebagai ruh setiap aktivitas kepegawaian.
-                </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="card-numbered">
+                <div className="number-badge-box">01</div>
+                <div>
+                  <h3 className="card-title">Nilai Luhur PINTAR</h3>
+                  <p className="card-desc">
+                    Peduli, Islami, Niat Mulia, Taat, Amanah, dan Rapi menjadi fondasi adab dan etika kerja seluruh asatidzah serta pegawai.
+                  </p>
+                </div>
               </div>
 
-              <div className="card-alhakim">
-                <div className="number-badge">02</div>
-                <h3 className="text-base font-black text-slate-900 mb-2">19+ Unit Kerja</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Jalur pengabdian di jenjang PAUD, Sekolah Dasar, Menengah, Boarding, hingga Lembaga Dakwah.
-                </p>
+              <div className="card-numbered">
+                <div className="number-badge-box">02</div>
+                <div>
+                  <h3 className="card-title">19+ Unit Kerja Terpadu</h3>
+                  <p className="card-desc">
+                    Jalur pengabdian menyeluruh di jenjang PAUD, Sekolah Dasar, Menengah, Pesantren Boarding, hingga divisi operasional sosial dakwah.
+                  </p>
+                </div>
               </div>
 
-              <div className="card-alhakim">
-                <div className="number-badge">03</div>
-                <h3 className="text-base font-black text-slate-900 mb-2">Jenjang Terukur</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Skala Upah Dua Titik, KPI transparan, jaminan BPJS, dan digitalisasi satu pintu dengan SIMAK.
-                </p>
+              <div className="card-numbered">
+                <div className="number-badge-box">03</div>
+                <div>
+                  <h3 className="card-title">Karier & Kesejahteraan Terukur</h3>
+                  <p className="card-desc">
+                    Skala Upah Dua Titik berbasis keadilan, penilaian KPI transparan, jaminan BPJS, serta daurah manhaj berkelanjutan.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. RECENT VACANCIES TEASER */}
-      <section className="page-section-alt border-b border-slate-200/80">
-        <div className="container-custom space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-2">
-              <div className="text-xs font-bold text-emerald-800 tracking-widest uppercase flex items-center gap-2">
-                <Briefcase className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Pusat Karier & Rekrutmen</span>
+      {/* 3. TEASER FORMASI LOWONGAN TERBARU */}
+      <section className="content-section alt-bg">
+        <div className="site-container">
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: '20px', marginBottom: '40px' }}>
+            <div className="section-head-box" style={{ marginBottom: 0 }}>
+              <div className="section-tagline">
+                <Briefcase size={14} />
+                <span>Peluang Pengabdian</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-                Formasi Terbuka Periode Ini
+              <h2 className="section-title">
+                Formasi Lowongan Terbaru
               </h2>
+              <p className="section-subtitle">
+                Bergabunglah bersama keluarga besar Yayasan Dar el-Iman untuk tahun ajaran baru.
+              </p>
             </div>
 
             <button
               type="button"
               onClick={() => onNavigate('karier')}
-              className="btn-simak-pill text-xs px-5 py-2.5 self-start sm:self-auto"
+              className="btn-hero-primary"
+              style={{ padding: '10px 22px', fontSize: '0.84rem' }}
             >
-              <span>Lihat Semua Lowongan ({MOCK_VACANCIES.length})</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Lihat Semua Lowongan</span>
+              <ArrowRight size={14} />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {MOCK_VACANCIES.slice(0, 3).map((vac) => (
-              <div
-                key={vac.id}
-                className="card-alhakim flex flex-col justify-between space-y-4 bg-white"
-              >
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                      {vac.code}
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      {vac.status}
-                    </span>
+          <div className="grid-3-col">
+            {featuredVacancies.map((job) => (
+              <div key={job.id} className="vacancy-card">
+                <div>
+                  <div className="vacancy-top-tags">
+                    <span className="tag-badge-green">{job.category}</span>
+                    <span className="tag-badge-slate">{job.gender}</span>
                   </div>
-                  <h3 className="text-base font-black text-slate-900 leading-snug">
-                    {vac.title}
+
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '14px', marginBottom: '8px', lineHeight: 1.3 }}>
+                    {job.title}
                   </h3>
-                  <p className="text-xs text-emerald-800 font-semibold">
-                    {vac.unit}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    Kriteria: {vac.gender} &bull; {vac.education}
-                  </p>
+
+                  <div className="vacancy-meta-list">
+                    <div className="vacancy-meta-item">
+                      <Building2 size={15} color="var(--emerald-main)" />
+                      <span>{job.unit}</span>
+                    </div>
+                    <div className="vacancy-meta-item">
+                      <GraduationCap size={15} color="var(--emerald-main)" />
+                      <span>{job.education}</span>
+                    </div>
+                    <div className="vacancy-meta-item">
+                      <Calendar size={15} color="var(--emerald-main)" />
+                      <span>Batas: {job.deadline}</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">
-                    Batas: {vac.deadline}
-                  </span>
+                <div>
                   <button
                     type="button"
-                    onClick={() => onSelectVacancy(vac)}
-                    className="text-xs font-bold text-emerald-800 hover:text-emerald-950 flex items-center gap-1"
+                    onClick={() => onSelectVacancy(job)}
+                    className="btn-apply-job"
                   >
-                    <span>Lamar</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Detail & Lamar Sekarang</span>
+                    <ArrowRight size={14} />
                   </button>
                 </div>
               </div>
@@ -210,40 +216,31 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
         </div>
       </section>
 
-      {/* 4. CLOSING INVITATION BANNER */}
-      <section className="page-section bg-white text-center">
-        <div className="container-custom max-w-3xl mx-auto space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Mulai Perjalanan Pengabdian Anda Hari Ini
-          </h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
-            Jelajahi halaman profil unit dan budaya kerja kami untuk mengenal lebih dekat lingkungan yang akan menjadi wadah Anda berdedikasi.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+      {/* 4. CALL TO ACTION BANNER */}
+      <section style={{ background: 'var(--navy-dark)', color: '#ffffff', padding: '72px 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="site-container" style={{ textAlign: 'center' }}>
+          <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.12em', color: 'var(--gold-light)', textTransform: 'uppercase', display: 'inline-block', marginBottom: '12px' }}>
+              Transparansi Proses Seleksi
+            </span>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.3rem)', fontWeight: 800, marginBottom: '16px', lineHeight: 1.25 }}>
+              Sudah Mengirimkan Berkas Lamaran?
+            </h2>
+            <p style={{ color: '#cde4de', fontSize: '0.95rem', marginBottom: '28px', lineHeight: 1.65 }}>
+              Lacak perkembangan verifikasi berkas, tes wawancara, dan microteaching Anda secara mandiri dan transparan melalui sistem pelacak status kami.
+            </p>
             <button
               type="button"
-              onClick={() => onNavigate('unit')}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
+              onClick={onOpenStatusModal}
+              className="btn-hero-primary"
+              style={{ padding: '14px 32px' }}
             >
-              Lihat 19 Unit Lembaga
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('kenapa-kami')}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
-            >
-              Kesejahteraan & Benefit
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('our-team')}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors"
-            >
-              Our Team & Layanan SDM
+              <span>Lacak Status Seleksi Anda</span>
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
