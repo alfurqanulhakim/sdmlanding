@@ -9,10 +9,11 @@ import {
   ArrowRight,
   CheckCircle2,
   Sparkles,
+  Share2,
 } from 'lucide-react';
 import { recruitmentService } from '../services/api';
 
-export default function CareerSection({ onSelectVacancy, onOpenStatusModal }) {
+export default function CareerSection({ onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const [vacancies, setVacancies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -182,15 +183,31 @@ export default function CareerSection({ onSelectVacancy, onOpenStatusModal }) {
                 </div>
 
                 {/* Card CTA */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-4 border-t border-slate-100 flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => onSelectVacancy(vac)}
                     id={`btn-apply-${vac.id}`}
-                    className="btn-zaitunu-primary text-xs py-2 px-4 w-full"
+                    className="btn-zaitunu-primary text-xs py-2 px-4 flex-1"
                   >
                     <span>Lamar Sekarang</span>
                     <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onShareVacancy && onShareVacancy({
+                      title: vac.title,
+                      unit: vac.unit,
+                      url: `${window.location.origin}/#/karier`,
+                      customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nInformasi Lowongan Kerja Yayasan Dar el-Iman Padang:\n📌 Formasi: ${vac.title}\n🏢 Unit: ${vac.unit}\n🎓 Kualifikasi: ${vac.education}\n👥 Kriteria: ${vac.gender}\n📅 Batas: ${vac.deadline}\n\nDaftar online sekarang di:\nhttps://sdmdareliman.web.id/#/karier`,
+                    })}
+                    className="btn-share-job"
+                    style={{ padding: '8px 12px', fontSize: '0.75rem' }}
+                    title="Bagikan lowongan ini"
+                    aria-label={`Bagikan lowongan ${vac.title}`}
+                  >
+                    <Share2 size={14} />
+                    <span>Bagikan</span>
                   </button>
                 </div>
               </div>

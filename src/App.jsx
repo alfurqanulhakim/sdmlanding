@@ -9,6 +9,8 @@ import CareerPage from './pages/CareerPage';
 import TeamPage from './pages/TeamPage';
 import ApplicationModal from './components/ApplicationModal';
 import StatusTrackerModal from './components/StatusTrackerModal';
+import ShareModal from './components/ShareModal';
+import FloatingShareButton from './components/FloatingShareButton';
 
 export default function App() {
   const getRouteFromHash = () => {
@@ -23,6 +25,7 @@ export default function App() {
   const [activeRoute, setActiveRoute] = useState(getRouteFromHash());
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [shareModalData, setShareModalData] = useState(null);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -41,6 +44,18 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenShare = (customData) => {
+    if (customData) {
+      setShareModalData(customData);
+    } else {
+      setShareModalData({
+        title: 'Portal Karier & Lowongan SDM Yayasan Dar el-Iman Padang',
+        url: `${window.location.origin}/#/karier`,
+        customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nBagi ikhwan dan akhawat yang mencari peluang pengabdian dan berkarir di dunia pendidikan dakwah Islam:\n\nYayasan Dar el-Iman Padang membuka formasi Tenaga Pendidik (Guru) dan Tenaga Kependidikan untuk berbagai unit sekolah.\n\nInformasi formasi dan pendaftaran online dapat diakses di:\nhttps://sdmdareliman.web.id/#/karier`,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-sans bg-[#f8faf9] text-[#0f1f1d]">
       {/* Floating Pill Top Navbar */}
@@ -57,6 +72,7 @@ export default function App() {
             onNavigate={handleNavigate}
             onSelectVacancy={(vac) => setSelectedVacancy(vac)}
             onOpenStatusModal={() => setStatusModalOpen(true)}
+            onShareVacancy={handleOpenShare}
           />
         )}
 
@@ -72,11 +88,15 @@ export default function App() {
           <CareerPage
             onSelectVacancy={(vac) => setSelectedVacancy(vac)}
             onOpenStatusModal={() => setStatusModalOpen(true)}
+            onShareVacancy={handleOpenShare}
           />
         )}
 
         {activeRoute === 'our-team' && <TeamPage />}
       </main>
+
+      {/* Floating Share Button for Visitors */}
+      <FloatingShareButton onOpenShare={() => handleOpenShare()} />
 
       {/* Global Footer */}
       <Footer onNavigate={handleNavigate} />
@@ -93,6 +113,14 @@ export default function App() {
       {statusModalOpen && (
         <StatusTrackerModal
           onClose={() => setStatusModalOpen(false)}
+        />
+      )}
+
+      {/* Social Media Share Modal */}
+      {shareModalData && (
+        <ShareModal
+          data={shareModalData}
+          onClose={() => setShareModalData(null)}
         />
       )}
     </div>

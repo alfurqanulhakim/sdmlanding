@@ -739,24 +739,117 @@ img {
   color: var(--text-muted);
 }
 
-.btn-apply-job {
+.vacancy-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
+}
+
+.btn-apply-job {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 12px 18px;
   border-radius: 12px;
   background: var(--emerald-main);
   color: #ffffff;
   font-size: 0.85rem;
   font-weight: 800;
+  border: none;
+  cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-apply-job:hover {
   background: var(--emerald-light);
   box-shadow: 0 4px 14px rgba(4, 120, 87, 0.3);
+}
+
+.btn-share-job {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1.5px solid var(--border-card);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-share-job:hover {
+  background: var(--emerald-soft);
+  border-color: var(--emerald-border);
+  color: var(--emerald-main);
+  transform: translateY(-1px);
+}
+
+/* Floating Share Button */
+.floating-share-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  background: #031c15;
+  color: #ffffff;
+  border: 1.5px solid rgba(245, 158, 11, 0.7);
+  box-shadow: 0 10px 30px rgba(3, 28, 21, 0.4);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.floating-share-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--gold-vibrant);
+  box-shadow: 0 14px 36px rgba(245, 158, 11, 0.35);
+  background: #063b2d;
+}
+
+.floating-share-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold-vibrant);
+  color: var(--navy-dark);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.floating-share-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .floating-share-btn {
+    bottom: 16px;
+    right: 16px;
+    padding: 8px 14px 8px 8px;
+  }
+  .floating-share-label {
+    font-size: 0.76rem;
+  }
 }
 
 /* Unit Card */

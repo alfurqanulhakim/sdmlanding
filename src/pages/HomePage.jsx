@@ -9,10 +9,11 @@ import {
   CheckCircle2,
   Calendar,
   Building2,
+  Share2,
 } from 'lucide-react';
 import { ZAITUNU_METAPHOR, PINTAR_VALUES, MOCK_VACANCIES } from '../data/mockData';
 
-export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModal }) {
+export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const quickStats = [
     { label: 'Unit Lembaga & Sekolah', val: '19+' },
     { label: 'Asatidzah & Tenaga Pendidik', val: '500+' },
@@ -66,6 +67,21 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
                 id="btn-hero-about-zaitunu"
               >
                 <span>Filosofi Zaitunu & PINTAR</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onShareVacancy && onShareVacancy({
+                  title: 'Portal Karier & SDM Yayasan Dar el-Iman Padang',
+                  url: `${window.location.origin}/#/karier`,
+                  customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nBagi ikhwan dan akhawat yang sedang mencari peluang pengabdian dan berkarir di dunia pendidikan dakwah Islam:\n\nYayasan Dar el-Iman Padang membuka formasi Tenaga Pendidik (Guru) dan Tenaga Kependidikan untuk berbagai unit sekolah.\n\nInformasi formasi dan pendaftaran online dapat diakses di:\nhttps://sdmdareliman.web.id/#/karier`,
+                })}
+                className="btn-hero-outline"
+                id="btn-hero-share-portal"
+                title="Bagikan portal karir ke teman & keluarga"
+              >
+                <Share2 size={16} />
+                <span>Bagikan Info Karir</span>
               </button>
             </div>
           </div>
@@ -200,14 +216,29 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
                   </div>
                 </div>
 
-                <div>
+                <div className="vacancy-card-actions">
                   <button
                     type="button"
                     onClick={() => onSelectVacancy(job)}
                     className="btn-apply-job"
                   >
-                    <span>Detail & Lamar Sekarang</span>
+                    <span>Lamar Sekarang</span>
                     <ArrowRight size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onShareVacancy && onShareVacancy({
+                      title: job.title,
+                      unit: job.unit,
+                      url: `${window.location.origin}/#/karier`,
+                      customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nInformasi Lowongan Kerja Yayasan Dar el-Iman Padang:\n📌 Formasi: ${job.title}\n🏢 Unit: ${job.unit}\n🎓 Kualifikasi: ${job.education}\n👥 Kriteria: ${job.gender}\n📅 Batas: ${job.deadline}\n\nDaftar online sekarang di:\nhttps://sdmdareliman.web.id/#/karier`,
+                    })}
+                    className="btn-share-job"
+                    title="Bagikan lowongan ini"
+                    aria-label={`Bagikan lowongan ${job.title}`}
+                  >
+                    <Share2 size={15} />
+                    <span>Bagikan</span>
                   </button>
                 </div>
               </div>

@@ -11,11 +11,12 @@ import {
   CheckCircle2,
   Building2,
   AlertCircle,
+  Share2,
 } from 'lucide-react';
 import { recruitmentService } from '../services/api';
 import { RECRUITMENT_STAGES } from '../data/mockData';
 
-export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
+export default function CareerPage({ onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const [vacancies, setVacancies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -211,7 +212,7 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="vacancy-card-actions">
                     <button
                       type="button"
                       onClick={() => onSelectVacancy(job)}
@@ -220,11 +221,80 @@ export default function CareerPage({ onSelectVacancy, onOpenStatusModal }) {
                       <span>Lamar Formasi Ini</span>
                       <ArrowRight size={15} />
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => onShareVacancy && onShareVacancy({
+                        title: job.title,
+                        unit: job.unit,
+                        url: `${window.location.origin}/#/karier`,
+                        customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nInformasi Lowongan Kerja Yayasan Dar el-Iman Padang:\n📌 Formasi: ${job.title}\n🏢 Unit: ${job.unit}\n🎓 Kualifikasi: ${job.education}\n👥 Kriteria: ${job.gender}\n📅 Batas: ${job.deadline}\n\nDaftar online sekarang di:\nhttps://sdmdareliman.web.id/#/karier`,
+                      })}
+                      className="btn-share-job"
+                      title="Bagikan lowongan ini"
+                      aria-label={`Bagikan lowongan ${job.title}`}
+                    >
+                      <Share2 size={16} />
+                      <span>Bagikan</span>
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
+
+          {/* BANNER SEBARKAN KEBAIKAN */}
+          <div
+            style={{
+              marginTop: '48px',
+              padding: '24px clamp(20px, 4vw, 32px)',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, #031c15 0%, #063b2d 100%)',
+              color: '#ffffff',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '20px',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              boxShadow: '0 10px 28px rgba(3, 28, 21, 0.15)',
+            }}
+          >
+            <div style={{ maxWidth: '620px' }}>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'var(--gold-light)',
+                  display: 'inline-block',
+                  marginBottom: '6px',
+                }}
+              >
+                Peluang Amal Jariyah
+              </span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
+                Bantu Sebarkan Informasi Formasi Ini
+              </h3>
+              <p style={{ fontSize: '0.84rem', color: '#d1fae5', lineHeight: 1.6 }}>
+                <em>"Barangsiapa yang menunjuki kepada kebaikan maka dia akan mendapatkan pahala seperti pahala orang yang mengerjakannya."</em> (HR. Muslim No. 1893). Bagikan kabar lowongan ini kepada keluarga, rekan sejawat, dan kerabat yang membutuhkan.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onShareVacancy && onShareVacancy({
+                title: 'Pusat Karier & Lowongan Kerja SDM Yayasan Dar el-Iman Padang',
+                url: `${window.location.origin}/#/karier`,
+                customText: `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nBagi ikhwan dan akhawat yang mencari peluang pengabdian dan berkarir di dunia pendidikan dakwah Islam:\n\nYayasan Dar el-Iman Padang membuka formasi Tenaga Pendidik (Guru) dan Tenaga Kependidikan untuk berbagai unit sekolah.\n\nInformasi formasi dan pendaftaran online dapat diakses di:\nhttps://sdmdareliman.web.id/#/karier`,
+              })}
+              className="btn-hero-primary"
+              style={{ padding: '12px 24px', fontSize: '0.86rem' }}
+            >
+              <Share2 size={16} />
+              <span>Bagikan Portal Karir Sekarang</span>
+            </button>
+          </div>
         </div>
       </section>
 
