@@ -20,7 +20,7 @@ export const recruitmentService = {
   async getVacancies() {
     try {
       const response = await api.get('/api/public/vacancies');
-      if (response.data && response.data.data) {
+      if (response.data && Array.isArray(response.data.data)) {
         return response.data.data;
       }
       return MOCK_VACANCIES;
