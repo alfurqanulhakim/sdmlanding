@@ -209,13 +209,11 @@ export default function StatusTrackerModal({ onClose }) {
                         <CheckCircle2 size={18} color="#059669" />
                         <div>
                           <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#065f46' }}>
-                            Tes DISC Berhasil Diserahkan
+                            Tes Psikotes DISC Selesai
                           </div>
-                          {result.discResult && (
-                            <div style={{ fontSize: '0.74rem', color: '#475569' }}>
-                              Profil: <strong>{result.discResult}</strong>
-                            </div>
-                          )}
+                          <div style={{ fontSize: '0.74rem', color: '#047857' }}>
+                            Lembar jawaban tersimpan & terverifikasi sistem SDM
+                          </div>
                         </div>
                       </div>
                       <button

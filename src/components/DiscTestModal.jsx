@@ -297,34 +297,31 @@ export default function DiscTestModal({ applicant, onClose, onComplete }) {
               <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-title)', marginBottom: '8px' }}>
                 Alhamdulillah, Tes DISC Anda Berhasil Disimpan!
               </h3>
-              <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', maxWidth: '520px', margin: '0 auto 20px' }}>
-                Lembar jawaban tes kepribadian Anda telah diverifikasi oleh sistem dan otomatis terhubung ke akun Biro SDM Yayasan Dar el-Iman untuk tahapan seleksi berikutnya.
+              <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', maxWidth: '520px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+                Lembar jawaban tes kepribadian Anda telah diverifikasi oleh sistem dan otomatis tersimpan dengan aman di database Biro SDM Yayasan Dar el-Iman untuk evaluasi tahapan seleksi berikutnya.
               </p>
 
-              {/* Profile Card */}
               <div
                 style={{
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '16px',
-                  padding: '20px',
-                  maxWidth: '560px',
+                  background: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  borderRadius: '14px',
+                  padding: '16px 20px',
+                  maxWidth: '520px',
                   margin: '0 auto 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
                   textAlign: 'left',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <Sparkles size={18} color="#d97706" />
-                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#92400e', textTransform: 'uppercase' }}>
-                    Hasil Profil Kepribadian
-                  </span>
+                <div style={{ background: '#dcfce7', borderRadius: '50%', padding: '8px', color: '#16a34a', flexShrink: 0 }}>
+                  <CheckCircle2 size={20} />
                 </div>
-                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#047857', marginBottom: '8px' }}>
-                  {submitResult.profile_label}
-                </h4>
-                <p style={{ fontSize: '0.82rem', color: '#334155', lineHeight: 1.5 }}>
-                  {submitResult.personality_summary}
-                </p>
+                <div style={{ fontSize: '0.8rem', color: '#166534', lineHeight: 1.5 }}>
+                  <strong>Status Data: Terverifikasi & Konfidensial</strong>
+                  <div>Seluruh hasil asesmen bersifat rahasia dan diolah secara internal oleh tim penguji SDM. Silakan pantau status seleksi Anda secara berkala.</div>
+                </div>
               </div>
 
               <button
