@@ -91,6 +91,28 @@ export const recruitmentService = {
       throw new Error(msg);
     }
   },
+
+  // Ambil soal tes psikotes DISC
+  async getDiscQuestions(registrationCode) {
+    try {
+      const response = await api.get(`/api/public/recruitment/disc/questions?registration_code=${encodeURIComponent(registrationCode || '')}`);
+      return response.data;
+    } catch (err) {
+      console.warn('Gagal memuat soal DISC dari API, fallback lokal:', err.message);
+      return null;
+    }
+  },
+
+  // Submit lembar jawaban tes DISC
+  async submitDiscTest(payload) {
+    try {
+      const response = await api.post('/api/public/recruitment/disc/submit', payload);
+      return response.data;
+    } catch (err) {
+      const errMsg = err.response?.data?.message || err.message || 'Gagal menyimpan jawaban tes DISC.';
+      throw new Error(errMsg);
+    }
+  },
 };
 
 export default api;

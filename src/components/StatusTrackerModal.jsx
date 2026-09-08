@@ -9,15 +9,19 @@ import {
   Sparkles,
   ShieldCheck,
   ChevronRight,
+  BrainCircuit,
+  ExternalLink,
 } from 'lucide-react';
 import { RECRUITMENT_STAGES } from '../data/mockData';
 import { recruitmentService } from '../services/api';
+import DiscTestModal from './DiscTestModal';
 
 export default function StatusTrackerModal({ onClose }) {
   const [identifier, setIdentifier] = useState('');
   const [searching, setSearching] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
+  const [showDiscModal, setShowDiscModal] = useState(false);
 
   // Handle ESC key
   useEffect(() => {
@@ -148,6 +152,134 @@ export default function StatusTrackerModal({ onClose }) {
                   Catatan Panitia: "{result.notes}"
                 </p>
               )}
+
+              {/* Card Tes Psikotes DISC jika status di tahap 4 / tes_psikotes */}
+              {(result.status === 'tes_psikotes' || result.currentStageIndex === 3) && (
+                <div
+                  style={{
+                    background: '#fdf2f8',
+                    border: '1px solid #fbcfe8',
+                    borderRadius: '12px',
+                    padding: '14px 16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div
+                      style={{
+                        background: '#fce7f3',
+                        color: '#be185d',
+                        borderRadius: '8px',
+                        padding: '6px',
+                        display: 'grid',
+                        placeItems: 'center',
+                      }}
+                    >
+                      <BrainCircuit size={18} />
+                    </div>
+                    <div>
+                      <h5 style={{ fontSize: '0.88rem', fontWeight: 800, color: '#831843', margin: 0 }}>
+                        Tahap 4: Tes Psikotes Online (DISC)
+                      </h5>
+                      <p style={{ fontSize: '0.74rem', color: '#9d174d', margin: '2px 0 0 0' }}>
+                        {result.discCompleted
+                          ? 'Alhamdulillah, lembar tes kepribadian Anda telah selesai dan tersimpan di database SIMAK.'
+                          : 'Silakan mengisi lembar tes kepribadian 24 butir soal untuk melanjutkan proses seleksi:'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {result.discCompleted ? (
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #fbcfe8',
+                        borderRadius: '10px',
+                        padding: '10px 14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '8px',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <CheckCircle2 size={18} color="#059669" />
+                        <div>
+                          <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#065f46' }}>
+                            Tes DISC Berhasil Diserahkan
+                          </div>
+                          {result.discResult && (
+                            <div style={{ fontSize: '0.74rem', color: '#475569' }}>
+                              Profil: <strong>{result.discResult}</strong>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDiscModal(true)}
+                        style={{
+                          background: 'none',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '6px',
+                          padding: '4px 10px',
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          color: '#64748b',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Buka Lembar Tes
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setShowDiscModal(true)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          background: '#ec4899',
+                          color: '#ffffff',
+                          border: 'none',
+                          fontWeight: 800,
+                          fontSize: '0.85rem',
+                          padding: '11px 18px',
+                          borderRadius: '10px',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 6px rgba(236, 72, 153, 0.3)',
+                        }}
+                      >
+                        <BrainCircuit size={16} /> Mulai Tes Psikotes DISC Online
+                      </button>
+
+                      <a
+                        href="https://docs.google.com/forms/d/1VUe96YlumNFOJLYwwRfedVKi1BuiqHHKBpY5MDnzQVQ/viewform"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: '0.72rem',
+                          color: '#9d174d',
+                          textAlign: 'center',
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        Atau gunakan Tautan Alternatif Google Form <ExternalLink size={11} />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Visual Growth Pipeline Stepper */}
@@ -224,6 +356,21 @@ export default function StatusTrackerModal({ onClose }) {
           </div>
         )}
       </div>
+
+      {/* Modal Tes Psikotes DISC Native */}
+      {showDiscModal && (
+        <DiscTestModal
+          applicant={result}
+          onClose={() => setShowDiscModal(false)}
+          onComplete={(data) => {
+            setResult((prev) => ({
+              ...prev,
+              discCompleted: true,
+              discResult: data.profile_label,
+            }));
+          }}
+        />
+      )}
     </div>
   );
 }
