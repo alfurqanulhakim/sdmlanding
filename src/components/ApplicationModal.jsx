@@ -39,7 +39,10 @@ export default function ApplicationModal({ vacancy, onClose }) {
     whatsapp: '',
     email: '',
     gender: 'Ikhwan',
+    birthPlace: '',
     birthDate: '',
+    domicileAddress: '',
+    maritalStatus: '',
 
     // Step 3: Pendidikan & Pengalaman
     lastEducation: 'S1',
@@ -75,7 +78,10 @@ export default function ApplicationModal({ vacancy, onClose }) {
           whatsapp: data.whatsapp || prev.whatsapp,
           email: data.email || prev.email,
           gender: data.gender || prev.gender,
+          birthPlace: data.birthPlace || prev.birthPlace,
           birthDate: data.birthDate || prev.birthDate,
+          domicileAddress: data.domicileAddress || prev.domicileAddress,
+          maritalStatus: data.maritalStatus || prev.maritalStatus,
           lastEducation: data.lastEducation || prev.lastEducation,
           institution: data.institution || prev.institution,
           gpa: data.gpa || prev.gpa,
@@ -121,9 +127,13 @@ export default function ApplicationModal({ vacancy, onClose }) {
     setErrorMessage('');
     if (currentStep === 2) {
       if (!formData.fullName.trim()) return 'Nama lengkap wajib diisi sesuai KTP/Ijazah.';
-      if (!formData.nik.trim() || formData.nik.length < 16) return 'NIK harus terdiri dari 16 digit angka.';
+      if (!/^\d{16}$/.test(formData.nik.trim())) return 'NIK harus terdiri dari 16 digit angka.';
       if (!formData.whatsapp.trim() || formData.whatsapp.length < 9) return 'Nomor WhatsApp aktif wajib diisi.';
-      if (!formData.email.trim() || !formData.email.includes('@')) return 'Alamat email valid wajib diisi.';
+      if (formData.email.trim() && !formData.email.includes('@')) return 'Alamat email tidak valid.';
+      if (!formData.birthPlace.trim()) return 'Tempat lahir wajib diisi.';
+      if (!formData.birthDate) return 'Tanggal lahir wajib diisi.';
+      if (!formData.domicileAddress.trim()) return 'Alamat domisili wajib diisi.';
+      if (!formData.maritalStatus) return 'Status pernikahan wajib dipilih.';
     }
     if (currentStep === 3) {
       if (!formData.institution.trim()) return 'Nama Universitas / Sekolah Tinggi / Ma\'had wajib diisi.';
@@ -640,7 +650,7 @@ export default function ApplicationModal({ vacancy, onClose }) {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
                   <div className="form-field-group">
                     <label className="form-field-label">
-                      Alamat Email Aktif <span style={{ color: '#ef4444' }}>*</span>
+                      Alamat Email Aktif <span style={{ color: '#64748b' }}>(Opsional)</span>
                     </label>
                     <input
                       type="email"
@@ -669,17 +679,70 @@ export default function ApplicationModal({ vacancy, onClose }) {
                   </div>
                 </div>
 
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                  <div className="form-field-group">
+                    <label className="form-field-label">
+                      Tempat Lahir <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="birthPlace"
+                      value={formData.birthPlace}
+                      onChange={handleChange}
+                      placeholder="Contoh: Padang"
+                      className="form-field-input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-field-group">
+                    <label className="form-field-label">
+                      Tanggal Lahir <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="birthDate"
+                      value={formData.birthDate}
+                      onChange={handleChange}
+                      className="form-field-input"
+                      required
+                    />
+                  </div>
+                </div>
+
                 <div className="form-field-group">
                   <label className="form-field-label">
-                    Tanggal Lahir
+                    Alamat Domisili <span style={{ color: '#ef4444' }}>*</span>
                   </label>
-                  <input
-                    type="date"
-                    name="birthDate"
-                    value={formData.birthDate}
+                  <textarea
+                    rows="2"
+                    name="domicileAddress"
+                    value={formData.domicileAddress}
+                    onChange={handleChange}
+                    placeholder="Alamat tempat tinggal saat ini"
+                    className="form-field-input"
+                    style={{ resize: 'vertical' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-field-group">
+                  <label className="form-field-label">
+                    Status Pernikahan <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <select
+                    name="maritalStatus"
+                    value={formData.maritalStatus}
                     onChange={handleChange}
                     className="form-field-input"
-                  />
+                    required
+                  >
+                    <option value="">Pilih status pernikahan</option>
+                    <option value="Belum Menikah">Belum Menikah</option>
+                    <option value="Menikah">Menikah</option>
+                    <option value="Cerai Hidup">Cerai Hidup</option>
+                    <option value="Cerai Mati">Cerai Mati</option>
+                  </select>
                 </div>
               </div>
             )}
