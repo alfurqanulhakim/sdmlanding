@@ -94,6 +94,13 @@ export default function DiscTestModal({ applicant, onClose, onComplete }) {
   const progressPercent = Math.round((completedCount / totalQuestions) * 100);
   const isAllCompleted = completedCount === totalQuestions;
 
+  // Alur pengerjaan wajib berurutan
+  const firstUnansweredIndex = questions.findIndex((q) => {
+    const a = answers[q.no];
+    return !a || a.most === null || a.least === null || a.most === a.least;
+  });
+  const maxAllowedIndex = firstUnansweredIndex === -1 ? totalQuestions - 1 : firstUnansweredIndex;
+
   // Submit test to backend
   const handleSubmit = async () => {
     if (!isAllCompleted) {
@@ -371,10 +378,12 @@ export default function DiscTestModal({ applicant, onClose, onComplete }) {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                    Daftar Nomor Soal (1 - 24):
+                    Alur Pengerjaan Wajib Berurutan (Nomor 1 - 24):
                   </span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-light)' }}>
-                    Klik nomor untuk berpindah soal
+                  <span style={{ fontSize: '0.72rem', color: currentAns.most !== null && currentAns.least !== null ? '#059669' : '#d97706', fontWeight: 700 }}>
+                    {currentAns.most !== null && currentAns.least !== null
+                      ? '✅ Nomor ini telah terisi, silakan lanjut'
+                      : '⚠️ Pilih 1 [P] dan 1 [K] untuk membuka nomor selanjutnya'}
                   </span>
                 </div>
                 <div
@@ -388,33 +397,39 @@ export default function DiscTestModal({ applicant, onClose, onComplete }) {
                     const ans = answers[q.no];
                     const isDone = ans && ans.most !== null && ans.least !== null && ans.most !== ans.least;
                     const isActive = idx === activeQuestionIndex;
+                    const isLocked = idx > maxAllowedIndex;
 
                     return (
                       <button
                         key={q.no}
                         type="button"
-                        onClick={() => setActiveQuestionIndex(idx)}
+                        disabled={isLocked}
+                        onClick={() => !isLocked && setActiveQuestionIndex(idx)}
                         style={{
                           aspectRatio: '1',
                           borderRadius: '8px',
-                          border: isActive ? '2px solid #047857' : '1px solid #cbd5e1',
+                          border: isActive ? '2px solid #047857' : isLocked ? '1px dashed #cbd5e1' : '1px solid #cbd5e1',
                           background: isActive
                             ? '#ecfdf5'
                             : isDone
                             ? '#10b981'
+                            : isLocked
+                            ? '#f1f5f9'
                             : '#ffffff',
-                          color: isDone && !isActive ? '#ffffff' : isActive ? '#065f46' : '#64748b',
+                          color: isDone && !isActive ? '#ffffff' : isActive ? '#065f46' : isLocked ? '#94a3b8' : '#64748b',
                           fontWeight: 800,
                           fontSize: '0.75rem',
-                          cursor: 'pointer',
+                          cursor: isLocked ? 'not-allowed' : 'pointer',
+                          opacity: isLocked ? 0.45 : 1,
                           display: 'grid',
                           placeItems: 'center',
                           padding: 0,
                           transition: 'all 0.15s ease',
                           boxShadow: isActive ? '0 0 0 2px rgba(4, 120, 87, 0.2)' : 'none',
                         }}
+                        title={isLocked ? `Nomor ${q.no} terkunci (wajib isi nomor sebelumnya dahulu)` : `Nomor ${q.no}`}
                       >
-                        {q.no}
+                        {isLocked ? '🔒' : q.no}
                       </button>
                     );
                   })}
@@ -613,23 +628,24 @@ export default function DiscTestModal({ applicant, onClose, onComplete }) {
 
                   <button
                     type="button"
-                    disabled={activeQuestionIndex === totalQuestions - 1}
+                    disabled={currentAns.most === null || currentAns.least === null || activeQuestionIndex === totalQuestions - 1}
                     onClick={() => setActiveQuestionIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '6px',
-                      background: 'none',
-                      border: '1px solid #cbd5e1',
+                      background: currentAns.most !== null && currentAns.least !== null ? 'var(--emerald-main)' : '#e2e8f0',
+                      border: 'none',
                       borderRadius: '8px',
-                      padding: '8px 14px',
+                      padding: '8px 16px',
                       fontSize: '0.8rem',
-                      fontWeight: 700,
-                      color: activeQuestionIndex === totalQuestions - 1 ? '#94a3b8' : 'var(--text-body)',
-                      cursor: activeQuestionIndex === totalQuestions - 1 ? 'not-allowed' : 'pointer',
+                      fontWeight: 800,
+                      color: currentAns.most !== null && currentAns.least !== null ? '#ffffff' : '#94a3b8',
+                      cursor: currentAns.most === null || currentAns.least === null || activeQuestionIndex === totalQuestions - 1 ? 'not-allowed' : 'pointer',
+                      boxShadow: currentAns.most !== null && currentAns.least !== null ? '0 2px 6px rgba(4, 120, 87, 0.2)' : 'none',
                     }}
                   >
-                    Berikutnya <ChevronRight size={16} />
+                    {activeQuestionIndex === totalQuestions - 1 ? 'Soal Terakhir' : `Lanjut ke Nomor ${activeQuestionIndex + 2}`} <ChevronRight size={16} />
                   </button>
                 </div>
               </div>
