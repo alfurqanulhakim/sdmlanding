@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { ZAITUNU_METAPHOR, PINTAR_VALUES, MOCK_VACANCIES } from '../data/mockData';
 import { recruitmentService } from '../services/api';
+import HrisPromoBanner from '../components/HrisPromoBanner';
 
 export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const quickStats = [
@@ -109,7 +110,10 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
         </div>
       </section>
 
-      {/* 2. OVERVIEW: EDITORIAL GRID WITH BREATHING SPACE */}
+      {/* 2. HRIS PROMO SHOWCASE / IKLAN SIMAK SDM (FLOATING LAPTOP & HP + WA DEMO CTA) */}
+      <HrisPromoBanner />
+
+      {/* 3. OVERVIEW: EDITORIAL GRID WITH BREATHING SPACE */}
       <section className="content-section white-bg">
         <div className="site-container">
           <div className="grid-overview">
