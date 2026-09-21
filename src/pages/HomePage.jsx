@@ -14,6 +14,7 @@ import {
 import { ZAITUNU_METAPHOR, PINTAR_VALUES, MOCK_VACANCIES } from '../data/mockData';
 import { recruitmentService } from '../services/api';
 import HrisPromoBanner from '../components/HrisPromoBanner';
+import SimakAppDownloadSection from '../components/SimakAppDownloadSection';
 
 export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModal, onShareVacancy }) {
   const quickStats = [
@@ -112,6 +113,9 @@ export default function HomePage({ onNavigate, onSelectVacancy, onOpenStatusModa
 
       {/* 2. HRIS PROMO SHOWCASE / IKLAN SIMAK SDM (FLOATING LAPTOP & HP + WA DEMO CTA) */}
       <HrisPromoBanner />
+
+      {/* 2B. SIMAK PINTAR ANDROID APP DOWNLOAD HUB (TEMPAT UNDUH APK TERBARU) */}
+      <SimakAppDownloadSection />
 
       {/* 3. OVERVIEW: EDITORIAL GRID WITH BREATHING SPACE */}
       <section className="content-section white-bg">

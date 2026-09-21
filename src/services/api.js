@@ -115,4 +115,31 @@ export const recruitmentService = {
   },
 };
 
+/**
+ * Service API Publik Rilis Aplikasi Android SIMAK PINTAR
+ */
+export const appReleaseService = {
+  // Ambil metadata rilis aplikasi terbaru
+  async getLatestRelease() {
+    try {
+      const response = await api.get('/api/public/app-release/latest');
+      if (response.data && response.data.has_release && response.data.data) {
+        return response.data.data;
+      }
+      return null;
+    } catch (err) {
+      console.warn('Gagal memuat metadata rilis APK terbaru:', err.message);
+      return null;
+    }
+  },
+
+  // Dapatkan URL unduh langsung
+  getDownloadUrl(releaseId) {
+    const base = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'https://simakapi.sdmdareliman.web.id';
+    return releaseId
+      ? `${base}/api/public/app-release/download/${releaseId}`
+      : `${base}/api/public/app-release/download`;
+  },
+};
+
 export default api;

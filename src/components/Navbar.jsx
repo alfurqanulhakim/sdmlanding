@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ExternalLink } from 'lucide-react';
+import { Search, ExternalLink, Smartphone } from 'lucide-react';
 
 export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -75,6 +75,28 @@ export default function Navbar({ activeRoute, onNavigate, onOpenStatusModal }) {
 
       {/* Action Buttons (Right) */}
       <div className="nav-actions">
+        <button
+          type="button"
+          onClick={() => {
+            if (activeRoute !== 'home') {
+              onNavigate('home');
+              setTimeout(() => {
+                const el = document.getElementById('unduh-simak');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 200);
+            } else {
+              const el = document.getElementById('unduh-simak');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="btn-nav-download"
+          id="btn-nav-download-app"
+          title="Unduh Aplikasi Android SIMAK Pintar (.APK)"
+        >
+          <Smartphone size={14} />
+          <span>Unduh APK</span>
+        </button>
+
         <button
           type="button"
           onClick={onOpenStatusModal}
