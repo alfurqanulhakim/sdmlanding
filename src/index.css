@@ -1815,6 +1815,19 @@ img {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 18px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.simak-pill-badge svg {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+  min-height: 15px !important;
+  max-width: 15px !important;
+  max-height: 15px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
 }
 
 .simak-download-heading {
@@ -1928,48 +1941,69 @@ img {
 
 /* Google Play Store Button */
 .btn-google-play {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 22px;
-  border-radius: 14px;
-  background: #090d16;
-  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 22px !important;
+  border-radius: 14px !important;
+  background: #090d16 !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.45) !important;
   color: #ffffff !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
-  transition: all 0.25s ease;
-  text-decoration: none;
-  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .btn-google-play:hover {
-  background: #030712;
-  border-color: #34d399;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.7), 0 0 28px rgba(16, 185, 129, 0.4);
+  background: #030712 !important;
+  border-color: #34d399 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.7), 0 0 28px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-google-play svg {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
 }
 
 .btn-google-play-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  line-height: 1.15;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
 }
 
 .btn-google-play-sub {
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #94a3b8;
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #94a3b8 !important;
+  white-space: nowrap !important;
+  display: block !important;
+  line-height: 1 !important;
 }
 
 .btn-google-play-title {
-  font-size: 1.18rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.01em;
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+  display: block !important;
+  line-height: 1.2 !important;
+  margin-top: 2px !important;
 }
 
 /* Direct APK Fallback Row */
@@ -2299,24 +2333,47 @@ img {
 
 /* Nav Download button */
 .btn-nav-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 8px 16px !important;
+  border-radius: 50px !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   color: #ffffff !important;
-  font-size: 0.78rem;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
 }
 
 .btn-nav-download:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.45) !important;
+}
+
+.btn-nav-download svg {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  max-width: 14px !important;
+  min-height: 14px !important;
+  max-height: 14px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+.btn-nav-download span,
+.btn-nav-download-text {
+  white-space: nowrap !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+  word-break: keep-all !important;
 }
 
 /* Responsive */

@@ -16,9 +16,26 @@ import hpImg from '../assets/HP.png';
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.dareliman.simakv1';
 
-function GooglePlayIcon({ className = 'w-7 h-7 shrink-0' }) {
+function GooglePlayLogo({ size = 20, className = '' }) {
   return (
-    <svg className={className} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        minWidth: `${size}px`,
+        minHeight: `${size}px`,
+        maxWidth: `${size}px`,
+        maxHeight: `${size}px`,
+        flexShrink: 0,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+      }}
+    >
       <path
         fill="#4285F4"
         d="M47.1 22.1c-3.1 3.3-4.8 8.1-4.8 14.1v439.6c0 6 1.7 10.8 4.8 14.1l2.4 2.2L277.6 264v-16L49.5 19.9l-2.4 2.2z"
@@ -85,7 +102,7 @@ export default function SimakAppDownloadSection() {
             <div className="simak-download-info">
               {/* Badge */}
               <div className="simak-pill-badge">
-                <GooglePlayIcon className="w-4 h-4" />
+                <GooglePlayLogo size={15} />
                 <span>KINI TERSEDIA DI GOOGLE PLAY STORE</span>
               </div>
 
@@ -140,12 +157,12 @@ export default function SimakAppDownloadSection() {
                   id="btn-download-playstore"
                   title="Buka Aplikasi SIMAK Pintar di Google Play Store"
                 >
-                  <GooglePlayIcon className="w-7 h-7" />
+                  <GooglePlayLogo size={26} />
                   <div className="btn-google-play-text">
                     <span className="btn-google-play-sub">TEMUKAN DI</span>
                     <span className="btn-google-play-title">Google Play</span>
                   </div>
-                  <ExternalLink size={16} className="text-emerald-400 ml-1 opacity-80" />
+                  <ExternalLink size={15} className="text-emerald-400 ml-1 opacity-80 shrink-0" />
                 </a>
 
                 {/* QR Code Trigger Button */}
@@ -188,15 +205,15 @@ export default function SimakAppDownloadSection() {
               {/* Trust Badge */}
               <div className="simak-trust-row">
                 <div className="trust-item">
-                  <ShieldCheck size={16} className="text-emerald-400" />
+                  <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
                   <span>Terverifikasi Google Play Protect</span>
                 </div>
                 <div className="trust-item">
-                  <Sparkles size={16} className="text-emerald-400" />
+                  <Sparkles size={16} className="text-emerald-400 shrink-0" />
                   <span>Pembaruan Otomatis</span>
                 </div>
                 <div className="trust-item">
-                  <CheckCircle2 size={16} className="text-emerald-400" />
+                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
                   <span>Rilis Resmi Yayasan Dar el-Iman</span>
                 </div>
               </div>
@@ -205,7 +222,7 @@ export default function SimakAppDownloadSection() {
               {release?.changelog && (
                 <div className="simak-changelog-box">
                   <div className="changelog-header">
-                    <FileText size={14} className="text-emerald-400" />
+                    <FileText size={14} className="text-emerald-400 shrink-0" />
                     <span>Catatan Pembaruan (v{currentVersion}):</span>
                   </div>
                   <p className="changelog-text">{release.changelog}</p>
@@ -246,7 +263,7 @@ export default function SimakAppDownloadSection() {
           >
             <div className="modal-header">
               <div className="flex items-center gap-2">
-                <GooglePlayIcon className="w-5 h-5" />
+                <GooglePlayLogo size={20} />
                 <h3 className="modal-title">Scan QR untuk Buka di Google Play</h3>
               </div>
               <button
@@ -287,7 +304,7 @@ export default function SimakAppDownloadSection() {
                   rel="noopener noreferrer"
                   className="btn-google-play text-sm py-2 px-4"
                 >
-                  <GooglePlayIcon className="w-5 h-5" />
+                  <GooglePlayLogo size={20} />
                   <div className="btn-google-play-text">
                     <span className="btn-google-play-sub">BUKA LANGSUNG DI</span>
                     <span className="btn-google-play-title text-sm">Google Play Store</span>
@@ -369,7 +386,7 @@ export default function SimakAppDownloadSection() {
                   className="btn-google-play text-sm py-2 px-4"
                   onClick={() => setShowGuideModal(false)}
                 >
-                  <GooglePlayIcon className="w-5 h-5" />
+                  <GooglePlayLogo size={20} />
                   <div className="btn-google-play-text">
                     <span className="btn-google-play-sub">PASANG SEKARANG DI</span>
                     <span className="btn-google-play-title text-sm">Google Play</span>
